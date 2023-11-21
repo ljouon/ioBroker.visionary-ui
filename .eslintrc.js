@@ -51,6 +51,14 @@ module.exports = {
         'no-var': 'error',
         'prefer-const': 'error',
         'no-trailing-spaces': 'error',
+        'prettier/prettier': [
+            'warn',
+            {
+                singleQuote: true,
+                semi: true,
+            },
+        ],
+        quotes: [2, 'single', { avoidEscape: true, allowTemplateLiterals: true }],
     },
     overrides: [
         {
