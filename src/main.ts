@@ -5,11 +5,36 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
+import express from 'express';
+import { createServer, Server } from 'http';
 
 // Load your modules here, e.g.:
 // import * as fs from "fs";
 
+// interface ServerToClientEvents {
+//     noArg: () => void;
+//     basicEmit: (a: number, b: string, c: Buffer) => void;
+//     withAck: (d: string, callback: (e: number) => void) => void;
+// }
+//
+// interface ClientToServerEvents {
+//     hello: () => void;
+// }
+//
+// interface InterServerEvents {
+//     ping: () => void;
+// }
+//
+// interface SocketData {
+//     id: string;
+//     state: any;
+// }
+
 class VisionaryUi extends utils.Adapter {
+    // private readonly io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
+
+    private webserver: Server;
+
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
             ...options,
@@ -17,9 +42,16 @@ class VisionaryUi extends utils.Adapter {
         });
         this.on('ready', this.onReady.bind(this));
         this.on('stateChange', this.onStateChange.bind(this));
-        // this.on('objectChange', this.onObjectChange.bind(this));
+        this.on('objectChange', this.onObjectChange.bind(this));
+
         // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
+        // this.io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>({});
+        const app = express();
+        app.get('/', (req, res) => {
+            res.send('Hello from Express!');
+        });
+        this.webserver = createServer(app);
     }
 
     /**
@@ -34,50 +66,73 @@ class VisionaryUi extends utils.Adapter {
         this.log.info('config option2: ' + this.config.option2);
 
         /*
-		For every state in the system there has to be also an object of type state
-		Here a simple template for a boolean variable named "testVariable"
-		Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
-		*/
-        await this.setObjectNotExistsAsync('testVariable', {
-            type: 'state',
-            common: {
-                name: 'testVariable',
-                type: 'boolean',
-                role: 'indicator',
-                read: true,
-                write: true,
-            },
-            native: {},
-        });
+For every state in the system there has to be also an object of type state
+Here a simple template for a boolean variable named "testVariable"
+Because every adapter instance uses its own unique namespace variable names can't collide with other adapters variables
+*/
+        // await this.setObjectNotExistsAsync('testVariable', {
+        //     type: 'state',
+        //     common: {
+        //         name: 'testVariable',
+        //         type: 'boolean',
+        //         role: 'indicator',
+        //         read: true,
+        //         write: true,
+        //     },
+        //     native: {},
+        // });
 
         // In order to get state updates, you need to subscribe to them. The following line adds a subscription for our variable we have created above.
-        this.subscribeStates('testVariable');
+        // this.subscribeStates('testVariable');
         // You can also add a subscription for multiple states. The following line watches all states starting with "lights."
         // this.subscribeStates('lights.*');
         // Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
         // this.subscribeStates('*');
+        // this.subscribeForeignStates('*');
+        this.subscribeForeignStates('0_userdata.*');
+        this.subscribeForeignObjects('*');
 
         /*
-			setState examples
-			you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
-		*/
+setState examples
+you will notice that each setState will cause the stateChange event to fire (because of above subscribeStates cmd)
+*/
         // the variable testVariable is set to true as command (ack=false)
-        const variable = await this.setStateAsync('testVariable', false);
-        console.log({ variable });
+        // const variable = await this.setStateAsync('testVariable', false);
+        // console.log({ variable });
+        //
+        // // same thing, but the value is flagged "ack"
+        // // ack should be always set to true if the value is received from or acknowledged from the target system
+        // await this.setStateAsync('testVariable', { val: true, ack: true });
+        //
+        // // same thing, but the state is deleted after 30s (getState will return null afterwards)
+        // await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
+        //
+        // // examples for the checkPassword/checkGroup functions
+        // let result = await this.checkPasswordAsync('admin', 'iobroker');
+        // this.log.info('check user admin pw iobroker: ' + result);
+        //
+        // result = await this.checkGroupAsync('admin', 'admin');
+        // this.log.info('check group user admin group admin: ' + result);
 
-        // same thing, but the value is flagged "ack"
-        // ack should be always set to true if the value is received from or acknowledged from the target system
-        await this.setStateAsync('testVariable', { val: true, ack: true });
+        // ####
 
-        // same thing, but the state is deleted after 30s (getState will return null afterwards)
-        await this.setStateAsync('testVariable', { val: true, ack: true, expire: 30 });
+        // this.io.on('connection', (socket) => {
+        //     socket.emit('noArg');
+        //     socket.emit('basicEmit', 1, '2', Buffer.from([3]));
+        //     socket.emit('withAck', '4', (_) => {
+        //         // e is inferred as number
+        //     });
+        //
+        //     socket.on('hello', () => {
+        //         this.log.info('client says hello');
+        //     });
+        // });
+        // this.io.listen(3000);
 
-        // examples for the checkPassword/checkGroup functions
-        let result = await this.checkPasswordAsync('admin', 'iobroker');
-        this.log.info('check user admin pw iobroker: ' + result);
-
-        result = await this.checkGroupAsync('admin', 'admin');
-        this.log.info('check group user admin group admin: ' + result);
+        this.log.info(JSON.stringify(this.config));
+        const port = parseInt(this.config.webserverPort, 10) || 8088;
+        console.log({ port });
+        this.webserver.listen(port);
     }
 
     /**
@@ -95,6 +150,8 @@ class VisionaryUi extends utils.Adapter {
         } catch (e) {
             callback();
         }
+
+        this.webserver.close();
     }
 
     // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
@@ -118,10 +175,16 @@ class VisionaryUi extends utils.Adapter {
     private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
         if (state) {
             // The state was changed
-            this.log.info(`state ${id} changed: ${state.val} (ack = ${state.ack})`);
+            this.log.info(`changed state ${id} : ${state.val} (ack = ${state.ack})`);
         } else {
             // The state was deleted
-            this.log.info(`state ${id} deleted`);
+            this.log.info(`deleted state ${id}`);
+        }
+    }
+
+    private onObjectChange(id: string, object: ioBroker.Object | null | undefined): void {
+        if (object) {
+            this.log.info(`changed object ${id}: ${JSON.stringify(object)}`);
         }
     }
 
