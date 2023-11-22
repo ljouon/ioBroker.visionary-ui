@@ -1,16 +1,18 @@
 import React from 'react';
-import { withStyles } from '@material-ui/core/styles';
-import { CreateCSSProperties } from '@material-ui/core/styles/withStyles';
-import TextField from '@material-ui/core/TextField';
-import Input from '@material-ui/core/Input';
-import FormHelperText from '@material-ui/core/FormHelperText';
-import FormControl from '@material-ui/core/FormControl';
-import Select from '@material-ui/core/Select';
-import MenuItem from '@material-ui/core/MenuItem';
-import FormControlLabel from '@material-ui/core/FormControlLabel';
-import Checkbox from '@material-ui/core/Checkbox';
-import I18n from '@iobroker/adapter-react/i18n';
-import { Container } from '@material-ui/core';
+import { withStyles } from '@mui/styles';
+import { CreateCSSProperties } from '@mui/styles/withStyles';
+import I18n from '@iobroker/adapter-react-v5/i18n';
+import {
+    Checkbox,
+    Container,
+    FormControl,
+    FormControlLabel,
+    FormHelperText,
+    Input,
+    MenuItem,
+    Select,
+    TextField,
+} from '@mui/material';
 
 const styles = (): Record<string, CreateCSSProperties> => ({
     input: {
@@ -72,6 +74,7 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
                 type={type || 'text'}
                 onChange={(e) => this.props.onChange(attr, e.target.value)}
                 margin="normal"
+                variant="standard"
             />
         );
     }
@@ -89,6 +92,7 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
                     paddingTop: 5,
                     ...style,
                 }}
+                variant="standard"
             >
                 <Select
                     value={this.props.native[attr] || '_'}
