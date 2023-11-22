@@ -7,6 +7,7 @@
 import * as utils from '@iobroker/adapter-core';
 import express from 'express';
 import { createServer, Server } from 'http';
+import path from 'path';
 
 // Load your modules here, e.g.:
 // import * as fs from "fs";
@@ -48,8 +49,9 @@ class VisionaryUi extends utils.Adapter {
         this.on('unload', this.onUnload.bind(this));
         // this.io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>({});
         const app = express();
-        app.get('/', (req, res) => {
-            res.send('Hello from Express!');
+        app.use('/', express.static(path.join(__dirname, '../build/client/')));
+        app.get('/hello', (req, res) => {
+            res.send('Hello!');
         });
         this.webserver = createServer(app);
     }
@@ -131,8 +133,9 @@ you will notice that each setState will cause the stateChange event to fire (bec
 
         this.log.info(JSON.stringify(this.config));
         const port = parseInt(this.config.webserverPort, 10) || 8088;
-        console.log({ port });
-        this.webserver.listen(port);
+        this.webserver.listen(port, () => {
+            console.log(`Server ready on port: ${port}`);
+        });
     }
 
     /**
@@ -151,7 +154,9 @@ you will notice that each setState will cause the stateChange event to fire (bec
             callback();
         }
 
-        this.webserver.close();
+        this.webserver.close(() => {
+            console.log(`Server closed`);
+        });
     }
 
     // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.

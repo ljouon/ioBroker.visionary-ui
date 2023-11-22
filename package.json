@@ -77,7 +77,9 @@
     "LICENSE"
   ],
   "scripts": {
-    "prebuild": "rimraf build admin/build",
+    "client:install": "cd client && npm install",
+    "client:build": "cd client && npm run build",
+    "prebuild": "rimraf build admin/build && npm run client:install && npm run client:build",
     "build": "build-adapter all",
     "watch": "build-adapter all --watch",
     "prebuild:ts": "rimraf build",
