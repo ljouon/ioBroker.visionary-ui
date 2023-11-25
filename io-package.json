@@ -78,7 +78,10 @@
       {
         "js-controller": ">=2.0.0"
       }
-    ]
+    ],
+    "adminUI": {
+      "config": "materialize"
+    }
   },
   "native": {
     "option1": true,

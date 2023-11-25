@@ -5,36 +5,12 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
-import express from 'express';
-import { createServer, Server } from 'http';
-import path from 'path';
-
-// Load your modules here, e.g.:
-// import * as fs from "fs";
-
-// interface ServerToClientEvents {
-//     noArg: () => void;
-//     basicEmit: (a: number, b: string, c: Buffer) => void;
-//     withAck: (d: string, callback: (e: number) => void) => void;
-// }
-//
-// interface ClientToServerEvents {
-//     hello: () => void;
-// }
-//
-// interface InterServerEvents {
-//     ping: () => void;
-// }
-//
-// interface SocketData {
-//     id: string;
-//     state: any;
-// }
+import { createVisionaryServer, VisionaryServer } from './VisionaryServer';
 
 class VisionaryUi extends utils.Adapter {
     // private readonly io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 
-    private webserver: Server;
+    private visionaryServer: VisionaryServer;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -47,13 +23,8 @@ class VisionaryUi extends utils.Adapter {
 
         // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
-        // this.io = new Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>({});
-        const app = express();
-        app.use('/', express.static(path.join(__dirname, '../build/client/')));
-        app.get('/hello', (req, res) => {
-            res.send('Hello!');
-        });
-        this.webserver = createServer(app);
+
+        this.visionaryServer = createVisionaryServer();
     }
 
     /**
@@ -66,6 +37,8 @@ class VisionaryUi extends utils.Adapter {
         // this.config:
         this.log.info('config option1: ' + this.config.option1);
         this.log.info('config option2: ' + this.config.option2);
+
+        console.log(this.visionaryServer);
 
         /*
 For every state in the system there has to be also an object of type state
@@ -132,10 +105,8 @@ you will notice that each setState will cause the stateChange event to fire (bec
         // this.io.listen(3000);
 
         this.log.info(JSON.stringify(this.config));
-        const port = parseInt(this.config.webserverPort, 10) || 8088;
-        this.webserver.listen(port, () => {
-            console.log(`Server ready on port: ${port}`);
-        });
+        const webServerPort = parseInt(this.config.webserverPort, 10) || 8088;
+        this.visionaryServer.start(webServerPort, 8888);
     }
 
     /**
@@ -154,9 +125,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
             callback();
         }
 
-        this.webserver.close(() => {
-            console.log(`Server closed`);
-        });
+        this.visionaryServer.stop();
     }
 
     // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
@@ -172,6 +141,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
     //         // The object was deleted
     //         this.log.info(`object ${id} deleted`);
     //     }
+
     // }
 
     /**
@@ -202,8 +172,8 @@ you will notice that each setState will cause the stateChange event to fire (bec
     //     if (typeof obj === 'object' && obj.message) {
     //         if (obj.command === 'send') {
     //             // e.g. send email or pushover or whatever
-    //             this.log.info('send command');
 
+    //             this.log.info('send command');
     //             // Send response in callback if required
     //             if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
     //         }
