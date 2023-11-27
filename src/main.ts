@@ -10,7 +10,7 @@ import { createVisionaryServer, VisionaryServer } from './VisionaryServer';
 class VisionaryUi extends utils.Adapter {
     // private readonly io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 
-    private visionaryServer: VisionaryServer;
+    private readonly visionaryServer: VisionaryServer;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -23,6 +23,7 @@ class VisionaryUi extends utils.Adapter {
 
         // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
+        this.on('exit', this.onExit.bind(this));
 
         this.visionaryServer = createVisionaryServer();
     }
@@ -37,8 +38,6 @@ class VisionaryUi extends utils.Adapter {
         // this.config:
         this.log.info('config option1: ' + this.config.option1);
         this.log.info('config option2: ' + this.config.option2);
-
-        console.log(this.visionaryServer);
 
         /*
 For every state in the system there has to be also an object of type state
@@ -65,7 +64,9 @@ Because every adapter instance uses its own unique namespace variable names can'
         // this.subscribeStates('*');
         // this.subscribeForeignStates('*');
         this.subscribeForeignStates('0_userdata.*');
-        this.subscribeForeignObjects('*');
+        // this.subscribeForeignStates('*');
+        this.subscribeForeignObjects('0_userdata.*');
+        // this.subscribeForeignObjects('*');
 
         /*
 setState examples
@@ -89,24 +90,23 @@ you will notice that each setState will cause the stateChange event to fire (bec
         // result = await this.checkGroupAsync('admin', 'admin');
         // this.log.info('check group user admin group admin: ' + result);
 
-        // ####
-
-        // this.io.on('connection', (socket) => {
-        //     socket.emit('noArg');
-        //     socket.emit('basicEmit', 1, '2', Buffer.from([3]));
-        //     socket.emit('withAck', '4', (_) => {
-        //         // e is inferred as number
-        //     });
-        //
-        //     socket.on('hello', () => {
-        //         this.log.info('client says hello');
-        //     });
-        // });
-        // this.io.listen(3000);
-
         this.log.info(JSON.stringify(this.config));
         const webServerPort = parseInt(this.config.webserverPort, 10) || 8088;
         this.visionaryServer.start(webServerPort, 8888);
+
+        // this.getForeignObjectsAsync<ioBroker.ObjectType>('0_userdata.*', 'state')
+        //     .catch((err) => this.log.error(err.message))
+        //     .then((ioBrokerObjects) => {
+        //         if (ioBrokerObjects) {
+        //             Object.entries(ioBrokerObjects).forEach((entry) => {
+        //                 this.processIoBrokerObject(entry[1]);
+        //             });
+        //         }
+        //     });
+    }
+
+    private processIoBrokerObject(ioBrokerObject: ioBroker.AnyObject): void {
+        this.log.info(`State: ${JSON.stringify(ioBrokerObject)}`);
     }
 
     /**
@@ -119,13 +119,17 @@ you will notice that each setState will cause the stateChange event to fire (bec
             // clearTimeout(timeout2);
             // ...
             // clearInterval(interval1);
+            this.visionaryServer.stop();
 
             callback();
         } catch (e) {
             callback();
         }
+    }
 
-        this.visionaryServer.stop();
+    private onExit(exitCode: number, reason: string): void {
+        console.log('EXIT: ', { exitCode }, { reason });
+        this.visionaryServer.shutDown();
     }
 
     // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
@@ -150,16 +154,21 @@ you will notice that each setState will cause the stateChange event to fire (bec
     private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
         if (state) {
             // The state was changed
-            this.log.info(`changed state ${id} : ${state.val} (ack = ${state.ack})`);
+            const message = `${JSON.stringify(this.visionaryServer)}changed state ${id} : ${state.val} (ack = ${
+                state.ack
+            })`;
+            this.visionaryServer.sendMessageToClients(message);
+            this.log.info(message);
         } else {
             // The state was deleted
             this.log.info(`deleted state ${id}`);
         }
     }
 
-    private onObjectChange(id: string, object: ioBroker.Object | null | undefined): void {
-        if (object) {
-            this.log.info(`changed object ${id}: ${JSON.stringify(object)}`);
+    private onObjectChange(id: string, ioBrokerObject: ioBroker.Object | null | undefined): void {
+        if (ioBrokerObject) {
+            // this.log.info(`changed object ${id}: ${JSON.stringify(object)}`);
+            this.processIoBrokerObject(ioBrokerObject);
         }
     }
 
