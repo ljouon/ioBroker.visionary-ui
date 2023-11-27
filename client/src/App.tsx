@@ -1,28 +1,59 @@
-import { useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
+import useWebSocket, { ReadyState } from 'react-use-websocket';
 
 function App() {
-    const [count, setCount] = useState(0);
+    const [count, setCount] = useState<number>(0);
 
     // --- TEMP ----
 
-    const ws = new WebSocket('ws://localhost:8888');
+    // const ws = new WebSocket('ws://localhost:8888');
+    //
+    // ws.addEventListener('open', () => {
+    //     console.log('Connected to server');
+    //
+    //     ws.send('Hello, server!');
+    // });
+    //
+    // ws.addEventListener('message', (event: MessageEvent) => {
+    //     console.log(`Received message from server: ${event.data}`);
+    // });
+    //
+    // ws.addEventListener('close', () => {
+    //     console.log('Disconnected from server');
+    // });
 
-    ws.addEventListener('open', () => {
-        console.log('Connected to server');
+    const [socketUrl] = useState('ws://localhost:8888');
+    const [messageHistory, setMessageHistory] = useState<MessageEvent[]>([]);
 
-        ws.send('Hello, server!');
+    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
+        shouldReconnect: () => true,
     });
 
-    ws.addEventListener('message', (event: MessageEvent) => {
-        console.log(`Received message from server: ${event.data}`);
-    });
+    useEffect(() => {
+        if (lastMessage !== null) {
+            setMessageHistory((prev) => prev.concat(lastMessage));
+        }
+    }, [lastMessage, setMessageHistory]);
 
-    ws.addEventListener('close', () => {
-        console.log('Disconnected from server');
-    });
+    const handleClickSendMessage = useCallback(
+        (counter: number) => {
+            const newCount = counter + 1;
+            setCount(newCount);
+            sendMessage('' + newCount);
+        },
+        [sendMessage],
+    );
+
+    const connectionStatus = {
+        [ReadyState.CONNECTING]: 'Connecting',
+        [ReadyState.OPEN]: 'Open',
+        [ReadyState.CLOSING]: 'Closing',
+        [ReadyState.CLOSED]: 'Closed',
+        [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
+    }[readyState];
 
     return (
         <>
@@ -34,14 +65,18 @@ function App() {
                     <img src={reactLogo} className="logo react" alt="React logo" />
                 </a>
             </div>
-            <h1>Vite + React</h1>
+            <h1>Client with websocket connection</h1>
             <div className="card">
-                <button onClick={() => setCount((count) => count + 1)}>count is {count}</button>
-                <p>
-                    Edit <code>src/App.tsx</code> and save to test HMR
-                </p>
+                <button disabled={readyState !== ReadyState.OPEN} onClick={() => handleClickSendMessage(count)}>
+                    count is {count}
+                </button>
+                <p>{connectionStatus}</p>
             </div>
-            <p className="read-the-docs">Click on the Vite and React logos to learn more</p>
+            <ul>
+                {messageHistory.map((message, idx) => (
+                    <p key={idx}>{message ? message.data : null}</p>
+                ))}
+            </ul>
         </>
     );
 }
