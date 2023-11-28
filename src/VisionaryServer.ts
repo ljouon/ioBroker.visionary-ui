@@ -5,16 +5,13 @@ import path from 'path';
 
 export type VisionaryServer = {
     start: (webServerPort: number, webSocketServerPort: number) => void;
-    sendMessageToClients: (message: string) => void;
     stop: () => void;
-    shutDown: () => void;
+    sendBroadcastMessage: (message: string) => void;
 };
 
 export function createVisionaryServer(): VisionaryServer {
     let webServer: Server | null;
     let socketServer: WebSocketServer | null;
-
-    let connections: any[] = [];
 
     function createWebServer(): Server {
         const app = express();
@@ -26,26 +23,13 @@ export function createVisionaryServer(): VisionaryServer {
     }
 
     const startWebServer = (port: number): void => {
-        if (webServer) {
-            console.log('Webserver already started');
-            return;
-        }
-
         webServer = createWebServer();
-        webServer.removeAllListeners();
-        const connection = webServer.listen(port, () => {
+        webServer.listen(port, () => {
             console.log(`Web server started on port: ${port}`);
         });
-
-        connections.push(connection);
-        connection.on('close', () => (connections = connections.filter((curr) => curr !== connection)));
     };
 
     const startSocketServer = (port: number): void => {
-        if (socketServer) {
-            console.log('Socket server already started');
-            return;
-        }
         socketServer = new WebSocket.Server({ port }, () => {
             console.log(`Socket server started on port: ${port}`);
         });
@@ -82,20 +66,7 @@ export function createVisionaryServer(): VisionaryServer {
         });
     };
 
-    const shutDown = (): void => {
-        console.log('Received kill signal, shutting down gracefully');
-        stop();
-
-        setTimeout(() => {
-            console.error('Could not close connections in time, forcefully shutting down');
-            process.exit(1);
-        }, 10000);
-
-        connections.forEach((curr) => curr.end());
-        setTimeout(() => connections.forEach((curr) => curr.destroy()), 5000);
-    };
-
-    const sendMessage = (message: string): void => {
+    const sendMessageToAllConnectedClients = (message: string): void => {
         console.log(`Server sends message: ${message}`);
 
         socketServer?.clients.forEach((client) => {
@@ -106,8 +77,7 @@ export function createVisionaryServer(): VisionaryServer {
 
     return {
         start,
-        sendMessageToClients: sendMessage,
         stop,
-        shutDown,
+        sendBroadcastMessage: sendMessageToAllConnectedClients,
     };
 }
