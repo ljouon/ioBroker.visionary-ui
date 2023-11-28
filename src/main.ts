@@ -10,7 +10,7 @@ import { createVisionaryServer, VisionaryServer } from './VisionaryServer';
 class VisionaryUi extends utils.Adapter {
     // private readonly io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
 
-    private readonly visionaryServer: VisionaryServer;
+    private visionaryServer: VisionaryServer;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -23,7 +23,6 @@ class VisionaryUi extends utils.Adapter {
 
         // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
-        this.on('exit', this.onExit.bind(this));
 
         this.visionaryServer = createVisionaryServer();
     }
@@ -63,10 +62,6 @@ Because every adapter instance uses its own unique namespace variable names can'
         // Or, if you really must, you can also watch all states. Don't do this if you don't need to. Otherwise this will cause a lot of unnecessary load on the system:
         // this.subscribeStates('*');
         // this.subscribeForeignStates('*');
-        this.subscribeForeignStates('0_userdata.*');
-        // this.subscribeForeignStates('*');
-        this.subscribeForeignObjects('0_userdata.*');
-        // this.subscribeForeignObjects('*');
 
         /*
 setState examples
@@ -94,19 +89,52 @@ you will notice that each setState will cause the stateChange event to fire (bec
         const webServerPort = parseInt(this.config.webserverPort, 10) || 8088;
         this.visionaryServer.start(webServerPort, 8888);
 
-        // this.getForeignObjectsAsync<ioBroker.ObjectType>('0_userdata.*', 'state')
-        //     .catch((err) => this.log.error(err.message))
-        //     .then((ioBrokerObjects) => {
-        //         if (ioBrokerObjects) {
-        //             Object.entries(ioBrokerObjects).forEach((entry) => {
-        //                 this.processIoBrokerObject(entry[1]);
-        //             });
-        //         }
-        //     });
+        // Is this needed?
+        // this.loadInitialIoBrokerObjects();
+
+        this.subscribeForeignStates('0_userdata.*');
+        // this.subscribeForeignStates('*');
+        this.subscribeForeignObjects('0_userdata.*');
+        // this.subscribeForeignObjects('*');
+
+        // this.getEnumsAsync(['enum.rooms']).then((enumRooms) => {
+        //     this.log.info(JSON.stringify(enumRooms));
+        // });
+        //
+        // this.getEnumsAsync(['enum.functions']).then((enumFunctions) => {
+        //     this.log.info(JSON.stringify(enumFunctions));
+        // });
+
+        Promise.all([this.getEnumsAsync(['enum.rooms']), this.getEnumsAsync(['enum.functions'])]).then(
+            ([enumRooms, enumFunctions]): void => {
+                this.log.warn(JSON.stringify(enumRooms));
+                this.log.warn(JSON.stringify(enumFunctions));
+                this.visionaryServer.sendBroadcastMessage('enums loaded');
+
+                // this.subscribeForeignObjects('*');
+                // this.subscribeObjects('configuration');
+            },
+        );
+    }
+
+    private loadInitialIoBrokerObjects(): void {
+        // this.getForeignObjectsAsync('0_userdata.*', {})
+        this.getForeignObjectsAsync('enum.rooms.*', {})
+            .catch((err) => this.log.error(err.message))
+            .then((ioBrokerObjects) => {
+                if (ioBrokerObjects) {
+                    Object.entries(ioBrokerObjects).forEach((entry) => {
+                        this.log.info(JSON.stringify(entry[1]));
+                        this.processIoBrokerObject(entry[1]);
+                    });
+                }
+            });
     }
 
     private processIoBrokerObject(ioBrokerObject: ioBroker.AnyObject): void {
-        this.log.info(`State: ${JSON.stringify(ioBrokerObject)}`);
+        const message = `Object (${ioBrokerObject._id}): ${JSON.stringify(ioBrokerObject)}`;
+        this.log.info(message);
+        this.visionaryServer.sendBroadcastMessage(message);
     }
 
     /**
@@ -119,57 +147,40 @@ you will notice that each setState will cause the stateChange event to fire (bec
             // clearTimeout(timeout2);
             // ...
             // clearInterval(interval1);
-            this.visionaryServer.stop();
 
             callback();
         } catch (e) {
             callback();
         }
+
+        this.visionaryServer.stop();
     }
-
-    private onExit(exitCode: number, reason: string): void {
-        console.log('EXIT: ', { exitCode }, { reason });
-        this.visionaryServer.shutDown();
-    }
-
-    // If you need to react to object changes, uncomment the following block and the corresponding line in the constructor.
-    // You also need to subscribe to the objects with `this.subscribeObjects`, similar to `this.subscribeStates`.
-    // /**
-    //  * Is called if a subscribed object changes
-    //  */
-    // private onObjectChange(id: string, obj: ioBroker.Object | null | undefined): void {
-    //     if (obj) {
-    //         // The object was changed
-    //         this.log.info(`object ${id} changed: ${JSON.stringify(obj)}`);
-    //     } else {
-    //         // The object was deleted
-    //         this.log.info(`object ${id} deleted`);
-    //     }
-
-    // }
 
     /**
-     * Is called if a subscribed state changes
+     * Is called if a subscribed state changes ({@see VisionaryUi constructor subscriptions})
      */
     private onStateChange(id: string, state: ioBroker.State | null | undefined): void {
-        if (state) {
-            // The state was changed
-            const message = `${JSON.stringify(this.visionaryServer)}changed state ${id} : ${state.val} (ack = ${
-                state.ack
-            })`;
-            this.visionaryServer.sendMessageToClients(message);
-            this.log.info(message);
-        } else {
-            // The state was deleted
-            this.log.info(`deleted state ${id}`);
+        if (!state) {
+            // The state has been deleted
+            this.log.info(`state ${id} deleted`);
+            return;
         }
+
+        // The state has been changed
+        const message = `State (${id}): ${JSON.stringify(state)}`;
+        this.log.info(message);
+        this.visionaryServer.sendBroadcastMessage(message);
     }
 
     private onObjectChange(id: string, ioBrokerObject: ioBroker.Object | null | undefined): void {
-        if (ioBrokerObject) {
-            // this.log.info(`changed object ${id}: ${JSON.stringify(object)}`);
-            this.processIoBrokerObject(ioBrokerObject);
+        if (!ioBrokerObject) {
+            // The object has been deleted
+            this.log.info(`object ${id} deleted`);
+            return;
         }
+
+        // The object has been changed
+        this.processIoBrokerObject(ioBrokerObject);
     }
 
     // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
