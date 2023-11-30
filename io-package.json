@@ -87,9 +87,8 @@
     }
   },
   "native": {
-    "option1": true,
-    "option2": "42",
-    "webserverPort": "8088"
+    "webPort": "8088",
+    "socketPort": "8888"
   },
   "objects": [],
   "instanceObjects": []

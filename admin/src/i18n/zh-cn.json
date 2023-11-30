@@ -1,5 +1,5 @@
 {
-    "visionary-ui adapter settings": "visionary-ui的适配器设置",
-    "option1": "选项1",
-    "option2": "选项2"
+  "visionary-ui adapter settings": "visionary-ui的适配器设置",
+  "webPort": "Web server port",
+  "socketPort": "Socket server port"
 }

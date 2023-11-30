@@ -1,6 +1,6 @@
 {
   "visionary-ui adapter settings": "Adapter settings for visionary-ui",
-  "option1": "option1",
-  "option2": "option2",
-  "webserverPort": "webserverPort"
+  "visionaryUiSettings": "Visionary UI Settings",
+  "webPort": "Web server port",
+  "socketPort": "Socket server port"
 }

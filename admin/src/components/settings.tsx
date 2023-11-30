@@ -3,6 +3,7 @@ import { withStyles } from '@mui/styles';
 import { CreateCSSProperties } from '@mui/styles/withStyles';
 import I18n from '@iobroker/adapter-react-v5/i18n';
 import {
+    Box,
     Checkbox,
     Container,
     FormControl,
@@ -12,6 +13,7 @@ import {
     MenuItem,
     Select,
     TextField,
+    Typography,
 } from '@mui/material';
 
 const styles = (): Record<string, CreateCSSProperties> => ({
@@ -135,9 +137,13 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
         return (
             <form className={this.props.classes.tab}>
                 <Container maxWidth="sm">
-                    {this.renderCheckbox('option1', 'option1')}
-                    <br />
-                    {this.renderInput('webserverPort', 'webserverPort', 'number')}
+                    <Typography>{I18n.t('visionaryUiSettings')}</Typography>
+                </Container>
+                <Container maxWidth="sm">
+                    <Box>
+                        {this.renderInput('webPort', 'webPort', 'number')}
+                        {this.renderInput('socketPort', 'socketPort', 'number')}
+                    </Box>
                 </Container>
             </form>
         );
