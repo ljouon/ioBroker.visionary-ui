@@ -1,49 +1,24 @@
-import { createServer, Server } from 'http';
 import WebSocket, { WebSocketServer } from 'ws';
-import express from 'express';
-import path from 'path';
 import { v4 as uuidv4 } from 'uuid';
+import { VisionaryUiServer } from './visionary-ui.server';
 
 export type ClientConnectionHandler = {
     connect: (clientId: string) => void;
     disconnect: (clientId: string) => void;
 };
 
-export type SocketClient = {
-    id: string;
-};
-
-export type VisionaryServer = {
-    start: (webServerPort: number, webSocketServerPort: number) => void;
-    stop: () => void;
+export type VisionaryUiSocketServer = VisionaryUiServer & {
     sendBroadcastMessage: (message: string) => void;
     registerClientConnectionHandler: (clientConnectHandler: ClientConnectionHandler) => void;
     sendMessageToClient: (clientId: string, message: string) => void;
 };
 
-export function useVisionaryServer(): VisionaryServer {
-    let webServer: Server | null;
+export function createSocketServer(): VisionaryUiSocketServer {
     let socketServer: WebSocketServer | null;
     let clientConnectHandler: ClientConnectionHandler | null;
     const clients = new Map<string, WebSocket>();
 
-    function createWebServer(): Server {
-        const app = express();
-        app.use('/', express.static(path.join(__dirname, '../build/client/')));
-        app.get('/hello', (req, res) => {
-            res.send('Hello!');
-        });
-        return createServer(app);
-    }
-
-    const startWebServer = (port: number): void => {
-        webServer = createWebServer();
-        webServer.listen(port, () => {
-            console.log(`Web server started on port: ${port}`);
-        });
-    };
-
-    const startSocketServer = (port: number): void => {
+    const start = (port: number): void => {
         socketServer = new WebSocket.Server({ port }, () => {
             console.log(`Socket server started on port: ${port}`);
         });
@@ -71,16 +46,11 @@ export function useVisionaryServer(): VisionaryServer {
         });
     };
 
-    const start = (webServerPort: number, webSocketServerPort: number): void => {
-        startWebServer(webServerPort);
-        startSocketServer(webSocketServerPort);
-    };
-
     const stop = (): void => {
-        webServer?.close(() => {
-            console.log('Web server closed');
-            webServer = null;
-        });
+        // Reset client connection handler
+        clientConnectHandler = null;
+
+        // Close socket server
         socketServer?.close(() => {
             console.log('Socket server closed');
             socketServer = null;
