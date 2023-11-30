@@ -28,18 +28,19 @@ This section is intended for the developer. It can be deleted later
 - [x] refactor adapter to use react-adapter-v5
 - [x] prototype serving client using express server
 - [x] client build should work with adapter build
-- [ ] add web socket to main.ts as backend API for client
-- [ ] add useWebSocket: https://www.npmjs.com/package/react-use-websocket
+- [x] add web socket to main.ts as backend API for client
+- [x] add useWebSocket: https://www.npmjs.com/package/react-use-websocket
 - [ ] how to define the port between client and server? maybe add info via express endpoint or data on
   serving: https://stackoverflow.com/questions/44354763/how-do-i-get-http-headers-in-react-js
-- [ ] connect client to web socket
-- [ ] think about splitting web server and socket server implementations
+- [x] connect client to web socket
+- [x] think about splitting web server and socket server implementations
 - [ ] multi language in client? Server language file via api?
 - [ ] upgrade admin to react 18?
 - [ ] refactor client serving to iobroker.web adapter
-- [ ] connect client to socket.io
-- [ ] implement UI for client
+- [ ] implement client UI
+- [ ] business logics for structure and states in backend: rooms, categories, devices, states
 - [ ] business logics for UI: rooms, categories, devices, states
+- [ ] test all the things ;-)
 
 ### Getting started
 
