@@ -5,11 +5,10 @@
 // The adapter-core module gives you access to the core ioBroker functions
 // you need to create an adapter
 import * as utils from '@iobroker/adapter-core';
-import { createVisionaryServer, VisionaryServer } from './VisionaryServer';
+import { useVisionaryServer, VisionaryServer } from './VisionaryServer';
+import { getLanguage, getRooms } from './FacilityManagement';
 
 class VisionaryUi extends utils.Adapter {
-    // private readonly io: Server<ClientToServerEvents, ServerToClientEvents, InterServerEvents, SocketData>;
-
     private visionaryServer: VisionaryServer;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
@@ -24,7 +23,7 @@ class VisionaryUi extends utils.Adapter {
         // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
 
-        this.visionaryServer = createVisionaryServer();
+        this.visionaryServer = useVisionaryServer();
     }
 
     /**
@@ -85,7 +84,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
         // result = await this.checkGroupAsync('admin', 'admin');
         // this.log.info('check group user admin group admin: ' + result);
 
-        this.log.info(JSON.stringify(this.config));
+        // this.log.info(JSON.stringify(this.config));
         const webServerPort = parseInt(this.config.webserverPort, 10) || 8088;
         this.visionaryServer.start(webServerPort, 8888);
 
@@ -105,16 +104,28 @@ you will notice that each setState will cause the stateChange event to fire (bec
         //     this.log.info(JSON.stringify(enumFunctions));
         // });
 
-        Promise.all([this.getEnumsAsync(['enum.rooms']), this.getEnumsAsync(['enum.functions'])]).then(
-            ([enumRooms, enumFunctions]): void => {
-                this.log.warn(JSON.stringify(enumRooms));
-                this.log.warn(JSON.stringify(enumFunctions));
-                this.visionaryServer.sendBroadcastMessage('enums loaded');
+        const language = await getLanguage(this);
+        const rooms = await getRooms(this, language);
+        // this.log.info(JSON.stringify(rooms));
 
-                // this.subscribeForeignObjects('*');
-                // this.subscribeObjects('configuration');
-            },
-        );
+        // Promise.all([
+        //     this.getForeignObjectsAsync('system.config'),
+        //     this.getEnumsAsync(['enum.rooms']),
+        //     this.getEnumsAsync(['enum.functions']),
+        // ]).then(([config, enumRooms, _]): void => {
+        //     this.log.warn(JSON.stringify(config));
+        //     this.log.warn(JSON.stringify(enumRooms != null));
+        //     this.log.warn(JSON.stringify(enumRooms != null));
+        //     this.visionaryServer.sendBroadcastMessage('enums loaded');
+        //
+        //     // this.subscribeForeignObjects('*');
+        //     // this.subscribeObjects('configuration');
+        // });
+
+        this.visionaryServer.registerClientConnectionHandler({
+            connect: (clientId) => this.log.info(clientId),
+            disconnect: (clientId) => this.log.info(clientId),
+        });
     }
 
     private loadInitialIoBrokerObjects(): void {
