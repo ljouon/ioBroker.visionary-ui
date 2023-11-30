@@ -1,5 +1,6 @@
 {
   "common": {
+    "tier": 3,
     "name": "visionary-ui",
     "version": "0.0.1",
     "news": {
@@ -70,7 +71,7 @@
     "mode": "daemon",
     "type": "visualization",
     "compact": true,
-    "connectionType": "local",
+    "connectionType": "none",
     "dataSource": "poll",
     "materialize": true,
     "eraseOnUpload": true,
@@ -78,7 +79,12 @@
       {
         "js-controller": ">=2.0.0"
       }
-    ]
+    ],
+    "supportCustoms": true,
+    "adminUI": {
+      "config": "materialize",
+      "custom": "json"
+    }
   },
   "native": {
     "option1": true,

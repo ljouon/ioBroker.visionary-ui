@@ -1,0 +1,28 @@
+{
+  "i18n": true,
+  "type": "panel",
+  "items": {
+    "customIcon": {
+      "newLine": true,
+      "type": "text",
+      "label": "Custom Material UI Icon",
+      "maxLength": 255,
+      "default": "",
+      "sm": 6,
+      "help": "Name of the custom Material UI icon. You can choose a name from the page below ..."
+    },
+    "info": {
+      "newLine": true,
+      "type": "staticText",
+      "text": "Please provide the name in the form of \"thumb_up\" for the \"Thumb Up\" Icon"
+    },
+    "link": {
+      "newLine": true,
+      "type": "staticLink",
+      "href": "https://fonts.google.com/icons?icon.set=Material+Icons",
+      "label": "Material UI Icons",
+      "variant": "outlined",
+      "icon": "info"
+    }
+  }
+}
