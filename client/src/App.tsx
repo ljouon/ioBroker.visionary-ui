@@ -3,6 +3,9 @@ import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
 import useWebSocket, { ReadyState } from 'react-use-websocket';
+import { Box } from '@mui/joy';
+import Icon from '@mui/material/Icon';
+import green from '@mui/material/colors/green';
 
 function App() {
     const [count, setCount] = useState<number>(0);
@@ -66,7 +69,23 @@ function App() {
                 </a>
             </div>
             <h1>Client with websocket connection</h1>
+
             <div className="card">
+                <Box
+                    sx={{
+                        '& > :not(style)': {
+                            m: 2,
+                        },
+                    }}
+                >
+                    <Icon>camera</Icon>
+                    <Icon color="primary">house</Icon>
+                    <Icon sx={{ color: green[500] }}>camera</Icon>
+                    <Icon fontSize="small">camera</Icon>
+                    <Icon sx={{ fontSize: 50 }}>camera</Icon>
+                </Box>
+
+                <p>{connectionStatus}</p>
                 <button disabled={readyState !== ReadyState.OPEN} onClick={() => handleClickSendMessage(count)}>
                     count is {count}
                 </button>
