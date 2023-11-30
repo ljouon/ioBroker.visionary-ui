@@ -1,7 +1,7 @@
 {
   "name": "iobroker.visionary-ui",
   "version": "0.0.1",
-  "description": "Introducing VisionaryUI, your gateway to a seamlessly responsive user interface for managing your smart home devices. Experience the future with a sleek design that not only enhances the aesthetic appeal but also ensures optimal functionality.",
+  "description": "Visionary UI offers a sophisticated and responsive user interface designed for efficient management of smart home devices. This interface combines sleek aesthetics with practical functionality, providing an advanced solution for the modern smart home environment.",
   "author": {
     "name": "ljouon",
     "email": "lars.jouon@codecentric.de"

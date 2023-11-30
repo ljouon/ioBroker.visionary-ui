@@ -3,18 +3,21 @@ import { withStyles } from '@mui/styles';
 import { CreateCSSProperties } from '@mui/styles/withStyles';
 import I18n from '@iobroker/adapter-react-v5/i18n';
 import {
+    Avatar,
     Box,
     Checkbox,
     Container,
     FormControl,
     FormControlLabel,
     FormHelperText,
+    Grid,
     Input,
     MenuItem,
     Select,
     TextField,
     Typography,
 } from '@mui/material';
+import { MapsHomeWork } from '@mui/icons-material';
 
 const styles = (): Record<string, CreateCSSProperties> => ({
     input: {
@@ -76,7 +79,7 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
                 type={type || 'text'}
                 onChange={(e) => this.props.onChange(attr, e.target.value)}
                 margin="normal"
-                variant="standard"
+                variant={'outlined'}
             />
         );
     }
@@ -136,13 +139,28 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
     render() {
         return (
             <form className={this.props.classes.tab}>
-                <Container maxWidth="sm">
-                    <Typography>{I18n.t('visionaryUiSettings')}</Typography>
-                </Container>
-                <Container maxWidth="sm">
-                    <Box>
-                        {this.renderInput('webPort', 'webPort', 'number')}
-                        {this.renderInput('socketPort', 'socketPort', 'number')}
+                <Container component="main" maxWidth="xs">
+                    <Avatar sx={{ m: 1, bgcolor: 'secondary.main' }}>
+                        <MapsHomeWork />
+                    </Avatar>
+                    <Typography component="h1" variant="h6">
+                        {I18n.t('visionaryUiSettings')}
+                    </Typography>
+                    <Box component="form" noValidate sx={{ mt: 3 }}>
+                        <Grid container spacing={4}>
+                            <Grid item xs={12}>
+                                {this.renderInput('webPort', 'webPort', 'number')}
+                                <Typography variant={'body1'}>{I18n.t('webPortDescription')}</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                {this.renderInput('socketPort', 'socketPort', 'number')}
+                                <Typography variant={'body1'}>{I18n.t('socketPortDescription')}</Typography>
+                            </Grid>
+                            <Grid item xs={12}>
+                                <Typography variant={'h6'}>{I18n.t('descriptionTitle')}</Typography>
+                                <Typography variant={'body1'}>{I18n.t('descriptionContent')}</Typography>
+                            </Grid>
+                        </Grid>
                     </Box>
                 </Container>
             </form>
