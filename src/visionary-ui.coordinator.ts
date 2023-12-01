@@ -59,19 +59,23 @@ export class VisionaryUiCoordinator {
     }
 
     setObjects(objects: IobObjectCache): void {
+        objects.deleteByFilter((object) => object.roomIds.length < 1);
         this.repository.setObjects(objects);
 
         this.socketServer.sendBroadcastMessage(JSON.stringify(objects));
     }
 
     setObject(iobObject: IobObject): void {
-        this.repository.setObject(iobObject);
+        if (iobObject.roomIds.length > 0) {
+            this.repository.setObject(iobObject);
 
-        // Publish directly
-        this.socketServer.sendBroadcastMessage(JSON.stringify(iobObject));
+            // Publish directly
+            this.socketServer.sendBroadcastMessage(JSON.stringify(iobObject));
+        }
     }
 
     setStates(states: IobStateCache): void {
+        // TODO
         this.repository.setStates(states);
 
         this.socketServer.sendBroadcastMessage(JSON.stringify(states));
@@ -86,16 +90,22 @@ export class VisionaryUiCoordinator {
 
     private onClientConnect(clientId: string): void {
         console.log(`Client connected: ${clientId}`);
-        const rooms = this.repository.getRooms();
+        const rooms = this.repository.getRooms().map((it) => it.id);
         this.socketServer.sendMessageToClient(clientId, JSON.stringify({ rooms }));
 
-        const functions = this.repository.getFunctions();
+        const functions = this.repository.getFunctions().map((it) => it.id);
         this.socketServer.sendMessageToClient(clientId, JSON.stringify({ functions }));
 
-        const objects = this.repository.getObjects();
+        const objects = this.repository
+            .getObjects()
+            .getAll()
+            .map((it) => it.id);
         this.socketServer.sendMessageToClient(clientId, JSON.stringify({ objects }));
 
-        const states = this.repository.getStates();
+        const states = this.repository
+            .getStates()
+            .getAll()
+            .map((it) => it.id);
         this.socketServer.sendMessageToClient(clientId, JSON.stringify({ states }));
     }
 

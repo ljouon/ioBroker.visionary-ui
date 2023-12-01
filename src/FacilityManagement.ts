@@ -18,10 +18,12 @@ export function getTranslation(value: ioBroker.StringOrTranslated, language: ioB
     return value;
 }
 
-export function mapToIobObject(object: any, language: ioBroker.Languages): IobObject {
+export function mapToIobObject(id: string, object: any, language: ioBroker.Languages): IobObject {
     // TODO: type and mapping
+    console.log(JSON.stringify(object, null, 2));
+
     return {
-        id: object._id,
+        id: id,
         name: getTranslation(object.common.name, language),
         displayName: 'Hübsche Lampe',
         desc: '',
@@ -32,15 +34,15 @@ export function mapToIobObject(object: any, language: ioBroker.Languages): IobOb
         defaultValue: 0,
         customIcon: '',
         rank: 0,
-        functionIds: [''],
-        roomIds: [''],
+        functionIds: [], // TODO map enums and filter on functions => map to IDs?
+        roomIds: [], // TODO map enums and filter on rooms => map to IDs?
     };
 }
 
-export function mapToIobState(state: any): IobState {
+export function mapToIobState(id: string, state: any): IobState {
     // TODO: type
     return {
-        id: state._id,
+        id: id,
         value: state.val,
         lastChange: state.lc,
     };

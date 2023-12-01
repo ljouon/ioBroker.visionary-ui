@@ -26,7 +26,7 @@ export class VisionaryUiRepository {
         return this.functions;
     }
 
-    setFunctions(elements: IobFunction[]) {
+    setFunctions(elements: IobFunction[]): void {
         this.functions = elements;
     }
 
