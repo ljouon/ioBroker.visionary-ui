@@ -1,11 +1,10 @@
 import * as utils from '@iobroker/adapter-core';
-import { getLanguage, getRooms } from './FacilityManagement';
-import { createWebServer, VisionaryUiWebServer } from './visionary-ui.web';
-import { createSocketServer, VisionaryUiSocketServer } from './visionary-ui.socket';
+import { getFunctions, getLanguage, getRooms, mapToIobObject, mapToIobState } from './FacilityManagement';
+import { VisionaryUiCoordinator } from './visionary-ui.coordinator';
+import { IobObjectCache, IobStateCache } from './domain';
 
 export class VisionaryUiAdapter extends utils.Adapter {
-    private webServer: VisionaryUiWebServer;
-    private socketServer: VisionaryUiSocketServer;
+    private coordinator: VisionaryUiCoordinator;
 
     public constructor(options: Partial<utils.AdapterOptions> = {}) {
         super({
@@ -19,8 +18,7 @@ export class VisionaryUiAdapter extends utils.Adapter {
         // this.on('message', this.onMessage.bind(this));
         this.on('unload', this.onUnload.bind(this));
 
-        this.webServer = createWebServer();
-        this.socketServer = createSocketServer();
+        this.coordinator = new VisionaryUiCoordinator();
     }
 
     /**
@@ -80,85 +78,88 @@ you will notice that each setState will cause the stateChange event to fire (bec
         // this.log.info('check group user admin group admin: ' + result);
 
         // this.log.info(JSON.stringify(this.config));
-        const webPort = parseInt(this.config.webPort, 10) || 8088;
-        this.webServer.start(webPort);
-        this.socketServer.start(8888);
 
-        // Is this needed?
-        this.loadInitialIoBrokerObjects();
+        const language = await getLanguage(this);
+
+        // Start coordinator between ioBroker and visionary ui
+        this.startCoordinator(language);
 
         this.subscribeForeignStates('0_userdata.*');
         // this.subscribeForeignStates('*');
         this.subscribeForeignObjects('0_userdata.*');
         // this.subscribeForeignObjects('*');
 
-        // this.getEnumsAsync(['enum.rooms']).then((enumRooms) => {
-        //     this.log.info(JSON.stringify(enumRooms));
-        // });
-        //
-        // this.getEnumsAsync(['enum.functions']).then((enumFunctions) => {
-        //     this.log.info(JSON.stringify(enumFunctions));
-        // });
-
-        const language = await getLanguage(this);
-
+        // Read all room definitions
         const rooms = await getRooms(this, language);
-        // this.log.info(JSON.stringify(rooms));
+        this.coordinator.setRooms(rooms);
 
-        // Promise.all([
-        //     this.getForeignObjectsAsync('system.config'),
-        //     this.getEnumsAsync(['enum.rooms']),
-        //     this.getEnumsAsync(['enum.functions']),
-        // ]).then(([config, enumRooms, _]): void => {
-        //     this.log.warn(JSON.stringify(config));
-        //     this.log.warn(JSON.stringify(enumRooms != null));
-        //     this.log.warn(JSON.stringify(enumRooms != null));
-        //     this.visionaryServer.sendBroadcastMessage('enums loaded');
-        //
-        //     // this.subscribeForeignObjects('*');
-        //     // this.subscribeObjects('configuration');
-        // });
+        // Read all function definitions
+        const functions = await getFunctions(this, language);
+        this.coordinator.setFunctions(functions);
 
-        this.socketServer.registerClientConnectionHandler({
-            connect: (clientId) => {
-                this.log.info(clientId);
+        // Read all objects
+        // TODO: filter on rooms and functions
+        const objects = await this.loadInitialIoBrokerObjects(language);
+        this.coordinator.setObjects(objects);
 
-                this.socketServer.sendMessageToClient(clientId, JSON.stringify({ language }));
+        // Read all initial states
+        // TODO: filter on rooms and functions
+        const states = await this.loadInitialIoBrokerStates();
+        this.coordinator.setStates(states);
+    }
 
-                this.getForeignObjectsAsync('0_userdata.*', {})
-                    .catch((err) => this.log.error(err.message))
-                    .then((ioBrokerObjects) => {
-                        if (ioBrokerObjects) {
-                            Object.entries(ioBrokerObjects).forEach((entry) => {
-                                const ioBrokerObject = entry[1];
-                                const message = `Object (${ioBrokerObject._id}): ${JSON.stringify(ioBrokerObject)}`;
+    private startCoordinator(language: ioBroker.Languages): void {
+        const webPort = parseInt(this.config.webPort, 10) || 8088;
+        const socketPort = parseInt(this.config.socketPort, 10) || 8888;
 
-                                this.socketServer.sendMessageToClient(clientId, message);
-                            });
-                        }
-                    });
+        const adapterHandle = {
+            setState: (clientId: string, stateId: string, value: string | number | boolean): void =>
+                this.setIobState(clientId, stateId, value),
+            config: {
+                language: language,
+                webPort,
+                socketPort,
             },
-            disconnect: (clientId) => this.log.info(clientId),
-        });
+        };
+
+        this.coordinator.start(adapterHandle);
     }
 
-    private loadInitialIoBrokerObjects(): void {
-        this.getForeignObjectsAsync('0_userdata.*', {})
-            .catch((err) => this.log.error(err.message))
-            .then((ioBrokerObjects) => {
-                if (ioBrokerObjects) {
-                    Object.entries(ioBrokerObjects).forEach((entry) => {
-                        this.log.info(JSON.stringify(entry[1]));
-                        this.processIoBrokerObject(entry[1]);
-                    });
-                }
+    private async loadInitialIoBrokerObjects(language: ioBroker.Languages): Promise<IobObjectCache> {
+        const objectCache = new IobObjectCache();
+        const ioBrokerObjects = await this.getForeignObjectsAsync('0_userdata.*', {});
+        if (ioBrokerObjects) {
+            Object.values(ioBrokerObjects).forEach((entry) => {
+                const key = entry._id;
+                const value = mapToIobObject(entry, language);
+                objectCache.set(key, value);
             });
+
+            // const entries = ioBrokerObjects.keys();
+            // const objectCache = entries.reduce((objectCache, entry) => {
+            //     console.log(JSON.stringify(entry[0]), JSON.stringify(mapToIobObject(entry[1], language)));
+            //     return objectCache.set(entry[0], mapToIobObject(entry[1], language));
+            // }, new Map<string, IobObject>());
+            // console.log(JSON.stringify({ entries }));
+            // console.log(JSON.stringify({ objectCache }));
+            // return new Map<string, IobObject>();
+        }
+        return objectCache;
     }
 
-    private processIoBrokerObject(ioBrokerObject: ioBroker.AnyObject): void {
-        const message = `Object (${ioBrokerObject._id}): ${JSON.stringify(ioBrokerObject)}`;
-        this.log.info(message);
-        this.socketServer.sendBroadcastMessage(message);
+    private async loadInitialIoBrokerStates(): Promise<IobStateCache> {
+        const stateCache = new IobStateCache();
+        const ioBrokerStates = await this.getForeignStateAsync('0_userdata.*', {});
+        if (ioBrokerStates) {
+            // TODO HERE
+            console.log(JSON.stringify({ ioBrokerStates }, null, 2));
+            Object.values(ioBrokerStates).forEach((entry) => {
+                const key = entry._id;
+                const value = mapToIobState(entry);
+                stateCache.set(key, value);
+            });
+        }
+        return stateCache;
     }
 
     /**
@@ -177,8 +178,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
             callback();
         }
 
-        this.webServer.stop();
-        this.socketServer.stop();
+        this.coordinator.stop();
     }
 
     /**
@@ -192,20 +192,22 @@ you will notice that each setState will cause the stateChange event to fire (bec
         }
 
         // The state has been changed
-        const message = `State (${id}): ${JSON.stringify(state)}`;
-        this.log.info(message);
-        this.socketServer.sendBroadcastMessage(message);
+        const iobState = mapToIobState(state);
+        this.coordinator.setState(iobState);
     }
 
-    private onObjectChange(id: string, ioBrokerObject: ioBroker.Object | null | undefined): void {
-        if (!ioBrokerObject) {
+    private onObjectChange(id: string, object: ioBroker.Object | null | undefined): void {
+        if (!object) {
             // The object has been deleted
             this.log.info(`object ${id} deleted`);
             return;
         }
 
-        // The object has been changed
-        this.processIoBrokerObject(ioBrokerObject);
+        getLanguage(this).then((language) => {
+            // The object has been changed
+            const iobObject = mapToIobObject(object, language);
+            this.coordinator.setObject(iobObject);
+        });
     }
 
     // If you need to accept messages in your adapter, uncomment the following block and the corresponding line in the constructor.
@@ -216,12 +218,33 @@ you will notice that each setState will cause the stateChange event to fire (bec
     // private onMessage(obj: ioBroker.Message): void {
     //     if (typeof obj === 'object' && obj.message) {
     //         if (obj.command === 'send') {
-    //             // e.g. send email or pushover or whatever
 
+    //             // e.g. send email or pushover or whatever
     //             this.log.info('send command');
     //             // Send response in callback if required
     //             if (obj.callback) this.sendTo(obj.from, obj.command, 'Message received', obj.callback);
     //         }
     //     }
+
     // }
+
+    private setIobState(clientId: string, stateId: string, value: string | number | boolean): void {
+        // const user = this.config.defaultUser)
+        new Date().getUTCMilliseconds();
+        const state = {
+            val: value,
+            ack: false,
+            lc: Date.now(),
+        };
+        this.getForeignStateAsync(stateId).then((state) => {
+            this.log.info(`Get state "${state}"`);
+            // Send feedback to client
+        });
+
+        this.log.info(`Setting state ${JSON.stringify(state)}`);
+        this.setForeignStateAsync(stateId, state).catch(() => {
+            this.log.error(`Error setting state "${stateId}" for client "${clientId}"`);
+            // Send feedback to client
+        });
+    }
 }

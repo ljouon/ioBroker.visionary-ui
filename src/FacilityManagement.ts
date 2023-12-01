@@ -1,4 +1,4 @@
-import { Room } from './domain';
+import { IobFunction, IobObject, IobRoom, IobState } from './domain';
 
 export async function getLanguage(adapter: ioBroker.Adapter): Promise<ioBroker.Languages> {
     try {
@@ -18,20 +18,49 @@ export function getTranslation(value: ioBroker.StringOrTranslated, language: ioB
     return value;
 }
 
-export async function getRooms(adapter: ioBroker.Adapter, language: ioBroker.Languages): Promise<Room[]> {
-    const rooms: Room[] = [];
-    try {
-        const roomEnums = await adapter.getEnumsAsync(['enum.rooms']);
-        if (roomEnums) {
-            Object.entries(roomEnums['enum.rooms']).map((enumRoomEntry) => {
-                const id = enumRoomEntry[0];
-                const currentRoom = enumRoomEntry[1];
+export function mapToIobObject(object: any, language: ioBroker.Languages): IobObject {
+    // TODO: type and mapping
+    return {
+        id: object._id,
+        name: getTranslation(object.common.name, language),
+        displayName: 'Hübsche Lampe',
+        desc: '',
+        role: '',
+        datatype: '',
+        iobType: '',
+        isWriteable: true,
+        defaultValue: 0,
+        customIcon: '',
+        rank: 0,
+        functionIds: [''],
+        roomIds: [''],
+    };
+}
 
-                const newRoom: Room = {
+export function mapToIobState(state: any): IobState {
+    // TODO: type
+    return {
+        id: state._id,
+        value: state.val,
+        lastChange: state.lc,
+    };
+}
+
+export async function getRooms(adapter: ioBroker.Adapter, language: ioBroker.Languages): Promise<IobRoom[]> {
+    const rooms: IobRoom[] = [];
+    try {
+        const enums = await adapter.getEnumsAsync(['enum.rooms']);
+        if (enums) {
+            Object.entries(enums['enum.rooms']).map((enumEntry) => {
+                const id = enumEntry[0];
+                const currentRoom = enumEntry[1];
+
+                const newRoom: IobRoom = {
                     id: id,
                     name: getTranslation(currentRoom.common.name, language),
-                    color: currentRoom.common.color,
-                    icon: currentRoom.common.icon,
+                    color: currentRoom.common.color ?? null,
+                    icon: currentRoom.common.icon ?? null,
+                    children: null,
                 };
 
                 const parentRoom = rooms.find((existingRooms) => id.startsWith(existingRooms.id));
@@ -45,21 +74,28 @@ export async function getRooms(adapter: ioBroker.Adapter, language: ioBroker.Lan
                     rooms.push(newRoom);
                 }
             });
-
             return rooms;
         }
     } catch (err) {}
-
-    return Promise.resolve([{ id: 'nix', name: '', icon: '' }]);
+    return Promise.reject();
 }
 
-export async function getFunctions(adapter: ioBroker.Adapter): Promise<any> {
+export async function getFunctions(adapter: ioBroker.Adapter, language: ioBroker.Languages): Promise<IobFunction[]> {
+    const functions: IobFunction[] = [];
     try {
-        const functionEnums = await adapter.getEnumsAsync(['enum.functions']);
-        if (functionEnums) {
-            return functionEnums;
+        const enums = await adapter.getEnumsAsync(['enum.functions']);
+        if (enums) {
+            Object.entries(enums['enum.functions']).map((enumEntry) => {
+                const id = enumEntry[0];
+                const currentFunction = enumEntry[1];
+
+                functions.push({
+                    id: id,
+                    name: getTranslation(currentFunction.common.name, language),
+                });
+            });
+            return functions;
         }
     } catch (err) {}
-
-    return Promise.resolve([]);
+    return Promise.reject();
 }

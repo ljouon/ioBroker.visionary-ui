@@ -58,17 +58,15 @@ export function createSocketServer(): VisionaryUiSocketServer {
     };
 
     const sendMessageToAllConnectedClients = (message: string): void => {
-        console.log(`Server sends message: ${message}`);
-
+        // console.log(`Server sends message: ${message}`);
         socketServer?.clients.forEach((client) => {
-            console.log(client);
             client.send(message);
         });
     };
 
     const sendMessageToClient = (clientId: string, message: string): void => {
         if (clients.has(clientId)) {
-            console.log(`Server sends message: ${message}`);
+            // console.log(`Server sends message: ${message}`);
             const clientSocket = clients.get(clientId)!;
             clientSocket.send(message);
         }
