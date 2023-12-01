@@ -85,7 +85,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
         this.socketServer.start(8888);
 
         // Is this needed?
-        // this.loadInitialIoBrokerObjects();
+        this.loadInitialIoBrokerObjects();
 
         this.subscribeForeignStates('0_userdata.*');
         // this.subscribeForeignStates('*');
@@ -119,7 +119,22 @@ you will notice that each setState will cause the stateChange event to fire (bec
         // });
 
         this.socketServer.registerClientConnectionHandler({
-            connect: (clientId) => this.log.info(clientId),
+            connect: (clientId) => {
+                this.log.info(clientId);
+
+                this.getForeignObjectsAsync('0_userdata.*', {})
+                    .catch((err) => this.log.error(err.message))
+                    .then((ioBrokerObjects) => {
+                        if (ioBrokerObjects) {
+                            Object.entries(ioBrokerObjects).forEach((entry) => {
+                                const ioBrokerObject = entry[1];
+                                const message = `Object (${ioBrokerObject._id}): ${JSON.stringify(ioBrokerObject)}`;
+
+                                this.socketServer.sendMessageToClient(clientId, message);
+                            });
+                        }
+                    });
+            },
             disconnect: (clientId) => this.log.info(clientId),
         });
     }
