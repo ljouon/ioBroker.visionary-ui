@@ -24,6 +24,14 @@ describe('Cache', () => {
     it('should return all elements in the cache', () => {
         cache.set('key1', 123);
         cache.set('key2', 456);
-        expect(cache.allAll()).to.deep.equal([123, 456]);
+        expect(cache.getAll()).to.deep.equal([123, 456]);
+    });
+
+    it('should delete values by filter', () => {
+        cache.set('key1', 1);
+        cache.set('key2', 2);
+        cache.deleteByFilter((el) => el === 1);
+        expect(cache.get('key1')).to.be.undefined;
+        expect(cache.get('key2')).to.equal(2);
     });
 });

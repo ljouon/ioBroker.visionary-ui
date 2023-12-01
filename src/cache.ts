@@ -9,11 +9,19 @@ export abstract class Cache<T> {
         this.cache[key] = element;
     }
 
-    allAll(): T[] {
+    getAll(): T[] {
         return Object.values(this.cache);
     }
 
     delete(key: string): void {
         delete this.cache[key];
+    }
+
+    deleteByFilter(filter: (element: T) => boolean): void {
+        const entries = Object.entries(this.cache);
+        const filter1 = entries.filter((entry) => {
+            return filter(entry[1]);
+        });
+        filter1.forEach((entry) => this.delete(entry[0]));
     }
 }

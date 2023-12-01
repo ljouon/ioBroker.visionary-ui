@@ -84,10 +84,10 @@ you will notice that each setState will cause the stateChange event to fire (bec
         // Start coordinator between ioBroker and visionary ui
         this.startCoordinator(language);
 
-        this.subscribeForeignStates('0_userdata.*');
-        // this.subscribeForeignStates('*');
-        this.subscribeForeignObjects('0_userdata.*');
-        // this.subscribeForeignObjects('*');
+        // this.subscribeForeignStates('0_userdata.*');
+        this.subscribeForeignStates('*');
+        // this.subscribeForeignObjects('0_userdata.*');
+        this.subscribeForeignObjects('*');
 
         // Read all room definitions
         const rooms = await getRooms(this, language);
@@ -127,36 +127,31 @@ you will notice that each setState will cause the stateChange event to fire (bec
 
     private async loadInitialIoBrokerObjects(language: ioBroker.Languages): Promise<IobObjectCache> {
         const objectCache = new IobObjectCache();
-        const ioBrokerObjects = await this.getForeignObjectsAsync('0_userdata.*', {});
+        const ioBrokerObjects = await this.getForeignObjectsAsync('*', {});
         if (ioBrokerObjects) {
-            Object.values(ioBrokerObjects).forEach((entry) => {
-                const key = entry._id;
-                const value = mapToIobObject(entry, language);
-                objectCache.set(key, value);
+            Object.entries(ioBrokerObjects).forEach((entry) => {
+                const key = entry[0];
+                // If not deleted
+                if (entry[1]) {
+                    const value = mapToIobObject(key, entry[1], language);
+                    objectCache.set(key, value);
+                }
             });
-
-            // const entries = ioBrokerObjects.keys();
-            // const objectCache = entries.reduce((objectCache, entry) => {
-            //     console.log(JSON.stringify(entry[0]), JSON.stringify(mapToIobObject(entry[1], language)));
-            //     return objectCache.set(entry[0], mapToIobObject(entry[1], language));
-            // }, new Map<string, IobObject>());
-            // console.log(JSON.stringify({ entries }));
-            // console.log(JSON.stringify({ objectCache }));
-            // return new Map<string, IobObject>();
         }
         return objectCache;
     }
 
     private async loadInitialIoBrokerStates(): Promise<IobStateCache> {
         const stateCache = new IobStateCache();
-        const ioBrokerStates = await this.getForeignStateAsync('0_userdata.*', {});
+        const ioBrokerStates = await this.getForeignStatesAsync('*', {});
         if (ioBrokerStates) {
-            // TODO HERE
-            console.log(JSON.stringify({ ioBrokerStates }, null, 2));
-            Object.values(ioBrokerStates).forEach((entry) => {
-                const key = entry._id;
-                const value = mapToIobState(entry);
-                stateCache.set(key, value);
+            Object.entries(ioBrokerStates).forEach((entry) => {
+                const key = entry[0];
+                // If not deleted
+                if (entry[1]) {
+                    const value = mapToIobState(key, entry[1]);
+                    stateCache.set(key, value);
+                }
             });
         }
         return stateCache;
@@ -192,7 +187,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
         }
 
         // The state has been changed
-        const iobState = mapToIobState(state);
+        const iobState = mapToIobState(id, state);
         this.coordinator.setState(iobState);
     }
 
@@ -205,7 +200,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
 
         getLanguage(this).then((language) => {
             // The object has been changed
-            const iobObject = mapToIobObject(object, language);
+            const iobObject = mapToIobObject(id, object, language);
             this.coordinator.setObject(iobObject);
         });
     }
