@@ -3,7 +3,7 @@ import { getLanguage, getRooms } from './FacilityManagement';
 import { createWebServer, VisionaryUiWebServer } from './visionary-ui.web';
 import { createSocketServer, VisionaryUiSocketServer } from './visionary-ui.socket';
 
-export class VisionaryUi extends utils.Adapter {
+export class VisionaryUiAdapter extends utils.Adapter {
     private webServer: VisionaryUiWebServer;
     private socketServer: VisionaryUiSocketServer;
 
@@ -101,6 +101,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
         // });
 
         const language = await getLanguage(this);
+
         const rooms = await getRooms(this, language);
         // this.log.info(JSON.stringify(rooms));
 
@@ -121,6 +122,8 @@ you will notice that each setState will cause the stateChange event to fire (bec
         this.socketServer.registerClientConnectionHandler({
             connect: (clientId) => {
                 this.log.info(clientId);
+
+                this.socketServer.sendMessageToClient(clientId, JSON.stringify({ language }));
 
                 this.getForeignObjectsAsync('0_userdata.*', {})
                     .catch((err) => this.log.error(err.message))
