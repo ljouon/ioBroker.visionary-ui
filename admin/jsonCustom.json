@@ -5,16 +5,16 @@
     "customIcon": {
       "newLine": true,
       "type": "text",
-      "label": "Custom Material UI Icon",
-      "maxLength": 255,
+      "label": "Custom Icon",
+      "maxLength": 64,
       "default": "",
       "sm": 6,
-      "help": "Name of the custom Material UI icon. You can choose a name from the page below ..."
+      "help": "Name of the custom Material UI icon"
     },
     "info": {
       "newLine": true,
       "type": "staticText",
-      "text": "Please provide the name in the form of \"thumb_up\" for the \"Thumb Up\" Icon"
+      "text": "Please provide the name in \"snake case\" form like \"thumb_up\" for the \"Thumb Up\" Icon"
     },
     "link": {
       "newLine": true,
@@ -23,6 +23,23 @@
       "label": "Material UI Icons",
       "variant": "outlined",
       "icon": "info"
+    },
+    "displayName": {
+      "newLine": true,
+      "type": "text",
+      "label": "Display name",
+      "maxLength": 64,
+      "default": "",
+      "sm": 6,
+      "help": "Name to be shown in the user interface"
+    },
+    "rank": {
+      "newLine": true,
+      "type": "number",
+      "label": "Display rank",
+      "default": "0",
+      "sm": 6,
+      "help": "Rank number to be used to determine the sorting of the element in the context of others."
     }
   }
 }
