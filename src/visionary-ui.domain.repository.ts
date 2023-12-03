@@ -1,6 +1,6 @@
 import { IobFunction, IobObject, IobObjectCache, IobRole, IobRoom, IobState, IobStateCache } from './domain';
 
-export class VisionaryUiRepository {
+export class VisionaryUiDomainRepository {
     private language: string = 'en';
     private rooms: IobRoom[] = [];
     private functions: IobFunction[] = [];
@@ -40,6 +40,15 @@ export class VisionaryUiRepository {
 
     getObjects(): IobObjectCache {
         return this.objects;
+    }
+
+    hasObject(id: string): boolean {
+        return this.objects.get(id) !== null;
+    }
+
+    deleteObject(id: string): void {
+        this.objects.delete(id);
+        this.states.delete(id);
     }
 
     setObjects(elements: IobObjectCache): void {

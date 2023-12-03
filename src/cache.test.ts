@@ -24,7 +24,7 @@ describe('Cache', () => {
     it('should return all elements in the cache', () => {
         cache.set('key1', 123);
         cache.set('key2', 456);
-        expect(cache.getAll()).to.deep.equal([123, 456]);
+        expect(cache.values()).to.deep.equal([123, 456]);
     });
 
     it('should delete values by filter', () => {

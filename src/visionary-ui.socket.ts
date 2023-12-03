@@ -2,20 +2,21 @@ import WebSocket, { WebSocketServer } from 'ws';
 import { v4 as uuidv4 } from 'uuid';
 import { VisionaryUiServer } from './visionary-ui.server';
 
-export type ClientConnectionHandler = {
-    connect: (clientId: string) => void;
-    disconnect: (clientId: string) => void;
+export type ClientInboundHandler = {
+    onConnect: (clientId: string) => void;
+    onDisconnect: (clientId: string) => void;
+    onMessageFromClient: (clientId: string, content: string) => void;
 };
 
 export type VisionaryUiSocketServer = VisionaryUiServer & {
-    sendBroadcastMessage: (message: string) => void;
-    registerClientConnectionHandler: (clientConnectHandler: ClientConnectionHandler) => void;
-    sendMessageToClient: (clientId: string, message: string) => void;
+    registerClientInboundHandler: (clientInboundHandler: ClientInboundHandler) => void;
+    messageToClient: (clientId: string, message: string) => void;
+    messageToAllClients: (message: string) => void;
 };
 
 export function createSocketServer(): VisionaryUiSocketServer {
     let socketServer: WebSocketServer | null;
-    let clientConnectHandler: ClientConnectionHandler | null;
+    let clientConnectHandler: ClientInboundHandler | null;
     const clients = new Map<string, WebSocket>();
 
     const start = (port: number): void => {
@@ -29,10 +30,13 @@ export function createSocketServer(): VisionaryUiSocketServer {
             const clientId = uuidv4();
             clients.set(clientId, ws);
 
-            clientConnectHandler?.connect(clientId);
+            clientConnectHandler?.onConnect(clientId);
 
             ws.on('message', (message: string) => {
                 console.log(`Received message: ${message}`);
+
+                clientConnectHandler?.onMessageFromClient(clientId, message);
+
                 socketServer?.clients.forEach((client) => {
                     client.send(`Server received your message: ${message}`);
                 });
@@ -41,7 +45,7 @@ export function createSocketServer(): VisionaryUiSocketServer {
             ws.on('close', (code) => {
                 clients.delete(clientId);
                 console.log(`${clientId} closed the connection: exit code ${code}`);
-                clientConnectHandler?.disconnect(clientId);
+                clientConnectHandler?.onDisconnect(clientId);
             });
         });
     };
@@ -57,14 +61,14 @@ export function createSocketServer(): VisionaryUiSocketServer {
         });
     };
 
-    const sendMessageToAllConnectedClients = (message: string): void => {
+    const messageToAllClients = (message: string): void => {
         // console.log(`Server sends message: ${message}`);
         socketServer?.clients.forEach((client) => {
             client.send(message);
         });
     };
 
-    const sendMessageToClient = (clientId: string, message: string): void => {
+    const messageToClient = (clientId: string, message: string): void => {
         if (clients.has(clientId)) {
             // console.log(`Server sends message: ${message}`);
             const clientSocket = clients.get(clientId)!;
@@ -72,15 +76,15 @@ export function createSocketServer(): VisionaryUiSocketServer {
         }
     };
 
-    const registerClientConnectionHandler = (connectHandler: ClientConnectionHandler): void => {
+    const registerClientConnectionHandler = (connectHandler: ClientInboundHandler): void => {
         clientConnectHandler = connectHandler;
     };
 
     return {
         start,
         stop,
-        sendBroadcastMessage: sendMessageToAllConnectedClients,
-        sendMessageToClient,
-        registerClientConnectionHandler,
+        messageToAllClients,
+        messageToClient,
+        registerClientInboundHandler: registerClientConnectionHandler,
     };
 }

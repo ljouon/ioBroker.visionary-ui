@@ -1,7 +1,7 @@
 import { IobFunction, IobObject, IobObjectCache, IobRoom, IobState, IobStateCache } from './domain';
 import { createWebServer, VisionaryUiWebServer } from './visionary-ui.web';
-import { ClientConnectionHandler, createSocketServer, VisionaryUiSocketServer } from './visionary-ui.socket';
-import { VisionaryUiRepository } from './visionary-ui.repository';
+import { ClientInboundHandler, createSocketServer, VisionaryUiSocketServer } from './visionary-ui.socket';
+import { VisionaryUiDomainRepository } from './visionary-ui.domain.repository';
 
 export type StateSetter = (clientId: string, stateId: string, value: string | number | boolean) => void;
 
@@ -15,13 +15,13 @@ export type AdapterHandle = {
 };
 
 export class VisionaryUiCoordinator {
-    private repository: VisionaryUiRepository;
+    private repository: VisionaryUiDomainRepository;
     private webServer: VisionaryUiWebServer;
     private socketServer: VisionaryUiSocketServer;
     private adapter: AdapterHandle | null = null;
 
     constructor() {
-        this.repository = new VisionaryUiRepository();
+        this.repository = new VisionaryUiDomainRepository();
         this.webServer = createWebServer();
         this.socketServer = createSocketServer();
     }
@@ -35,11 +35,12 @@ export class VisionaryUiCoordinator {
         this.webServer.start(adapterHandle.config.webPort);
         this.socketServer.start(adapterHandle.config.socketPort);
 
-        const clientConnectionHandler: ClientConnectionHandler = {
-            connect: (clientId) => this.onClientConnect(clientId),
-            disconnect: (clientId) => this.onClientDisconnect(clientId),
+        const clientInboundHandler: ClientInboundHandler = {
+            onMessageFromClient: (clientId: string, content: string) => this.onMessageFromClient(clientId, content),
+            onConnect: (clientId) => this.onClientConnect(clientId),
+            onDisconnect: (clientId) => this.onClientDisconnect(clientId),
         };
-        this.socketServer.registerClientConnectionHandler(clientConnectionHandler);
+        this.socketServer.registerClientInboundHandler(clientInboundHandler);
     }
 
     stop(): void {
@@ -54,63 +55,70 @@ export class VisionaryUiCoordinator {
         this.repository.setRooms(rooms);
     }
 
+    setRoom(room: IobRoom): void {
+        console.log('room_change:' + JSON.stringify(room));
+        // this.repository.setRoom(room);
+    }
+
     setFunctions(functions: IobFunction[]): void {
         this.repository.setFunctions(functions);
     }
 
     setObjects(objects: IobObjectCache): void {
         objects.deleteByFilter((object) => object.roomIds.length < 1);
+        // console.log(JSON.stringify(objects, null, 2));
         this.repository.setObjects(objects);
-
-        this.socketServer.sendBroadcastMessage(JSON.stringify(objects));
+        this.socketServer.messageToAllClients(JSON.stringify(objects));
     }
 
     setObject(iobObject: IobObject): void {
+        console.log(iobObject.id + ' ' + JSON.stringify(iobObject));
         if (iobObject.roomIds.length > 0) {
             this.repository.setObject(iobObject);
-
-            // Publish directly
-            this.socketServer.sendBroadcastMessage(JSON.stringify(iobObject));
+            this.socketServer.messageToAllClients(JSON.stringify(iobObject));
+        } else if (this.repository.hasObject(iobObject.id)) {
+            this.repository.deleteObject(iobObject.id); // TODO: does this work?
+            this.socketServer.messageToAllClients(`delete ${iobObject.id}`);
         }
     }
 
     setStates(states: IobStateCache): void {
-        // TODO
+        const managedObjectIds = this.repository.getObjects().keys();
+        states.deleteByFilter((state) => !managedObjectIds.includes(state.id));
         this.repository.setStates(states);
-
-        this.socketServer.sendBroadcastMessage(JSON.stringify(states));
+        this.socketServer.messageToAllClients(JSON.stringify(states));
     }
 
     setState(iobState: IobState): void {
-        this.repository.setState(iobState);
-
-        // Publish directly
-        this.socketServer.sendBroadcastMessage(JSON.stringify(iobState));
+        const managedObjectIds = this.repository.getObjects().keys();
+        if (managedObjectIds.includes(iobState.id)) {
+            this.repository.setState(iobState);
+            this.socketServer.messageToAllClients(JSON.stringify(iobState));
+        }
     }
 
     private onClientConnect(clientId: string): void {
         console.log(`Client connected: ${clientId}`);
-        const rooms = this.repository.getRooms().map((it) => it.id);
-        this.socketServer.sendMessageToClient(clientId, JSON.stringify({ rooms }));
+        const rooms = this.repository.getRooms();
+        this.socketServer.messageToClient(clientId, JSON.stringify(rooms, null, 2));
 
-        const functions = this.repository.getFunctions().map((it) => it.id);
-        this.socketServer.sendMessageToClient(clientId, JSON.stringify({ functions }));
+        const functions = this.repository.getFunctions();
+        this.socketServer.messageToClient(clientId, JSON.stringify(functions, null, 2));
 
-        const objects = this.repository
-            .getObjects()
-            .getAll()
-            .map((it) => it.id);
-        this.socketServer.sendMessageToClient(clientId, JSON.stringify({ objects }));
+        const objects = this.repository.getObjects().values();
+        this.socketServer.messageToClient(clientId, JSON.stringify(objects, null, 2));
 
-        const states = this.repository
-            .getStates()
-            .getAll()
-            .map((it) => it.id);
-        this.socketServer.sendMessageToClient(clientId, JSON.stringify({ states }));
+        const states = this.repository.getStates().values();
+        this.socketServer.messageToClient(clientId, JSON.stringify(states, null, 2));
     }
 
     private onClientDisconnect(clientId: string): void {
         // NO OP
         console.log(`Client disconnected: ${clientId}`);
+    }
+
+    private onMessageFromClient(clientId: string, content: string): void {
+        console.log(`Inbound message from client ${clientId}: ${content}`);
+        this.setAdapterState();
     }
 }
