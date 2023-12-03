@@ -38,7 +38,10 @@ This section is intended for the developer. It can be deleted later
 - [ ] upgrade admin to react 18?
 - [ ] refactor client serving to iobroker.web adapter
 - [ ] implement client UI
-- [ ] business logics for structure and states in backend: rooms, categories, devices, states
+- [x] business logics for structure and states in backend: rooms, categories, devices, states
+- [ ] handle enum changes (might be an object change with id starting with 'enum.')
+- [ ] !!! handle object to enum association changes, add/remove
+- [ ] invalid config message!?
 - [ ] business logics for UI: rooms, categories, devices, states
 - [ ] test all the things ;-)
 

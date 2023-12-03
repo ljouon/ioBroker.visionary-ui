@@ -2,14 +2,14 @@ export abstract class Cache<T> {
     private cache: { [key: string]: T } = {};
 
     get(key: string): T | null {
-        return this.cache[key];
+        return this.cache[key] || null;
     }
 
     set(key: string, element: T): void {
         this.cache[key] = element;
     }
 
-    getAll(): T[] {
+    values(): T[] {
         return Object.values(this.cache);
     }
 
@@ -23,5 +23,9 @@ export abstract class Cache<T> {
             return filter(entry[1]);
         });
         filter1.forEach((entry) => this.delete(entry[0]));
+    }
+
+    keys(): string[] {
+        return Object.keys(this.cache);
     }
 }
