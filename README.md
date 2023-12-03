@@ -39,8 +39,9 @@ This section is intended for the developer. It can be deleted later
 - [ ] refactor client serving to iobroker.web adapter
 - [ ] implement client UI
 - [x] business logics for structure and states in backend: rooms, categories, devices, states
-- [ ] handle enum changes (might be an object change with id starting with 'enum.')
-- [ ] !!! handle object to enum association changes, add/remove
+- [x] handle enum changes (might be an object change with id starting with 'enum.')
+- [x] !!! handle object to enum association changes, add/remove
+- [ ] API Definition: how to tell client the type of the message (wrap in object: envelop)
 - [ ] invalid config message!?
 - [ ] business logics for UI: rooms, categories, devices, states
 - [ ] test all the things ;-)

@@ -1,4 +1,13 @@
-import { IobFunction, IobObject, IobObjectCache, IobRoom, IobState, IobStateCache } from './domain';
+import {
+    IobFunction,
+    IobFunctionCache,
+    IobObject,
+    IobObjectCache,
+    IobRoom,
+    IobRoomCache,
+    IobState,
+    IobStateCache,
+} from './domain';
 import { createWebServer, VisionaryUiWebServer } from './visionary-ui.web';
 import { ClientInboundHandler, createSocketServer, VisionaryUiSocketServer } from './visionary-ui.socket';
 import { VisionaryUiDomainRepository } from './visionary-ui.domain.repository';
@@ -26,10 +35,6 @@ export class VisionaryUiCoordinator {
         this.socketServer = createSocketServer();
     }
 
-    setAdapterState(): void {
-        this.adapter?.setState('clientId', '0_userdata.0.Lampe.on', true);
-    }
-
     start(adapterHandle: AdapterHandle): void {
         this.adapter = adapterHandle;
         this.webServer.start(adapterHandle.config.webPort);
@@ -49,40 +54,40 @@ export class VisionaryUiCoordinator {
         this.adapter = null;
     }
 
-    // ### Data publishing ###
-
-    setRooms(rooms: IobRoom[]): void {
+    setRooms(rooms: IobRoomCache): void {
         this.repository.setRooms(rooms);
     }
 
     setRoom(room: IobRoom): void {
-        console.log('room_change:' + JSON.stringify(room));
-        // this.repository.setRoom(room);
+        this.repository.setRoom(room);
     }
 
-    setFunctions(functions: IobFunction[]): void {
+    setFunctions(functions: IobFunctionCache): void {
         this.repository.setFunctions(functions);
     }
 
+    setFunction(element: IobFunction): void {
+        this.repository.setFunction(element);
+    }
+
     setObjects(objects: IobObjectCache): void {
-        objects.deleteByFilter((object) => object.roomIds.length < 1);
-        // console.log(JSON.stringify(objects, null, 2));
+        // Only store objects mapped to at least one room
+        objects.deleteByFilter((object) => !this.repository.isMappedToRoom(object));
+
         this.repository.setObjects(objects);
         this.socketServer.messageToAllClients(JSON.stringify(objects));
     }
 
     setObject(iobObject: IobObject): void {
-        console.log(iobObject.id + ' ' + JSON.stringify(iobObject));
-        if (iobObject.roomIds.length > 0) {
+        // Only store objects mapped to at least one room
+        if (this.repository.isMappedToRoom(iobObject)) {
             this.repository.setObject(iobObject);
             this.socketServer.messageToAllClients(JSON.stringify(iobObject));
-        } else if (this.repository.hasObject(iobObject.id)) {
-            this.repository.deleteObject(iobObject.id); // TODO: does this work?
-            this.socketServer.messageToAllClients(`delete ${iobObject.id}`);
         }
     }
 
     setStates(states: IobStateCache): void {
+        // Only handle states of objects mapped to at least one room
         const managedObjectIds = this.repository.getObjects().keys();
         states.deleteByFilter((state) => !managedObjectIds.includes(state.id));
         this.repository.setStates(states);
@@ -90,6 +95,7 @@ export class VisionaryUiCoordinator {
     }
 
     setState(iobState: IobState): void {
+        // Only store objects mapped to at least one room
         const managedObjectIds = this.repository.getObjects().keys();
         if (managedObjectIds.includes(iobState.id)) {
             this.repository.setState(iobState);
@@ -120,5 +126,13 @@ export class VisionaryUiCoordinator {
     private onMessageFromClient(clientId: string, content: string): void {
         console.log(`Inbound message from client ${clientId}: ${content}`);
         this.setAdapterState();
+    }
+
+    setAdapterState(): void {
+        this.adapter?.setState('clientId', '0_userdata.0.Lampe.on', true);
+    }
+
+    debug(m: any): void {
+        this.socketServer.messageToAllClients(JSON.stringify(m, null, 2));
     }
 }
