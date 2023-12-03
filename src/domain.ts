@@ -6,7 +6,7 @@ export type IobRoom = {
     color: string | null;
     icon: string | null;
     members: string[] | null;
-    children: IobRoom[] | null;
+    children: string[] | null;
 };
 
 export type IobFunction = {
@@ -41,6 +41,10 @@ export type IobState = {
     value: string | number | boolean | null;
     lastChange: number;
 };
+
+export class IobRoleCache extends Cache<IobRole> {}
+
+export class IobFunctionCache extends Cache<IobFunction> {}
 
 export class IobRoomCache extends Cache<IobRoom> {}
 

@@ -1,5 +1,5 @@
-import { IobFunction, IobRoom } from './domain';
-import { mapTranslation } from './visionary-ui.mapper';
+import { IobFunctionCache, IobObjectCache, IobRoomCache, IobStateCache } from './domain';
+import { mapToIobFunction, mapToIobObject, mapToIobRoom, mapToIobState } from './visionary-ui.mapper';
 
 export type VisionaryUiCustomProperties = {
     enabled: boolean;
@@ -26,60 +26,62 @@ export class VisionaryUiIoBrokerRepository {
         return Promise.resolve('en');
     }
 
-    async getRooms(language: ioBroker.Languages): Promise<IobRoom[]> {
-        const rooms: IobRoom[] = [];
-        try {
-            const enums = await this.adapter.getEnumsAsync(['enum.rooms']);
-            if (enums) {
-                Object.entries(enums['enum.rooms']).map((enumEntry) => {
-                    const id = enumEntry[0];
-                    const currentRoom = enumEntry[1];
-
-                    const newRoom: IobRoom = {
-                        id: id,
-                        name: mapTranslation(currentRoom.common.name, language),
-                        color: currentRoom.common.color ?? null,
-                        icon: currentRoom.common.icon ?? null,
-                        members: currentRoom.common.members ?? null,
-                        children: null,
-                    };
-
-                    // Parent klappt, child nicht
-                    const parentRoom = rooms.find((existingRooms) => id.startsWith(existingRooms.id));
-                    if (parentRoom) {
-                        if (!parentRoom.children) {
-                            parentRoom.children = [newRoom];
-                        } else {
-                            parentRoom.children.push(newRoom);
-                        }
-                    } else {
-                        rooms.push(newRoom);
-                    }
-                });
-                return rooms;
-            }
-        } catch (err) {}
-        return Promise.reject();
+    async getRooms(language: ioBroker.Languages): Promise<IobRoomCache> {
+        return this.adapter.getEnumsAsync('enum.rooms').then((roomEnums) =>
+            Object.entries(roomEnums['enum.rooms']).reduce((cache, entry) => {
+                const entryId = entry[0];
+                const entryElement = entry[1];
+                if (entryElement) {
+                    const iobRoom = mapToIobRoom(entryId, entryElement, language);
+                    cache.set(entryId, iobRoom);
+                }
+                return cache;
+            }, new IobRoomCache()),
+        );
     }
 
-    async getFunctions(language: ioBroker.Languages): Promise<IobFunction[]> {
-        const functions: IobFunction[] = [];
-        try {
-            const enums = await this.adapter.getEnumsAsync(['enum.functions']);
-            if (enums) {
-                Object.entries(enums['enum.functions']).map((enumEntry) => {
-                    const id = enumEntry[0];
-                    const currentFunction = enumEntry[1];
+    async getFunctions(language: ioBroker.Languages): Promise<IobFunctionCache> {
+        return this.adapter.getEnumsAsync('enum.functions').then((functionEnums) =>
+            Object.entries(functionEnums['enum.functions']).reduce((cache, entry) => {
+                const entryId = entry[0];
+                const entryElement = entry[1];
+                if (entryElement) {
+                    const iobFunction = mapToIobFunction(entryId, entryElement, language);
+                    cache.set(entryId, iobFunction);
+                }
+                return cache;
+            }, new IobFunctionCache()),
+        );
+    }
 
-                    functions.push({
-                        id: id,
-                        name: mapTranslation(currentFunction.common.name, language),
-                    });
-                });
-                return functions;
-            }
-        } catch (err) {}
-        return Promise.reject();
+    async getIoBrokerStateObjects(language: ioBroker.Languages): Promise<IobObjectCache> {
+        return this.adapter.getForeignObjectsAsync('*', { type: 'state' }).then((ioBrokerObjects) =>
+            Object.entries(ioBrokerObjects).reduce((cache, entry) => {
+                const entryId = entry[0];
+                const entryElement = entry[1];
+                // If not deleted
+                if (entryElement) {
+                    const iobObject = mapToIobObject(entryId, entryElement, language);
+                    cache.set(entryId, iobObject);
+                }
+                return cache;
+            }, new IobObjectCache()),
+        );
+    }
+
+    async getIoBrokerStateValues(): Promise<IobStateCache> {
+        return this.adapter.getForeignStatesAsync('*', {}).then((ioBrokerStates) =>
+            Object.entries(ioBrokerStates).reduce((cache, entry) => {
+                const entryId = entry[0];
+                const entryElement = entry[1];
+                // If not deleted
+                if (entryElement) {
+                    const iobState = mapToIobState(entryId, entryElement);
+                    cache.set(entryId, iobState);
+                }
+                return cache;
+            }, new IobStateCache()),
+        );
     }
 
     public setIobState(clientId: string, stateId: string, value: string | number | boolean): void {

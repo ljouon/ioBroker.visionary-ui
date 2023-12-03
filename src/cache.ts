@@ -9,6 +9,18 @@ export abstract class Cache<T> {
         this.cache[key] = element;
     }
 
+    has(key: string): boolean {
+        return this.get(key) !== null;
+    }
+
+    // Find
+    find(matcher: (element: T) => boolean): [string, T] | undefined {
+        const entries = Object.entries(this.cache);
+        return entries.find((entry) => {
+            return matcher(entry[1]);
+        });
+    }
+
     values(): T[] {
         return Object.values(this.cache);
     }
