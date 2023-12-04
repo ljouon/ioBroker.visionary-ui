@@ -33,7 +33,7 @@ export class VisionaryUiDomainRepository {
     }
 
     setRoom(element: IobRoom): void {
-        this.rooms.set(element.id, element);
+        this.rooms.set(element);
     }
 
     getFunctions(): IobFunctionCache {
@@ -45,7 +45,7 @@ export class VisionaryUiDomainRepository {
     }
 
     setFunction(element: IobFunction): void {
-        this.functions.set(element.id, element);
+        this.functions.set(element);
     }
 
     getRoles(): IobRoleCache {
@@ -74,7 +74,7 @@ export class VisionaryUiDomainRepository {
     }
 
     setObject(element: IobObject): void {
-        this.objects.set(element.id, element);
+        this.objects.set(element);
     }
 
     getStates(): IobStateCache {
@@ -86,11 +86,23 @@ export class VisionaryUiDomainRepository {
     }
 
     setState(element: IobState): void {
-        this.states.set(element.id, element);
+        this.states.set(element);
     }
 
     isMappedToRoom(object: IobObject): boolean {
         const values = this.rooms.values().map((room) => room.members?.includes(object.id) || false);
         return values.includes(true);
+    }
+
+    deleteRoom(id: string): void {
+        this.rooms.delete(id);
+    }
+
+    deleteFunction(id: string): void {
+        this.functions.delete(id);
+    }
+
+    deleteState(id: string): void {
+        this.states.delete(id);
     }
 }

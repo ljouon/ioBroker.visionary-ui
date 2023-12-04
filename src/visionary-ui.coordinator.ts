@@ -35,10 +35,10 @@ export class VisionaryUiCoordinator {
         this.socketServer = createSocketServer();
     }
 
-    start(adapterHandle: AdapterHandle): void {
+    async start(adapterHandle: AdapterHandle): Promise<void> {
         this.adapter = adapterHandle;
-        this.webServer.start(adapterHandle.config.webPort);
-        this.socketServer.start(adapterHandle.config.socketPort);
+        await this.webServer.start(adapterHandle.config.webPort);
+        await this.socketServer.start(adapterHandle.config.socketPort);
 
         const clientInboundHandler: ClientInboundHandler = {
             onMessageFromClient: (clientId: string, content: string) => this.onMessageFromClient(clientId, content),
@@ -48,26 +48,40 @@ export class VisionaryUiCoordinator {
         this.socketServer.registerClientInboundHandler(clientInboundHandler);
     }
 
-    stop(): void {
-        this.webServer.stop();
-        this.socketServer.stop();
+    async stop(): Promise<void> {
+        await this.webServer.stop();
+        await this.socketServer.stop();
         this.adapter = null;
     }
 
     setRooms(rooms: IobRoomCache): void {
         this.repository.setRooms(rooms);
+        this.socketServer.messageToAllClients(JSON.stringify(rooms.values()));
     }
 
-    setRoom(room: IobRoom): void {
-        this.repository.setRoom(room);
+    setRoom(element: IobRoom): void {
+        this.repository.setRoom(element);
+        this.socketServer.messageToAllClients(JSON.stringify(element));
+    }
+
+    deleteRoom(id: string): void {
+        this.repository.deleteRoom(id);
+        this.socketServer.messageToAllClients(JSON.stringify(this.repository.getRooms().values()));
     }
 
     setFunctions(functions: IobFunctionCache): void {
         this.repository.setFunctions(functions);
+        this.socketServer.messageToAllClients(JSON.stringify(functions.values()));
     }
 
     setFunction(element: IobFunction): void {
         this.repository.setFunction(element);
+        this.socketServer.messageToAllClients(JSON.stringify(element));
+    }
+
+    deleteFunction(id: string): void {
+        this.repository.deleteFunction(id);
+        this.socketServer.messageToAllClients(JSON.stringify(this.repository.getFunctions().values()));
     }
 
     setObjects(objects: IobObjectCache): void {
@@ -75,7 +89,7 @@ export class VisionaryUiCoordinator {
         objects.deleteByFilter((object) => !this.repository.isMappedToRoom(object));
 
         this.repository.setObjects(objects);
-        this.socketServer.messageToAllClients(JSON.stringify(objects));
+        this.socketServer.messageToAllClients(JSON.stringify(objects.values()));
     }
 
     setObject(iobObject: IobObject): void {
@@ -86,18 +100,24 @@ export class VisionaryUiCoordinator {
         }
     }
 
-    setStates(states: IobStateCache): void {
-        // Only handle states of objects mapped to at least one room
-        const managedObjectIds = this.repository.getObjects().keys();
-        states.deleteByFilter((state) => !managedObjectIds.includes(state.id));
-        this.repository.setStates(states);
-        this.socketServer.messageToAllClients(JSON.stringify(states));
+    deleteObject(id: string): void {
+        this.repository.deleteObject(id);
+        this.repository.deleteState(id);
+        this.socketServer.messageToAllClients(JSON.stringify(this.repository.getObjects().values()));
+        this.socketServer.messageToAllClients(JSON.stringify(this.repository.getStates().values()));
+    }
+
+    setStates(iobStates: IobStateCache): void {
+        // Only store states if object is managed
+        const managedObjectIds = this.repository.getObjects().ids();
+        iobStates.deleteByFilter((state) => !managedObjectIds.includes(state.id));
+        this.repository.setStates(iobStates);
+        this.socketServer.messageToAllClients(JSON.stringify(iobStates));
     }
 
     setState(iobState: IobState): void {
-        // Only store objects mapped to at least one room
-        const managedObjectIds = this.repository.getObjects().keys();
-        if (managedObjectIds.includes(iobState.id)) {
+        // Only store state if object is managed
+        if (this.repository.getObjects().has(iobState.id)) {
             this.repository.setState(iobState);
             this.socketServer.messageToAllClients(JSON.stringify(iobState));
         }
@@ -106,16 +126,16 @@ export class VisionaryUiCoordinator {
     private onClientConnect(clientId: string): void {
         console.log(`Client connected: ${clientId}`);
         const rooms = this.repository.getRooms();
-        this.socketServer.messageToClient(clientId, JSON.stringify(rooms, null, 2));
+        this.socketServer.messageToClient(clientId, JSON.stringify(rooms));
 
         const functions = this.repository.getFunctions();
-        this.socketServer.messageToClient(clientId, JSON.stringify(functions, null, 2));
+        this.socketServer.messageToClient(clientId, JSON.stringify(functions));
 
         const objects = this.repository.getObjects().values();
-        this.socketServer.messageToClient(clientId, JSON.stringify(objects, null, 2));
+        this.socketServer.messageToClient(clientId, JSON.stringify(objects));
 
         const states = this.repository.getStates().values();
-        this.socketServer.messageToClient(clientId, JSON.stringify(states, null, 2));
+        this.socketServer.messageToClient(clientId, JSON.stringify(states));
     }
 
     private onClientDisconnect(clientId: string): void {
@@ -133,6 +153,6 @@ export class VisionaryUiCoordinator {
     }
 
     debug(m: any): void {
-        this.socketServer.messageToAllClients(JSON.stringify(m, null, 2));
+        this.socketServer.messageToAllClients(JSON.stringify(m));
     }
 }

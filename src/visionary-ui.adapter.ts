@@ -1,8 +1,9 @@
 import * as utils from '@iobroker/adapter-core';
 import { VisionaryUiCoordinator } from './visionary-ui.coordinator';
 import { VisionaryUiIoBrokerRepository } from './visionary-ui-iobroker.repository';
-import { mapToIobFunction, mapToIobObject, mapToIobRoom, mapToIobState } from './visionary-ui.mapper';
-import { IobObjectCache } from './domain';
+import { mapToIobEnum, mapToIobObject, mapToIobState } from './visionary-ui.mapper';
+
+type VisionaryUiManagedObjectTypes = 'state' | 'room' | 'function';
 
 export class VisionaryUiAdapter extends utils.Adapter {
     private repository: VisionaryUiIoBrokerRepository;
@@ -81,7 +82,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
         const language = await this.repository.getLanguage();
 
         // Start coordinator between ioBroker and visionary ui
-        this.startCoordinator(language);
+        await this.startCoordinator(language);
 
         // this.subscribeForeignStates('0_userdata.*');
         this.subscribeForeignStates('*');
@@ -96,10 +97,10 @@ you will notice that each setState will cause the stateChange event to fire (bec
         const functions = await this.repository.getFunctions(language);
         this.coordinator.setFunctions(functions);
 
-        this.loadOrRefreshObjectData(language);
+        await this.loadOrRefreshObjectData(language);
     }
 
-    private startCoordinator(language: ioBroker.Languages): void {
+    private async startCoordinator(language: ioBroker.Languages): Promise<void> {
         const webPort = parseInt(this.config.webPort, 10) || 8088;
         const socketPort = parseInt(this.config.socketPort, 10) || 8888;
 
@@ -113,7 +114,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
             },
         };
 
-        this.coordinator.start(adapterHandle);
+        await this.coordinator.start(adapterHandle);
     }
 
     /**
@@ -146,40 +147,108 @@ you will notice that each setState will cause the stateChange event to fire (bec
         this.coordinator.setState(iobState);
     }
 
-    private onObjectChange(id: string, object: ioBroker.Object | null | undefined): void {
-        if (!object) {
-            // The object has been deleted
-            this.log.info(`object ${id} deleted`);
-            // TODO: Handle deletion by ID in rooms, functions, objects
-            return;
-        }
+    private async onObjectChange(id: string, object: ioBroker.Object | null | undefined): Promise<void> {
+        const language: ioBroker.Languages = await this.repository.getLanguage();
 
-        // The object has been changed: it might be a statObject or enum (room, function)
-        this.repository.getLanguage().then((language: ioBroker.Languages) => {
-            if (object.type === 'state') {
-                const iobObject = mapToIobObject(id, object, language);
-                this.coordinator.setObject(iobObject);
-            } else if (object.type === 'enum') {
-                if (id.startsWith('enum.rooms')) {
-                    const iobObject = mapToIobRoom(id, object, language);
-                    this.coordinator.setRoom(iobObject);
-                    this.loadOrRefreshObjectData(language);
-                } else if (id.startsWith('enum.functions')) {
-                    const iobObject = mapToIobFunction(id, object, language);
-                    this.coordinator.setFunction(iobObject);
-                    this.loadOrRefreshObjectData(language);
-                }
+        // The object has been deleted
+        if (!object) {
+            this.log.info(`object ${id} deleted`);
+            // The object has been changed: it might be a state object or enum (room, function)
+            switch (this.determineObjectTypeById(id)) {
+                case 'room':
+                    return await this.handleRoomEnumObjectDeletion(id, language);
+                case 'function':
+                    return await this.handleFunctionEnumObjectDeletion(id, language);
+                default:
+                    // Object type is either a state object or not managed by visionary ui adapter
+                    // The ID might be deleted from state management
+                    return await this.handleStateObjectDeletion(id);
             }
-        });
+        } else {
+            // The object has been changed: it might be a state object or enum (room, function)
+            switch (this.determineObjectType(object)) {
+                case 'state':
+                    return await this.handleStateObjectChange(id, object, language);
+                case 'room':
+                    return await this.handleRoomEnumObjectChange(id, object, language);
+                case 'function':
+                    return await this.handleFunctionEnumChange(id, object, language);
+                default:
+                    // Object type not managed by visionary ui adapter
+                    return Promise.resolve();
+            }
+        }
     }
 
-    private loadOrRefreshObjectData(language: ioBroker.Languages): void {
-        this.repository.getIoBrokerStateObjects(language).then((objects: IobObjectCache) => {
-            this.coordinator.setObjects(objects);
+    private determineObjectType(object: ioBroker.Object): VisionaryUiManagedObjectTypes | undefined {
+        if (object.type === 'state') {
+            return 'state';
+        }
 
-            this.repository.getIoBrokerStateValues().then((states) => {
-                this.coordinator.setStates(states);
-            });
-        });
+        if (object.type === 'enum') {
+            if (object._id.startsWith('enum.rooms')) {
+                return 'room';
+            } else if (object._id.startsWith('enum.functions')) {
+                return 'function';
+            }
+        }
+    }
+
+    private determineObjectTypeById(id: string): VisionaryUiManagedObjectTypes | undefined {
+        if (id.startsWith('enum.rooms')) {
+            return 'room';
+        } else if (id.startsWith('enum.functions')) {
+            return 'function';
+        } else {
+            return undefined;
+        }
+    }
+
+    private handleStateObjectChange(id: string, object: ioBroker.Object, language: ioBroker.Languages): Promise<void> {
+        const iobObject = mapToIobObject(id, object, language);
+        this.coordinator.setObject(iobObject);
+        return Promise.resolve();
+    }
+
+    private async handleRoomEnumObjectChange(
+        id: string,
+        object: ioBroker.Object,
+        language: ioBroker.Languages,
+    ): Promise<void> {
+        const iobEnum = mapToIobEnum(id, object, language);
+        this.coordinator.setRoom(iobEnum);
+        await this.loadOrRefreshObjectData(language);
+    }
+
+    private async handleFunctionEnumChange(
+        id: string,
+        object: ioBroker.Object,
+        language: ioBroker.Languages,
+    ): Promise<void> {
+        const iobEnum = mapToIobEnum(id, object, language);
+        this.coordinator.setFunction(iobEnum);
+        await this.loadOrRefreshObjectData(language);
+    }
+
+    private async handleRoomEnumObjectDeletion(id: string, language: ioBroker.Languages): Promise<void> {
+        this.coordinator.deleteRoom(id);
+        await this.loadOrRefreshObjectData(language);
+    }
+
+    private async handleFunctionEnumObjectDeletion(id: string, language: ioBroker.Languages): Promise<void> {
+        this.coordinator.deleteFunction(id);
+        await this.loadOrRefreshObjectData(language);
+    }
+
+    private async handleStateObjectDeletion(id: string): Promise<void> {
+        this.coordinator.deleteObject(id);
+    }
+
+    private async loadOrRefreshObjectData(language: ioBroker.Languages): Promise<void> {
+        const objects = await this.repository.getIoBrokerStateObjects(language);
+        this.coordinator.setObjects(objects);
+
+        const states = await this.repository.getIoBrokerStateValues();
+        this.coordinator.setStates(states);
     }
 }

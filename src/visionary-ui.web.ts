@@ -17,20 +17,26 @@ export function createWebServer(): VisionaryUiWebServer {
         return createServer(app);
     }
 
-    const start = (port: number): void => {
-        webServer = createWebServer();
-        webServer.listen(port, () => {
-            console.log(`Web server started on port: ${port}`);
+    async function start(port: number): Promise<void> {
+        return new Promise((resolve) => {
+            webServer = createWebServer();
+            webServer.listen(port, () => {
+                console.log(`Web server started on port: ${port}`);
+                resolve();
+            });
         });
-    };
+    }
 
-    const stop = (): void => {
-        // Close web server
-        webServer?.close(() => {
-            console.log('Web server closed');
-            webServer = null;
+    async function stop(): Promise<void> {
+        return new Promise((resolve) => {
+            // Close web server
+            webServer?.close(() => {
+                console.log('Web server closed');
+                webServer = null;
+                resolve();
+            });
         });
-    };
+    }
 
     return {
         start,
