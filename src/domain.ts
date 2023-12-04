@@ -27,7 +27,7 @@ export type IobObject = {
     datatype: string;
     iobType: string;
     isWriteable: boolean;
-    defaultValue: number;
+    defaultValue: string | number | boolean | null;
     unit: string;
     customIcon: string | null;
     rank: number | null;

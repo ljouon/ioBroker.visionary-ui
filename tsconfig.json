@@ -6,8 +6,8 @@
     // the compilation is configured in tsconfig.build.json
     "noEmit": true,
     // check JS files, but do not compile them => tsconfig.build.json
-    "allowJs": true,
-    "checkJs": true,
+//    "allowJs": true,
+//    "checkJs": true,
     "skipLibCheck": true,
     // Don't report errors in 3rd party definitions
     "noEmitOnError": true,
@@ -34,7 +34,8 @@
     "target": "es2018",
     "sourceMap": true,
     "inlineSourceMap": false,
-    "watch": false
+    "watch": false,
+    "jsx": "react"
   },
   "include": [
     "src/**/*.ts",
@@ -43,6 +44,7 @@
   ],
   "exclude": [
     "build/**",
-    "node_modules/**"
+    "node_modules/**",
+    "client/**"
   ]
 }

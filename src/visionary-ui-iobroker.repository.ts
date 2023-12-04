@@ -92,9 +92,6 @@ export class VisionaryUiIoBrokerRepository {
             ack: false,
             lc: Date.now(),
         };
-        this.adapter.getForeignStateAsync(stateId).then((_) => {
-            // Send feedback to client?
-        });
 
         this.adapter.setForeignStateAsync(stateId, state).catch(() => {
             // Send feedback to client?

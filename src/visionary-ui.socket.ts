@@ -8,85 +8,79 @@ export type ClientInboundHandler = {
     onMessageFromClient: (clientId: string, content: string) => void;
 };
 
-export type VisionaryUiSocketServer = VisionaryUiServer & {
-    registerClientInboundHandler: (clientInboundHandler: ClientInboundHandler) => void;
-    messageToClient: (clientId: string, message: string) => void;
-    messageToAllClients: (message: string) => void;
-};
+export abstract class ClientCommunication extends VisionaryUiServer {
+    abstract registerClientInboundHandler(clientInboundHandler: ClientInboundHandler): void;
 
-export function createSocketServer(): VisionaryUiSocketServer {
-    let socketServer: WebSocketServer | null;
-    let clientConnectHandler: ClientInboundHandler | null;
-    const clients = new Map<string, WebSocket>();
+    abstract messageToClient(clientId: string, message: string): void;
 
-    async function start(port: number): Promise<void> {
+    abstract messageToAllClients(message: string): void;
+}
+
+export class VisionaryUiSocketServer extends ClientCommunication {
+    private socketServer: WebSocketServer | null = null;
+    private clientInboundHandler: ClientInboundHandler | null = null;
+    private clients = new Map<string, WebSocket>();
+
+    async start(port: number): Promise<void> {
         return new Promise((resolve) => {
-            socketServer = new WebSocket.Server({ port }, () => {
+            this.socketServer = new WebSocket.Server({ port }, () => {
                 console.log(`Socket server started on port: ${port}`);
                 resolve();
             });
 
-            socketServer.on('connection', (ws: WebSocket) => {
+            this.socketServer.on('connection', (ws: WebSocket) => {
                 const clientId = uuidv4();
-                clients.set(clientId, ws);
+                this.clients.set(clientId, ws);
 
-                clientConnectHandler?.onConnect(clientId);
+                this.clientInboundHandler?.onConnect(clientId);
 
                 ws.on('message', (message: string) => {
                     console.log(`Received message: ${message}`);
-                    clientConnectHandler?.onMessageFromClient(clientId, message);
+                    this.clientInboundHandler?.onMessageFromClient(clientId, message);
 
-                    socketServer?.clients.forEach((client) => {
+                    this.socketServer?.clients.forEach((client) => {
                         client.send(`Server received your message: ${message}`);
                     });
                 });
 
                 ws.on('close', (_) => {
-                    clients.delete(clientId);
-                    clientConnectHandler?.onDisconnect(clientId);
+                    this.clients.delete(clientId);
+                    this.clientInboundHandler?.onDisconnect(clientId);
                 });
             });
         });
     }
 
-    async function stop(): Promise<void> {
+    async stop(): Promise<void> {
         return new Promise((resolve) => {
             // Reset client connection handler
-            clientConnectHandler = null;
+            this.clientInboundHandler = null;
 
             // Close socket server
-            socketServer?.close(() => {
+            this.socketServer?.close(() => {
                 console.log('Socket server closed');
-                socketServer = null;
+                this.socketServer = null;
                 resolve();
             });
         });
     }
 
-    const messageToAllClients = (message: string): void => {
+    messageToAllClients(message: string): void {
         // console.log(`Server sends message: ${message}`);
-        socketServer?.clients.forEach((client) => {
+        this.socketServer?.clients.forEach((client) => {
             client.send(message);
         });
-    };
+    }
 
-    const messageToClient = (clientId: string, message: string): void => {
-        if (clients.has(clientId)) {
+    messageToClient(clientId: string, message: string): void {
+        if (this.clients.has(clientId)) {
             // console.log(`Server sends message: ${message}`);
-            const clientSocket = clients.get(clientId)!;
+            const clientSocket = this.clients.get(clientId)!;
             clientSocket.send(message);
         }
-    };
+    }
 
-    const registerClientConnectionHandler = (connectHandler: ClientInboundHandler): void => {
-        clientConnectHandler = connectHandler;
-    };
-
-    return {
-        start,
-        stop,
-        messageToAllClients,
-        messageToClient,
-        registerClientInboundHandler: registerClientConnectionHandler,
-    };
+    registerClientInboundHandler(clientInboundHandler: ClientInboundHandler): void {
+        this.clientInboundHandler = clientInboundHandler;
+    }
 }
