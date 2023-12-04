@@ -1,6 +1,6 @@
 import { Cache } from './cache';
 
-export type IobRoom = {
+export type IobEnum = {
     id: string;
     name: string;
     color: string | null;
@@ -9,10 +9,9 @@ export type IobRoom = {
     children: string[] | null;
 };
 
-export type IobFunction = {
-    id: string;
-    name: string;
-};
+export type IobRoom = IobEnum;
+
+export type IobFunction = IobEnum;
 
 export type IobRole = {
     id: string;

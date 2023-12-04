@@ -1,4 +1,4 @@
-import { IobFunction, IobObject, IobRoom, IobState } from './domain';
+import { IobObject, IobRoom, IobState } from './domain';
 import { VisionaryUiCustomProperties } from './visionary-ui-iobroker.repository';
 
 export function mapTranslation(value: ioBroker.StringOrTranslated, language: ioBroker.Languages): string {
@@ -29,7 +29,7 @@ export function mapToIobObject(id: string, ioBrokerObject: ioBroker.Object, lang
     };
 }
 
-export function mapToIobRoom(id: string, ioBrokerRoom: ioBroker.EnumObject, language: ioBroker.Languages): IobRoom {
+export function mapToIobEnum(id: string, ioBrokerRoom: ioBroker.Object, language: ioBroker.Languages): IobRoom {
     return {
         id: id,
         name: mapTranslation(ioBrokerRoom.common.name, language),
@@ -37,17 +37,6 @@ export function mapToIobRoom(id: string, ioBrokerRoom: ioBroker.EnumObject, lang
         icon: ioBrokerRoom.common.icon ?? null,
         members: ioBrokerRoom.common.members ?? null,
         children: null,
-    };
-}
-
-export function mapToIobFunction(
-    id: string,
-    enumObject: ioBroker.EnumObject,
-    language: ioBroker.Languages,
-): IobFunction {
-    return {
-        id: id,
-        name: mapTranslation(enumObject.common.name, language),
     };
 }
 

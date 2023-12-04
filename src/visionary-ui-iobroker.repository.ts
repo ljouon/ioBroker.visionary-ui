@@ -1,5 +1,5 @@
 import { IobFunctionCache, IobObjectCache, IobRoomCache, IobStateCache } from './domain';
-import { mapToIobFunction, mapToIobObject, mapToIobRoom, mapToIobState } from './visionary-ui.mapper';
+import { mapToIobEnum, mapToIobObject, mapToIobState } from './visionary-ui.mapper';
 
 export type VisionaryUiCustomProperties = {
     enabled: boolean;
@@ -32,8 +32,8 @@ export class VisionaryUiIoBrokerRepository {
                 const entryId = entry[0];
                 const entryElement = entry[1];
                 if (entryElement) {
-                    const iobRoom = mapToIobRoom(entryId, entryElement, language);
-                    cache.set(entryId, iobRoom);
+                    const iobRoom = mapToIobEnum(entryId, entryElement, language);
+                    cache.set(iobRoom);
                 }
                 return cache;
             }, new IobRoomCache()),
@@ -46,8 +46,8 @@ export class VisionaryUiIoBrokerRepository {
                 const entryId = entry[0];
                 const entryElement = entry[1];
                 if (entryElement) {
-                    const iobFunction = mapToIobFunction(entryId, entryElement, language);
-                    cache.set(entryId, iobFunction);
+                    const iobFunction = mapToIobEnum(entryId, entryElement, language);
+                    cache.set(iobFunction);
                 }
                 return cache;
             }, new IobFunctionCache()),
@@ -62,7 +62,7 @@ export class VisionaryUiIoBrokerRepository {
                 // If not deleted
                 if (entryElement) {
                     const iobObject = mapToIobObject(entryId, entryElement, language);
-                    cache.set(entryId, iobObject);
+                    cache.set(iobObject);
                 }
                 return cache;
             }, new IobObjectCache()),
@@ -77,7 +77,7 @@ export class VisionaryUiIoBrokerRepository {
                 // If not deleted
                 if (entryElement) {
                     const iobState = mapToIobState(entryId, entryElement);
-                    cache.set(entryId, iobState);
+                    cache.set(iobState);
                 }
                 return cache;
             }, new IobStateCache()),

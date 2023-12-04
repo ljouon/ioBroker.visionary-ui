@@ -19,47 +19,49 @@ export function createSocketServer(): VisionaryUiSocketServer {
     let clientConnectHandler: ClientInboundHandler | null;
     const clients = new Map<string, WebSocket>();
 
-    const start = (port: number): void => {
-        socketServer = new WebSocket.Server({ port }, () => {
-            console.log(`Socket server started on port: ${port}`);
-        });
+    async function start(port: number): Promise<void> {
+        return new Promise((resolve) => {
+            socketServer = new WebSocket.Server({ port }, () => {
+                console.log(`Socket server started on port: ${port}`);
+                resolve();
+            });
 
-        socketServer.on('connection', (ws: WebSocket) => {
-            console.log('New client connected');
+            socketServer.on('connection', (ws: WebSocket) => {
+                const clientId = uuidv4();
+                clients.set(clientId, ws);
 
-            const clientId = uuidv4();
-            clients.set(clientId, ws);
+                clientConnectHandler?.onConnect(clientId);
 
-            clientConnectHandler?.onConnect(clientId);
+                ws.on('message', (message: string) => {
+                    console.log(`Received message: ${message}`);
+                    clientConnectHandler?.onMessageFromClient(clientId, message);
 
-            ws.on('message', (message: string) => {
-                console.log(`Received message: ${message}`);
+                    socketServer?.clients.forEach((client) => {
+                        client.send(`Server received your message: ${message}`);
+                    });
+                });
 
-                clientConnectHandler?.onMessageFromClient(clientId, message);
-
-                socketServer?.clients.forEach((client) => {
-                    client.send(`Server received your message: ${message}`);
+                ws.on('close', (_) => {
+                    clients.delete(clientId);
+                    clientConnectHandler?.onDisconnect(clientId);
                 });
             });
+        });
+    }
 
-            ws.on('close', (code) => {
-                clients.delete(clientId);
-                console.log(`${clientId} closed the connection: exit code ${code}`);
-                clientConnectHandler?.onDisconnect(clientId);
+    async function stop(): Promise<void> {
+        return new Promise((resolve) => {
+            // Reset client connection handler
+            clientConnectHandler = null;
+
+            // Close socket server
+            socketServer?.close(() => {
+                console.log('Socket server closed');
+                socketServer = null;
+                resolve();
             });
         });
-    };
-
-    const stop = (): void => {
-        // Reset client connection handler
-        clientConnectHandler = null;
-
-        // Close socket server
-        socketServer?.close(() => {
-            console.log('Socket server closed');
-            socketServer = null;
-        });
-    };
+    }
 
     const messageToAllClients = (message: string): void => {
         // console.log(`Server sends message: ${message}`);

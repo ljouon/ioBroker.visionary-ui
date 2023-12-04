@@ -1,23 +1,27 @@
-export abstract class Cache<T> {
-    private cache: { [key: string]: T } = {};
+export type WithId = {
+    id: string;
+};
 
-    get(key: string): T | null {
-        return this.cache[key] || null;
+export abstract class Cache<T extends WithId> {
+    private cache: { [id: string]: T } = {};
+
+    get(id: string): T | null {
+        return this.cache[id] || null;
     }
 
-    set(key: string, element: T): void {
-        this.cache[key] = element;
+    set(element: T): void {
+        this.cache[element.id] = element;
     }
 
-    has(key: string): boolean {
-        return this.get(key) !== null;
+    has(id: string): boolean {
+        return this.get(id) !== null;
     }
 
     // Find
-    find(matcher: (element: T) => boolean): [string, T] | undefined {
-        const entries = Object.entries(this.cache);
+    find(matcher: (element: T) => boolean): T | undefined {
+        const entries = Object.values(this.cache);
         return entries.find((entry) => {
-            return matcher(entry[1]);
+            return matcher(entry);
         });
     }
 
@@ -25,19 +29,19 @@ export abstract class Cache<T> {
         return Object.values(this.cache);
     }
 
-    delete(key: string): void {
-        delete this.cache[key];
+    delete(id: string): void {
+        delete this.cache[id];
     }
 
     deleteByFilter(filter: (element: T) => boolean): void {
-        const entries = Object.entries(this.cache);
+        const entries = Object.values(this.cache);
         const filter1 = entries.filter((entry) => {
-            return filter(entry[1]);
+            return filter(entry);
         });
-        filter1.forEach((entry) => this.delete(entry[0]));
+        filter1.forEach((entry) => this.delete(entry.id));
     }
 
-    keys(): string[] {
+    ids(): string[] {
         return Object.keys(this.cache);
     }
 }
