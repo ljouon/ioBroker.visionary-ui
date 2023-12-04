@@ -3,7 +3,6 @@ import {
     IobFunctionCache,
     IobObject,
     IobObjectCache,
-    IobRoleCache,
     IobRoom,
     IobRoomCache,
     IobState,
@@ -14,7 +13,6 @@ export class VisionaryUiDomainRepository {
     private language: string = 'en';
     private rooms: IobRoomCache = new IobRoomCache();
     private functions: IobFunctionCache = new IobFunctionCache();
-    private roles: IobRoleCache = new IobRoleCache();
     private objects: IobObjectCache = new IobObjectCache();
     private states: IobStateCache = new IobStateCache();
 
@@ -48,20 +46,8 @@ export class VisionaryUiDomainRepository {
         this.functions.set(element);
     }
 
-    getRoles(): IobRoleCache {
-        return this.roles;
-    }
-
-    setRoles(elements: IobRoleCache): void {
-        this.roles = elements;
-    }
-
     getObjects(): IobObjectCache {
         return this.objects;
-    }
-
-    hasObject(id: string): boolean {
-        return this.objects.has(id);
     }
 
     deleteObject(id: string): void {

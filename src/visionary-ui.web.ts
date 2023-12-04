@@ -3,12 +3,31 @@ import express from 'express';
 import path from 'path';
 import { VisionaryUiServer } from './visionary-ui.server';
 
-export type VisionaryUiWebServer = VisionaryUiServer;
+export class VisionaryUiWebServer extends VisionaryUiServer {
+    private webServer: Server | null = null;
 
-export function createWebServer(): VisionaryUiWebServer {
-    let webServer: Server | null;
+    async start(port: number): Promise<void> {
+        return new Promise((resolve) => {
+            this.webServer = this.createWebServer();
+            this.webServer.listen(port, () => {
+                console.log(`Web server started on port: ${port}`);
+                resolve();
+            });
+        });
+    }
 
-    function createWebServer(): Server {
+    async stop(): Promise<void> {
+        return new Promise((resolve) => {
+            // Close web server
+            this.webServer?.close(() => {
+                console.log('Web server closed');
+                this.webServer = null;
+                resolve();
+            });
+        });
+    }
+
+    private createWebServer(): Server {
         const app = express();
         app.use('/', express.static(path.join(__dirname, '../build/client/')));
         app.get('/hello', (req, res) => {
@@ -16,30 +35,4 @@ export function createWebServer(): VisionaryUiWebServer {
         });
         return createServer(app);
     }
-
-    async function start(port: number): Promise<void> {
-        return new Promise((resolve) => {
-            webServer = createWebServer();
-            webServer.listen(port, () => {
-                console.log(`Web server started on port: ${port}`);
-                resolve();
-            });
-        });
-    }
-
-    async function stop(): Promise<void> {
-        return new Promise((resolve) => {
-            // Close web server
-            webServer?.close(() => {
-                console.log('Web server closed');
-                webServer = null;
-                resolve();
-            });
-        });
-    }
-
-    return {
-        start,
-        stop,
-    };
 }

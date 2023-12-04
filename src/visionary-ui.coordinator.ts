@@ -8,8 +8,8 @@ import {
     IobState,
     IobStateCache,
 } from './domain';
-import { createWebServer, VisionaryUiWebServer } from './visionary-ui.web';
-import { ClientInboundHandler, createSocketServer, VisionaryUiSocketServer } from './visionary-ui.socket';
+import { VisionaryUiWebServer } from './visionary-ui.web';
+import { ClientInboundHandler, VisionaryUiSocketServer } from './visionary-ui.socket';
 import { VisionaryUiDomainRepository } from './visionary-ui.domain.repository';
 
 export type StateSetter = (clientId: string, stateId: string, value: string | number | boolean) => void;
@@ -29,10 +29,14 @@ export class VisionaryUiCoordinator {
     private socketServer: VisionaryUiSocketServer;
     private adapter: AdapterHandle | null = null;
 
-    constructor() {
-        this.repository = new VisionaryUiDomainRepository();
-        this.webServer = createWebServer();
-        this.socketServer = createSocketServer();
+    constructor(
+        repository: VisionaryUiDomainRepository = new VisionaryUiDomainRepository(),
+        webserver: VisionaryUiWebServer = new VisionaryUiWebServer(),
+        socketServer: VisionaryUiSocketServer = new VisionaryUiSocketServer(),
+    ) {
+        this.repository = repository;
+        this.webServer = webserver;
+        this.socketServer = socketServer;
     }
 
     async start(adapterHandle: AdapterHandle): Promise<void> {
@@ -112,7 +116,7 @@ export class VisionaryUiCoordinator {
         const managedObjectIds = this.repository.getObjects().ids();
         iobStates.deleteByFilter((state) => !managedObjectIds.includes(state.id));
         this.repository.setStates(iobStates);
-        this.socketServer.messageToAllClients(JSON.stringify(iobStates));
+        this.socketServer.messageToAllClients(JSON.stringify(iobStates.values()));
     }
 
     setState(iobState: IobState): void {
@@ -125,10 +129,10 @@ export class VisionaryUiCoordinator {
 
     private onClientConnect(clientId: string): void {
         console.log(`Client connected: ${clientId}`);
-        const rooms = this.repository.getRooms();
+        const rooms = this.repository.getRooms().values();
         this.socketServer.messageToClient(clientId, JSON.stringify(rooms));
 
-        const functions = this.repository.getFunctions();
+        const functions = this.repository.getFunctions().values();
         this.socketServer.messageToClient(clientId, JSON.stringify(functions));
 
         const objects = this.repository.getObjects().values();

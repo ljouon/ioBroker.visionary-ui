@@ -5,7 +5,7 @@ export function mapTranslation(value: ioBroker.StringOrTranslated, language: ioB
     if (typeof value === 'object') {
         return value[language] || value.en;
     }
-    return value;
+    return value ?? '';
 }
 
 export function mapToIobObject(id: string, ioBrokerObject: ioBroker.Object, language: ioBroker.Languages): IobObject {

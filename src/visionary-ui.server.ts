@@ -1,4 +1,5 @@
-export type VisionaryUiServer = {
-    start: (port: number) => Promise<void>;
-    stop: () => Promise<void>;
-};
+export abstract class VisionaryUiServer {
+    abstract start(port: number): Promise<void>;
+
+    abstract stop(): Promise<void>;
+}
