@@ -11,7 +11,7 @@ on:
       - "v[0-9]+.[0-9]+.[0-9]+"
       # pre-releases
       - "v[0-9]+.[0-9]+.[0-9]+-**"
-  pull_request: {}
+  pull_request: { }
 
 jobs:
   # Performs quick checks before the expensive test runs
@@ -36,8 +36,8 @@ jobs:
     runs-on: ${{ matrix.os }}
     strategy:
       matrix:
-        node-version: [12.x, 14.x, 16.x]
-        os: [ubuntu-latest, windows-latest, macos-latest]
+        node-version: [ 16.x, 18.x, 20.x ]
+        os: [ ubuntu-latest, windows-latest, macos-latest ]
 
     steps:
       - uses: ioBroker/testing-action-adapter@v1
@@ -48,7 +48,7 @@ jobs:
           # install-command: 'npm install'
           build: true
 
-# TODO: To enable automatic npm releases, create a token on npmjs.org 
+# TODO: To enable automatic npm releases, create a token on npmjs.org
 # Enter this token as a GitHub secret (with name NPM_TOKEN) in the repository options
 # Then uncomment the following block:
 
