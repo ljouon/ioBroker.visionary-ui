@@ -36,11 +36,11 @@ This section is intended for the developer. It can be deleted later
 - [x] think about splitting web server and socket server implementations
 - [ ] multi language in client? Server language file via api?
 - [ ] upgrade admin to react 18?
-- [ ] refactor client serving to iobroker.web adapter
+- [ ] refactor client serving to iobroker.web adapter?
 - [ ] implement client UI
 - [x] business logics for structure and states in backend: rooms, categories, devices, states
 - [x] handle enum changes (might be an object change with id starting with 'enum.')
-- [x] !!! handle object to enum association changes, add/remove
+- [x] handle object to enum association changes, add/remove
 - [ ] API Definition: how to tell client the type of the message (wrap in object: envelop)
 - [ ] invalid config message!?
 - [ ] business logics for UI: rooms, categories, devices, states

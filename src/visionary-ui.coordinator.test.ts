@@ -1,5 +1,5 @@
 import sinon from 'sinon';
-import { AdapterHandle, VisionaryUiCoordinator } from './visionary-ui.coordinator';
+import { VisionaryUiCoordinator } from './visionary-ui.coordinator';
 import { VisionaryUiWebServer } from './visionary-ui.web';
 import { VisionaryUiSocketServer } from './visionary-ui.socket';
 import { VisionaryUiDomainRepository } from './visionary-ui.domain.repository';
@@ -15,52 +15,42 @@ import {
 } from './domain';
 
 describe('VisionaryUiCoordinator', () => {
-    describe('VisionaryUiCoordinator', () => {
-        let coordinator: VisionaryUiCoordinator;
-        let webserver: any;
-        let socketServer: any;
-        let domainRepositoryMock: VisionaryUiDomainRepository;
-        let adapterHandleStub: AdapterHandle;
+    let coordinator: VisionaryUiCoordinator;
+    let webserver: any;
+    let socketServer: any;
+    let domainRepository: VisionaryUiDomainRepository;
 
-        beforeEach(() => {
-            domainRepositoryMock = new VisionaryUiDomainRepository();
+    beforeEach(() => {
+        domainRepository = new VisionaryUiDomainRepository();
 
-            webserver = {
-                start: sinon.stub(),
-                stop: sinon.stub(),
-            };
-            socketServer = {
-                start: sinon.stub(),
-                stop: sinon.stub(),
-                registerClientInboundHandler: sinon.stub(),
-                messageToClient: sinon.stub(),
-                messageToAllClients: sinon.stub(),
-            };
+        webserver = {
+            start: sinon.stub(),
+            stop: sinon.stub(),
+        };
+        socketServer = {
+            start: sinon.stub(),
+            stop: sinon.stub(),
+            registerClientInboundHandler: sinon.stub(),
+            messageToClient: sinon.stub(),
+            messageToAllClients: sinon.stub(),
+        };
 
-            coordinator = new VisionaryUiCoordinator(
-                domainRepositoryMock,
-                webserver as unknown as VisionaryUiWebServer,
-                socketServer as VisionaryUiSocketServer,
-            );
+        coordinator = new VisionaryUiCoordinator(
+            domainRepository,
+            webserver as unknown as VisionaryUiWebServer,
+            socketServer as VisionaryUiSocketServer,
+        );
+    });
 
-            adapterHandleStub = {
-                setState: sinon.stub(),
-                config: {
-                    language: 'en',
-                    webPort: 3000,
-                    socketPort: 8080,
-                },
-            };
-        });
+    afterEach(() => {
+        sinon.restore();
+    });
 
-        afterEach(() => {
-            sinon.restore();
-        });
-
+    describe('Coordinator activation', () => {
         // Test for the start method
         it('should start the coordinator with given adapter handle', async () => {
             // Setup for adapter handle stub
-            adapterHandleStub = {
+            const adapterHandleStub = {
                 setState: sinon.stub(),
                 config: {
                     language: 'en',
@@ -81,7 +71,9 @@ describe('VisionaryUiCoordinator', () => {
             sinon.assert.calledOnce(webserver.stop);
             sinon.assert.calledOnce(socketServer.stop);
         });
+    });
 
+    describe('Room management', () => {
         // Test for setting rooms
         it('should set rooms', () => {
             const iobRoomCache = new IobRoomCache();
@@ -104,6 +96,20 @@ describe('VisionaryUiCoordinator', () => {
             sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify(room));
         });
 
+        // Test for deleting a room
+        it('should delete a room and notify all clients', () => {
+            const roomId = 'roomId1';
+            coordinator.deleteRoom(roomId);
+
+            // Assuming getRooms() returns the updated state of rooms after deletion
+            sinon.assert.calledWith(
+                socketServer.messageToAllClients,
+                JSON.stringify(domainRepository.getRooms().values()),
+            );
+        });
+    });
+
+    describe('Function management', () => {
         // Test for setting functions
         it('should set functions', () => {
             const iobFunctionCache = new IobFunctionCache();
@@ -126,6 +132,20 @@ describe('VisionaryUiCoordinator', () => {
             sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify(functionElement));
         });
 
+        // Test for deleting a function
+        it('should delete a function and notify all clients', () => {
+            const functionId = 'functionId1';
+            coordinator.deleteFunction(functionId);
+
+            // Assuming getFunctions() returns the updated state of functions after deletion
+            sinon.assert.calledWith(
+                socketServer.messageToAllClients,
+                JSON.stringify(domainRepository.getFunctions().values()),
+            );
+        });
+    });
+
+    describe('Object and state management', () => {
         // Test for setting objects
         it('should set objects', () => {
             const room = {
@@ -157,6 +177,22 @@ describe('VisionaryUiCoordinator', () => {
             coordinator.setObject(objectElement);
 
             sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify(objectElement));
+        });
+
+        // Test for deleting an object
+        it('should delete an object and its state, and notify all clients', () => {
+            const objectId = 'objectId1';
+            coordinator.deleteObject(objectId);
+
+            // Assuming getObjects() and getStates() return the updated states after deletion
+            sinon.assert.calledWith(
+                socketServer.messageToAllClients,
+                JSON.stringify(domainRepository.getObjects().values()),
+            );
+            sinon.assert.calledWith(
+                socketServer.messageToAllClients,
+                JSON.stringify(domainRepository.getStates().values()),
+            );
         });
 
         // Test for setting states
@@ -202,18 +238,9 @@ describe('VisionaryUiCoordinator', () => {
 
             sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify(stateElement));
         });
+    });
 
-        // Test for deleting a room
-        it('should delete a room', () => {
-            const roomId = 'roomId1';
-            coordinator.deleteRoom(roomId);
-
-            // Assuming getRooms() returns the current state of rooms
-            sinon.assert.called(socketServer.messageToAllClients);
-        });
-
-        // Similar tests can be written for setFunctions, setFunction, deleteFunction, etc.
-
+    describe('Client events', () => {
         // Test for handling client connections
         it('should handle client connection', () => {
             const clientId = 'client1';
@@ -254,6 +281,26 @@ describe('VisionaryUiCoordinator', () => {
                 'client1',
                 '[{"id":"objectId","value":"value"}]',
             );
+        });
+
+        // Test for handling messages from client
+        it('should handle messages from client', async () => {
+            // Setup for adapter handle stub
+            const adapterHandleStub = {
+                setState: sinon.stub(),
+                config: {
+                    language: 'en',
+                    webPort: 3000,
+                    socketPort: 8080,
+                },
+            };
+            await coordinator.start(adapterHandleStub);
+
+            const clientId = 'client1';
+            const content = 'test message';
+            coordinator['onMessageFromClient'](clientId, content);
+
+            sinon.assert.calledWith(adapterHandleStub.setState, 'clientId', '0_userdata.0.Lampe.on', true);
         });
     });
 });
