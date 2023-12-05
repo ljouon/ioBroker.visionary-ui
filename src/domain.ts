@@ -1,5 +1,10 @@
 import { Cache } from './cache';
 
+export type Envelope = {
+    type: 'rooms' | 'functions' | 'objects' | 'states' | 'room' | 'function' | 'object' | 'state';
+    data: IobRoom[] | IobFunction[] | IobObject[] | IobState[] | IobRoom | IobFunction | IobObject | IobState;
+};
+
 export type IobEnum = {
     id: string;
     name: string;
