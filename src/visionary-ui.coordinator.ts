@@ -1,4 +1,5 @@
 import {
+    Envelope,
     IobFunction,
     IobFunctionCache,
     IobObject,
@@ -60,32 +61,38 @@ export class VisionaryUiCoordinator {
 
     setRooms(rooms: IobRoomCache): void {
         this.repository.setRooms(rooms);
-        this.socketServer.messageToAllClients(JSON.stringify(rooms.values()));
+        const envelope: Envelope = { type: 'rooms', data: rooms.values() };
+        this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
     setRoom(element: IobRoom): void {
         this.repository.setRoom(element);
-        this.socketServer.messageToAllClients(JSON.stringify(element));
+        const envelope: Envelope = { type: 'room', data: element };
+        this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
     deleteRoom(id: string): void {
         this.repository.deleteRoom(id);
-        this.socketServer.messageToAllClients(JSON.stringify(this.repository.getRooms().values()));
+        const envelope: Envelope = { type: 'rooms', data: this.repository.getRooms().values() };
+        this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
     setFunctions(functions: IobFunctionCache): void {
         this.repository.setFunctions(functions);
-        this.socketServer.messageToAllClients(JSON.stringify(functions.values()));
+        const envelope: Envelope = { type: 'functions', data: functions.values() };
+        this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
     setFunction(element: IobFunction): void {
         this.repository.setFunction(element);
-        this.socketServer.messageToAllClients(JSON.stringify(element));
+        const envelope: Envelope = { type: 'function', data: element };
+        this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
     deleteFunction(id: string): void {
         this.repository.deleteFunction(id);
-        this.socketServer.messageToAllClients(JSON.stringify(this.repository.getFunctions().values()));
+        const envelope: Envelope = { type: 'functions', data: this.repository.getFunctions().values() };
+        this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
     setObjects(objects: IobObjectCache): void {
@@ -93,22 +100,26 @@ export class VisionaryUiCoordinator {
         objects.deleteByFilter((object) => !this.repository.isMappedToRoom(object));
 
         this.repository.setObjects(objects);
-        this.socketServer.messageToAllClients(JSON.stringify(objects.values()));
+        const envelope: Envelope = { type: 'objects', data: objects.values() };
+        this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
     setObject(iobObject: IobObject): void {
         // Only store objects mapped to at least one room
         if (this.repository.isMappedToRoom(iobObject)) {
             this.repository.setObject(iobObject);
-            this.socketServer.messageToAllClients(JSON.stringify(iobObject));
+            const envelope: Envelope = { type: 'object', data: iobObject };
+            this.socketServer.messageToAllClients(JSON.stringify(envelope));
         }
     }
 
     deleteObject(id: string): void {
         this.repository.deleteObject(id);
         this.repository.deleteState(id);
-        this.socketServer.messageToAllClients(JSON.stringify(this.repository.getObjects().values()));
-        this.socketServer.messageToAllClients(JSON.stringify(this.repository.getStates().values()));
+        const objectsEnvelope = { type: 'objects', data: this.repository.getObjects().values() };
+        this.socketServer.messageToAllClients(JSON.stringify(objectsEnvelope));
+        const statesEnvelope = { type: 'states', data: this.repository.getStates().values() };
+        this.socketServer.messageToAllClients(JSON.stringify(statesEnvelope));
     }
 
     setStates(iobStates: IobStateCache): void {
@@ -116,30 +127,36 @@ export class VisionaryUiCoordinator {
         const managedObjectIds = this.repository.getObjects().ids();
         iobStates.deleteByFilter((state) => !managedObjectIds.includes(state.id));
         this.repository.setStates(iobStates);
-        this.socketServer.messageToAllClients(JSON.stringify(iobStates.values()));
+        const envelope: Envelope = { type: 'states', data: iobStates.values() };
+        this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
     setState(iobState: IobState): void {
         // Only store state if object is managed
         if (this.repository.getObjects().has(iobState.id)) {
             this.repository.setState(iobState);
-            this.socketServer.messageToAllClients(JSON.stringify(iobState));
+            const envelope: Envelope = { type: 'state', data: iobState };
+            this.socketServer.messageToAllClients(JSON.stringify(envelope));
         }
     }
 
     private onClientConnect(clientId: string): void {
         console.log(`Client connected: ${clientId}`);
         const rooms = this.repository.getRooms().values();
-        this.socketServer.messageToClient(clientId, JSON.stringify(rooms));
+        const roomsEnvelope = { type: 'rooms', data: rooms };
+        this.socketServer.messageToClient(clientId, JSON.stringify(roomsEnvelope));
 
         const functions = this.repository.getFunctions().values();
-        this.socketServer.messageToClient(clientId, JSON.stringify(functions));
+        const functionsEnvelope = { type: 'functions', data: functions };
+        this.socketServer.messageToClient(clientId, JSON.stringify(functionsEnvelope));
 
         const objects = this.repository.getObjects().values();
-        this.socketServer.messageToClient(clientId, JSON.stringify(objects));
+        const objectsEnvelope = { type: 'objects', data: objects };
+        this.socketServer.messageToClient(clientId, JSON.stringify(objectsEnvelope));
 
         const states = this.repository.getStates().values();
-        this.socketServer.messageToClient(clientId, JSON.stringify(states));
+        const statesEnvelope = { type: 'states', data: states };
+        this.socketServer.messageToClient(clientId, JSON.stringify(statesEnvelope));
     }
 
     private onClientDisconnect(clientId: string): void {
@@ -154,9 +171,5 @@ export class VisionaryUiCoordinator {
 
     setAdapterState(): void {
         this.adapter?.setState('clientId', '0_userdata.0.Lampe.on', true);
-    }
-
-    debug(m: any): void {
-        this.socketServer.messageToAllClients(JSON.stringify(m));
     }
 }
