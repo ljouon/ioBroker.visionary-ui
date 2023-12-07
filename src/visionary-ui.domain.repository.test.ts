@@ -1,13 +1,13 @@
 import { expect } from 'chai';
 import {
-    IobFunction,
-    IobFunctionCache,
-    IobObject,
-    IobObjectCache,
-    IobRoom,
-    IobRoomCache,
-    IobState,
-    IobStateCache,
+    VuiFunction,
+    VuiFunctionCache,
+    VuiRoom,
+    VuiRoomCache,
+    VuiStateObject,
+    VuiStateObjectCache,
+    VuiStateValue,
+    VuiStateValueCache,
 } from './domain';
 import { VisionaryUiDomainRepository } from './visionary-ui.domain.repository';
 
@@ -29,15 +29,15 @@ describe('VisionaryUiDomainRepository', () => {
 
     describe('Room Management', () => {
         it('should add and get multiple rooms correctly', () => {
-            const mockRoomCache = new IobRoomCache();
-            mockRoomCache.set({ id: '1', name: 'Name' } as unknown as IobRoom);
+            const mockRoomCache = new VuiRoomCache();
+            mockRoomCache.set({ id: '1', name: 'Name' } as unknown as VuiRoom);
             repository.setRooms(mockRoomCache);
             expect(repository.getRooms()).to.deep.equal(mockRoomCache);
         });
 
         it('should add a room correctly', () => {
-            const iobRoom: IobRoom = { id: '2', name: 'Name' } as unknown as IobRoom;
-            repository.setRoom(iobRoom);
+            const vuiRoom: VuiRoom = { id: '2', name: 'Name' } as unknown as VuiRoom;
+            repository.setRoom(vuiRoom);
             // Assume setRoom method adds to the cache
             expect(
                 repository
@@ -49,8 +49,8 @@ describe('VisionaryUiDomainRepository', () => {
 
         it('should delete a room correctly', () => {
             const roomId = 'someRoomId';
-            const iobRoom: IobRoom = { id: roomId, name: 'Name' } as unknown as IobRoom;
-            repository.setRoom(iobRoom);
+            const vuiRoom: VuiRoom = { id: roomId, name: 'Name' } as unknown as VuiRoom;
+            repository.setRoom(vuiRoom);
             expect(repository.getRooms().has(roomId)).to.be.true;
             repository.deleteRoom(roomId);
             expect(repository.getRooms().has(roomId)).to.be.false;
@@ -59,15 +59,15 @@ describe('VisionaryUiDomainRepository', () => {
 
     describe('Function Management', () => {
         it('should add and get multiple functions correctly', () => {
-            const mockFunctionCache = new IobFunctionCache();
-            mockFunctionCache.set({ id: '1', name: 'FunctionName' } as unknown as IobFunction);
+            const mockFunctionCache = new VuiFunctionCache();
+            mockFunctionCache.set({ id: '1', name: 'FunctionName' } as unknown as VuiFunction);
             repository.setFunctions(mockFunctionCache);
             expect(repository.getFunctions()).to.deep.equal(mockFunctionCache);
         });
 
         it('should add a function correctly', () => {
-            const iobFunction: IobFunction = { id: '2', name: 'FunctionName' } as unknown as IobFunction;
-            repository.setFunction(iobFunction);
+            const vuiFunction: VuiFunction = { id: '2', name: 'FunctionName' } as unknown as VuiFunction;
+            repository.setFunction(vuiFunction);
             expect(
                 repository
                     .getFunctions()
@@ -78,8 +78,8 @@ describe('VisionaryUiDomainRepository', () => {
 
         it('should delete a function correctly', () => {
             const functionId = 'someFunctionId';
-            const iobFunction: IobFunction = { id: functionId, name: 'FunctionName' } as unknown as IobFunction;
-            repository.setFunction(iobFunction);
+            const vuiFunction: VuiFunction = { id: functionId, name: 'FunctionName' } as unknown as VuiFunction;
+            repository.setFunction(vuiFunction);
             expect(repository.getFunctions().has(functionId)).to.be.true;
             repository.deleteFunction(functionId);
             expect(repository.getFunctions().has(functionId)).to.be.false;
@@ -88,18 +88,18 @@ describe('VisionaryUiDomainRepository', () => {
 
     describe('Object Management', () => {
         it('should add and get multiple objects correctly', () => {
-            const mockObjectCache = new IobObjectCache();
-            mockObjectCache.set({ id: '1', name: 'ObjectName' } as unknown as IobObject);
-            repository.setObjects(mockObjectCache);
-            expect(repository.getObjects()).to.deep.equal(mockObjectCache);
+            const mockObjectCache = new VuiStateObjectCache();
+            mockObjectCache.set({ id: '1', name: 'ObjectName' } as unknown as VuiStateObject);
+            repository.setStateObjects(mockObjectCache);
+            expect(repository.getStateObjects()).to.deep.equal(mockObjectCache);
         });
 
         it('should add an object correctly', () => {
-            const iobObject: IobObject = { id: '2', name: 'ObjectName' } as unknown as IobObject;
-            repository.setObject(iobObject);
+            const vuiStateObject: VuiStateObject = { id: '2', name: 'ObjectName' } as unknown as VuiStateObject;
+            repository.setStateObject(vuiStateObject);
             expect(
                 repository
-                    .getObjects()
+                    .getStateObjects()
                     .values()
                     .find((obj) => obj.id === '2')?.name,
             ).to.be.equal('ObjectName');
@@ -107,28 +107,28 @@ describe('VisionaryUiDomainRepository', () => {
 
         it('should delete an object correctly', () => {
             const objectId = 'someObjectId';
-            const iobObject: IobObject = { id: objectId, name: 'ObjectName' } as unknown as IobObject;
-            repository.setObject(iobObject);
-            expect(repository.getObjects().has(objectId)).to.be.true;
-            repository.deleteObject(objectId);
-            expect(repository.getObjects().has(objectId)).to.be.false;
+            const vuiStateObject: VuiStateObject = { id: objectId, name: 'ObjectName' } as unknown as VuiStateObject;
+            repository.setStateObject(vuiStateObject);
+            expect(repository.getStateObjects().has(objectId)).to.be.true;
+            repository.deleteStateObject(objectId);
+            expect(repository.getStateObjects().has(objectId)).to.be.false;
         });
     });
 
-    describe('State Management', () => {
-        it('should add and get multiple states correctly', () => {
-            const mockStateCache = new IobStateCache();
-            mockStateCache.set({ id: '1', name: 'StateName' } as unknown as IobState);
-            repository.setStates(mockStateCache);
-            expect(repository.getStates()).to.deep.equal(mockStateCache);
+    describe('State Value Management', () => {
+        it('should add and get multiple state values correctly', () => {
+            const mockStateValueCache = new VuiStateValueCache();
+            mockStateValueCache.set({ id: '1', name: 'StateName' } as unknown as VuiStateValue);
+            repository.setStateValues(mockStateValueCache);
+            expect(repository.getStateValues()).to.deep.equal(mockStateValueCache);
         });
 
-        it('should add a state correctly', () => {
-            const iobState: IobState = { id: '2', value: 'value' } as unknown as IobState;
-            repository.setState(iobState);
+        it('should add a state value correctly', () => {
+            const vuiStateValue: VuiStateValue = { id: '2', value: 'value' } as unknown as VuiStateValue;
+            repository.setStateValue(vuiStateValue);
             expect(
                 repository
-                    .getStates()
+                    .getStateValues()
                     .values()
                     .find((state) => state.id === '2')?.value,
             ).to.be.equal('value');
@@ -136,11 +136,11 @@ describe('VisionaryUiDomainRepository', () => {
 
         it('should delete a state correctly', () => {
             const stateId = 'someStateId';
-            const iobState: IobState = { id: stateId, value: 'value' } as unknown as IobState;
-            repository.setState(iobState);
-            expect(repository.getStates().has(stateId)).to.be.true;
-            repository.deleteState(stateId);
-            expect(repository.getStates().has(stateId)).to.be.false;
+            const vuiStateValue: VuiStateValue = { id: stateId, value: 'value' } as unknown as VuiStateValue;
+            repository.setStateValue(vuiStateValue);
+            expect(repository.getStateValues().has(stateId)).to.be.true;
+            repository.deleteStateValue(stateId);
+            expect(repository.getStateValues().has(stateId)).to.be.false;
         });
     });
 
@@ -149,12 +149,12 @@ describe('VisionaryUiDomainRepository', () => {
             // Erstellen eines Raums und eines Objekts
             const roomId = 'room1';
             const objectId = 'object1';
-            const room: IobRoom = { id: roomId, members: [objectId] } as unknown as IobRoom;
-            const object: IobObject = { id: objectId, name: 'ObjectName' } as unknown as IobObject;
+            const room: VuiRoom = { id: roomId, members: [objectId] } as unknown as VuiRoom;
+            const object: VuiStateObject = { id: objectId, name: 'ObjectName' } as unknown as VuiStateObject;
 
             // Hinzufügen des Raums und des Objekts zum Repository
             repository.setRoom(room);
-            repository.setObject(object);
+            repository.setStateObject(object);
 
             // Testen der isMappedToRoom-Methode
             const isMapped = repository.isMappedToRoom(object);
@@ -166,12 +166,12 @@ describe('VisionaryUiDomainRepository', () => {
             const roomId = 'room1';
             const objectId = 'object1';
             const anotherObjectId = 'object2';
-            const room: IobRoom = { id: roomId, members: [anotherObjectId] } as unknown as IobRoom;
-            const object: IobObject = { id: objectId, name: 'ObjectName' } as unknown as IobObject;
+            const room: VuiRoom = { id: roomId, members: [anotherObjectId] } as unknown as VuiRoom;
+            const object: VuiStateObject = { id: objectId, name: 'ObjectName' } as unknown as VuiStateObject;
 
             // Hinzufügen des Raums und des Objekts zum Repository
             repository.setRoom(room);
-            repository.setObject(object);
+            repository.setStateObject(object);
 
             // Testen der isMappedToRoom-Methode
             const isMapped = repository.isMappedToRoom(object);

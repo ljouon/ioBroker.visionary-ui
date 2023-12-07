@@ -1,4 +1,4 @@
-import { IobObject, IobRoom, IobState } from './domain';
+import { VuiEnum, VuiStateObject, VuiStateValue } from './domain';
 import { VisionaryUiCustomProperties } from './visionary-ui-iobroker.repository';
 
 export function mapTranslation(value: ioBroker.StringOrTranslated, language: ioBroker.Languages): string {
@@ -8,10 +8,15 @@ export function mapTranslation(value: ioBroker.StringOrTranslated, language: ioB
     return value ?? '';
 }
 
-export function mapToIobObject(id: string, ioBrokerObject: ioBroker.Object, language: ioBroker.Languages): IobObject {
+export function mapToVuiStateObject(
+    id: string,
+    ioBrokerObject: ioBroker.Object,
+    language: ioBroker.Languages,
+): VuiStateObject {
     const customProperties = findVisionaryCustomProperties(ioBrokerObject);
 
     return {
+        type: 'state',
         id: id,
         name: mapTranslation(ioBrokerObject.common.name, language),
         displayName: customProperties?.displayName || null,
@@ -29,7 +34,7 @@ export function mapToIobObject(id: string, ioBrokerObject: ioBroker.Object, lang
     };
 }
 
-export function mapToIobEnum(id: string, ioBrokerRoom: ioBroker.Object, language: ioBroker.Languages): IobRoom {
+export function mapToIobEnum(id: string, ioBrokerRoom: ioBroker.Object, language: ioBroker.Languages): VuiEnum {
     return {
         id: id,
         name: mapTranslation(ioBrokerRoom.common.name, language),
@@ -59,8 +64,9 @@ export function mapToFunctionIds(ioBrokerObject: ioBroker.Object): string[] {
     });
 }
 
-export function mapToIobState(id: string, state: ioBroker.State): IobState {
+export function mapToVuiStateValue(id: string, state: ioBroker.State): VuiStateValue {
     return {
+        type: 'value',
         id: id,
         value: state.val,
         lastChange: state.lc,

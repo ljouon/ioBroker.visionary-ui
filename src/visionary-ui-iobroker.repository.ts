@@ -1,5 +1,5 @@
-import { IobFunctionCache, IobObjectCache, IobRoomCache, IobStateCache } from './domain';
-import { mapToIobEnum, mapToIobObject, mapToIobState } from './visionary-ui.mapper';
+import { VuiFunctionCache, VuiRoomCache, VuiStateObjectCache, VuiStateValueCache } from './domain';
+import { mapToIobEnum, mapToVuiStateObject, mapToVuiStateValue } from './visionary-ui.mapper';
 
 export type VisionaryUiCustomProperties = {
     enabled: boolean;
@@ -26,65 +26,65 @@ export class VisionaryUiIoBrokerRepository {
         return Promise.resolve('en');
     }
 
-    async getRooms(language: ioBroker.Languages): Promise<IobRoomCache> {
+    async getRooms(language: ioBroker.Languages): Promise<VuiRoomCache> {
         return this.adapter.getEnumsAsync('enum.rooms').then((roomEnums) =>
             Object.entries(roomEnums['enum.rooms']).reduce((cache, entry) => {
                 const entryId = entry[0];
                 const entryElement = entry[1];
                 if (entryElement) {
-                    const iobRoom = mapToIobEnum(entryId, entryElement, language);
-                    cache.set(iobRoom);
+                    const vuiEnum = mapToIobEnum(entryId, entryElement, language);
+                    cache.set({ ...vuiEnum, type: 'room' });
                 }
                 return cache;
-            }, new IobRoomCache()),
+            }, new VuiRoomCache()),
         );
     }
 
-    async getFunctions(language: ioBroker.Languages): Promise<IobFunctionCache> {
+    async getFunctions(language: ioBroker.Languages): Promise<VuiFunctionCache> {
         return this.adapter.getEnumsAsync('enum.functions').then((functionEnums) =>
             Object.entries(functionEnums['enum.functions']).reduce((cache, entry) => {
                 const entryId = entry[0];
                 const entryElement = entry[1];
                 if (entryElement) {
-                    const iobFunction = mapToIobEnum(entryId, entryElement, language);
-                    cache.set(iobFunction);
+                    const vuiEnum = mapToIobEnum(entryId, entryElement, language);
+                    cache.set({ ...vuiEnum, type: 'function' });
                 }
                 return cache;
-            }, new IobFunctionCache()),
+            }, new VuiFunctionCache()),
         );
     }
 
-    async getIoBrokerStateObjects(language: ioBroker.Languages): Promise<IobObjectCache> {
+    async getIoBrokerStateObjects(language: ioBroker.Languages): Promise<VuiStateObjectCache> {
         return this.adapter.getForeignObjectsAsync('*', { type: 'state' }).then((ioBrokerObjects) =>
             Object.entries(ioBrokerObjects).reduce((cache, entry) => {
                 const entryId = entry[0];
                 const entryElement = entry[1];
                 // If not deleted
                 if (entryElement) {
-                    const iobObject = mapToIobObject(entryId, entryElement, language);
-                    cache.set(iobObject);
+                    const vuiStateObject = mapToVuiStateObject(entryId, entryElement, language);
+                    cache.set(vuiStateObject);
                 }
                 return cache;
-            }, new IobObjectCache()),
+            }, new VuiStateObjectCache()),
         );
     }
 
-    async getIoBrokerStateValues(): Promise<IobStateCache> {
+    async getIoBrokerStateValues(): Promise<VuiStateValueCache> {
         return this.adapter.getForeignStatesAsync('*', {}).then((ioBrokerStates) =>
             Object.entries(ioBrokerStates).reduce((cache, entry) => {
                 const entryId = entry[0];
                 const entryElement = entry[1];
                 // If not deleted
                 if (entryElement) {
-                    const iobState = mapToIobState(entryId, entryElement);
-                    cache.set(iobState);
+                    const vuiStateValue = mapToVuiStateValue(entryId, entryElement);
+                    cache.set(vuiStateValue);
                 }
                 return cache;
-            }, new IobStateCache()),
+            }, new VuiStateValueCache()),
         );
     }
 
-    public setIobState(clientId: string, stateId: string, value: string | number | boolean): void {
+    public setVuiStateValue(clientId: string, stateId: string, value: string | number | boolean): void {
         // const user = this.config.defaultUser)
         new Date().getUTCMilliseconds();
         const state = {

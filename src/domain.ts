@@ -1,11 +1,62 @@
 import { Cache } from './cache';
 
-export type Envelope = {
-    type: 'rooms' | 'functions' | 'objects' | 'states' | 'room' | 'function' | 'object' | 'state';
-    data: IobRoom[] | IobFunction[] | IobObject[] | IobState[] | IobRoom | IobFunction | IobObject | IobState;
+export type VuiEnvelope =
+    | AllRooms
+    | AllFunctions
+    | AllStateObjects
+    | AllStateValues
+    | OneRoom
+    | OneFunction
+    | OneStateObject
+    | OneStateValue;
+
+export type AllRooms = {
+    type: 'allRooms';
+    data: VuiRoom[];
 };
 
-export type IobEnum = {
+export type AllFunctions = {
+    type: 'allFunctions';
+    data: VuiFunction[];
+};
+
+export type AllStateObjects = {
+    type: 'allStates';
+    data: VuiStateObject[];
+};
+
+export type AllStateValues = {
+    type: 'allValues';
+    data: VuiStateValue[];
+};
+
+export type OneRoom = {
+    type: 'room';
+    data: VuiRoom;
+};
+
+export type OneFunction = {
+    type: 'function';
+    data: VuiFunction;
+};
+
+export type OneStateObject = {
+    type: 'state';
+    data: VuiStateObject;
+};
+
+export type OneStateValue = {
+    type: 'value';
+    data: VuiStateValue;
+};
+
+export type WithId = {
+    id: string;
+};
+
+export type VuiObject = VuiRoom | VuiFunction | VuiStateObject | VuiStateValue;
+
+export type VuiEnum = WithId & {
     id: string;
     name: string;
     color: string | null;
@@ -14,16 +65,16 @@ export type IobEnum = {
     children: string[] | null;
 };
 
-export type IobRoom = IobEnum;
-
-export type IobFunction = IobEnum;
-
-export type IobRole = {
-    id: string;
-    name: string;
+export type VuiRoom = VuiEnum & {
+    type: 'room';
 };
 
-export type IobObject = {
+export type VuiFunction = VuiEnum & {
+    type: 'function';
+};
+
+export type VuiStateObject = {
+    type: 'state';
     id: string;
     name: string;
     displayName: string | null;
@@ -40,18 +91,17 @@ export type IobObject = {
     roomIds: string[];
 };
 
-export type IobState = {
+export type VuiStateValue = {
+    type: 'value';
     id: string;
     value: string | number | boolean | null;
     lastChange: number;
 };
 
-export class IobRoleCache extends Cache<IobRole> {}
+export class VuiFunctionCache extends Cache<VuiFunction> {}
 
-export class IobFunctionCache extends Cache<IobFunction> {}
+export class VuiRoomCache extends Cache<VuiRoom> {}
 
-export class IobRoomCache extends Cache<IobRoom> {}
+export class VuiStateObjectCache extends Cache<VuiStateObject> {}
 
-export class IobObjectCache extends Cache<IobObject> {}
-
-export class IobStateCache extends Cache<IobState> {}
+export class VuiStateValueCache extends Cache<VuiStateValue> {}
