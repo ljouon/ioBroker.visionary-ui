@@ -1,5 +1,3 @@
-import { Cache } from './cache';
-
 export type VuiEnvelope =
     | AllRooms
     | AllFunctions
@@ -56,6 +54,8 @@ export type WithId = {
 
 export type VuiObject = VuiRoom | VuiFunction | VuiStateObject | VuiStateValue;
 
+export type VuiObjectTypes = 'room' | 'function' | 'state' | 'value';
+
 export type VuiEnum = WithId & {
     id: string;
     name: string;
@@ -97,11 +97,3 @@ export type VuiStateValue = {
     value: string | number | boolean | null;
     lastChange: number;
 };
-
-export class VuiFunctionCache extends Cache<VuiFunction> {}
-
-export class VuiRoomCache extends Cache<VuiRoom> {}
-
-export class VuiStateObjectCache extends Cache<VuiStateObject> {}
-
-export class VuiStateValueCache extends Cache<VuiStateValue> {}

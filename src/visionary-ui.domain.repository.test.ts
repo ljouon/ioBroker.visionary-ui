@@ -1,15 +1,7 @@
 import { expect } from 'chai';
-import {
-    VuiFunction,
-    VuiFunctionCache,
-    VuiRoom,
-    VuiRoomCache,
-    VuiStateObject,
-    VuiStateObjectCache,
-    VuiStateValue,
-    VuiStateValueCache,
-} from './domain';
+import { VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from './domain';
 import { VisionaryUiDomainRepository } from './visionary-ui.domain.repository';
+import { VuiCache } from './visionary-ui.cache';
 
 describe('VisionaryUiDomainRepository', () => {
     let repository: VisionaryUiDomainRepository;
@@ -29,7 +21,7 @@ describe('VisionaryUiDomainRepository', () => {
 
     describe('Room Management', () => {
         it('should add and get multiple rooms correctly', () => {
-            const mockRoomCache = new VuiRoomCache();
+            const mockRoomCache = new VuiCache<VuiRoom>();
             mockRoomCache.set({ id: '1', name: 'Name' } as unknown as VuiRoom);
             repository.setRooms(mockRoomCache);
             expect(repository.getRooms()).to.deep.equal(mockRoomCache);
@@ -59,7 +51,7 @@ describe('VisionaryUiDomainRepository', () => {
 
     describe('Function Management', () => {
         it('should add and get multiple functions correctly', () => {
-            const mockFunctionCache = new VuiFunctionCache();
+            const mockFunctionCache = new VuiCache<VuiFunction>();
             mockFunctionCache.set({ id: '1', name: 'FunctionName' } as unknown as VuiFunction);
             repository.setFunctions(mockFunctionCache);
             expect(repository.getFunctions()).to.deep.equal(mockFunctionCache);
@@ -88,7 +80,7 @@ describe('VisionaryUiDomainRepository', () => {
 
     describe('Object Management', () => {
         it('should add and get multiple objects correctly', () => {
-            const mockObjectCache = new VuiStateObjectCache();
+            const mockObjectCache = new VuiCache<VuiStateObject>();
             mockObjectCache.set({ id: '1', name: 'ObjectName' } as unknown as VuiStateObject);
             repository.setStateObjects(mockObjectCache);
             expect(repository.getStateObjects()).to.deep.equal(mockObjectCache);
@@ -117,7 +109,7 @@ describe('VisionaryUiDomainRepository', () => {
 
     describe('State Value Management', () => {
         it('should add and get multiple state values correctly', () => {
-            const mockStateValueCache = new VuiStateValueCache();
+            const mockStateValueCache = new VuiCache<VuiStateValue>();
             mockStateValueCache.set({ id: '1', name: 'StateName' } as unknown as VuiStateValue);
             repository.setStateValues(mockStateValueCache);
             expect(repository.getStateValues()).to.deep.equal(mockStateValueCache);
