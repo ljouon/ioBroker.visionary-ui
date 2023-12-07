@@ -1,5 +1,6 @@
-import { VuiFunctionCache, VuiRoomCache, VuiStateObjectCache, VuiStateValueCache } from './domain';
 import { mapToIobEnum, mapToVuiStateObject, mapToVuiStateValue } from './visionary-ui.mapper';
+import { VuiCache } from './visionary-ui.cache';
+import { VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from './domain';
 
 export type VisionaryUiCustomProperties = {
     enabled: boolean;
@@ -26,7 +27,7 @@ export class VisionaryUiIoBrokerRepository {
         return Promise.resolve('en');
     }
 
-    async getRooms(language: ioBroker.Languages): Promise<VuiRoomCache> {
+    async getRooms(language: ioBroker.Languages): Promise<VuiCache<VuiRoom>> {
         return this.adapter.getEnumsAsync('enum.rooms').then((roomEnums) =>
             Object.entries(roomEnums['enum.rooms']).reduce((cache, entry) => {
                 const entryId = entry[0];
@@ -36,11 +37,11 @@ export class VisionaryUiIoBrokerRepository {
                     cache.set({ ...vuiEnum, type: 'room' });
                 }
                 return cache;
-            }, new VuiRoomCache()),
+            }, new VuiCache<VuiRoom>()),
         );
     }
 
-    async getFunctions(language: ioBroker.Languages): Promise<VuiFunctionCache> {
+    async getFunctions(language: ioBroker.Languages): Promise<VuiCache<VuiFunction>> {
         return this.adapter.getEnumsAsync('enum.functions').then((functionEnums) =>
             Object.entries(functionEnums['enum.functions']).reduce((cache, entry) => {
                 const entryId = entry[0];
@@ -50,11 +51,11 @@ export class VisionaryUiIoBrokerRepository {
                     cache.set({ ...vuiEnum, type: 'function' });
                 }
                 return cache;
-            }, new VuiFunctionCache()),
+            }, new VuiCache<VuiFunction>()),
         );
     }
 
-    async getIoBrokerStateObjects(language: ioBroker.Languages): Promise<VuiStateObjectCache> {
+    async getIoBrokerStateObjects(language: ioBroker.Languages): Promise<VuiCache<VuiStateObject>> {
         return this.adapter.getForeignObjectsAsync('*', { type: 'state' }).then((ioBrokerObjects) =>
             Object.entries(ioBrokerObjects).reduce((cache, entry) => {
                 const entryId = entry[0];
@@ -65,11 +66,11 @@ export class VisionaryUiIoBrokerRepository {
                     cache.set(vuiStateObject);
                 }
                 return cache;
-            }, new VuiStateObjectCache()),
+            }, new VuiCache<VuiStateObject>()),
         );
     }
 
-    async getIoBrokerStateValues(): Promise<VuiStateValueCache> {
+    async getIoBrokerStateValues(): Promise<VuiCache<VuiStateValue>> {
         return this.adapter.getForeignStatesAsync('*', {}).then((ioBrokerStates) =>
             Object.entries(ioBrokerStates).reduce((cache, entry) => {
                 const entryId = entry[0];
@@ -80,7 +81,7 @@ export class VisionaryUiIoBrokerRepository {
                     cache.set(vuiStateValue);
                 }
                 return cache;
-            }, new VuiStateValueCache()),
+            }, new VuiCache<VuiStateValue>()),
         );
     }
 

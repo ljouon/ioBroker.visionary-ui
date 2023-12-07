@@ -3,16 +3,8 @@ import { VisionaryUiCoordinator } from './visionary-ui.coordinator';
 import { VisionaryUiWebServer } from './visionary-ui.web';
 import { VisionaryUiSocketServer } from './visionary-ui.socket';
 import { VisionaryUiDomainRepository } from './visionary-ui.domain.repository';
-import {
-    VuiFunction,
-    VuiFunctionCache,
-    VuiRoom,
-    VuiRoomCache,
-    VuiStateObject,
-    VuiStateObjectCache,
-    VuiStateValue,
-    VuiStateValueCache,
-} from './domain';
+import { VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from './domain';
+import { VuiCache } from './visionary-ui.cache';
 
 describe('VisionaryUiCoordinator', () => {
     let coordinator: VisionaryUiCoordinator;
@@ -76,7 +68,7 @@ describe('VisionaryUiCoordinator', () => {
     describe('Room management', () => {
         // Test for setting rooms
         it('should set rooms', () => {
-            const vuiRoomCache = new VuiRoomCache();
+            const vuiRoomCache = new VuiCache<VuiRoom>();
             const room = {
                 id: 'roomId',
             } as unknown as VuiRoom;
@@ -115,7 +107,7 @@ describe('VisionaryUiCoordinator', () => {
     describe('Function management', () => {
         // Test for setting functions
         it('should set functions', () => {
-            const vuiFunctionCache = new VuiFunctionCache();
+            const vuiFunctionCache = new VuiCache<VuiFunction>();
             const functionElement = {
                 id: 'functionId',
             } as unknown as VuiFunction;
@@ -168,7 +160,7 @@ describe('VisionaryUiCoordinator', () => {
                 members: ['objectId'],
             } as unknown as VuiRoom;
             coordinator.setRoom(room);
-            const vuiStateObjectCache = new VuiStateObjectCache();
+            const vuiStateObjectCache = new VuiCache<VuiStateObject>();
             const vuiStateObject = {
                 id: 'objectId',
             } as unknown as VuiStateObject;
@@ -234,7 +226,7 @@ describe('VisionaryUiCoordinator', () => {
 
             sinon.restore();
 
-            const vuiStateValueCache = new VuiStateValueCache();
+            const vuiStateValueCache = new VuiCache<VuiStateValue>();
             const stateElement = {
                 id: 'objectId',
             } as unknown as VuiStateValue;

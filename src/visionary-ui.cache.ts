@@ -2,7 +2,7 @@ export type WithId = {
     id: string;
 };
 
-export abstract class Cache<T extends WithId> {
+export class VuiCache<T extends WithId> {
     private cache: { [id: string]: T } = {};
 
     get(id: string): T | null {

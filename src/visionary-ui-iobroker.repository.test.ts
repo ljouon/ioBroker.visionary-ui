@@ -1,7 +1,6 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { VisionaryUiIoBrokerRepository } from './visionary-ui-iobroker.repository';
-import { VuiFunctionCache, VuiRoomCache, VuiStateObjectCache, VuiStateValueCache } from './domain';
 
 describe('VisionaryUiIoBrokerRepository', () => {
     let repository: VisionaryUiIoBrokerRepository;
@@ -47,7 +46,6 @@ describe('VisionaryUiIoBrokerRepository', () => {
         adapter.getEnumsAsync.withArgs('enum.rooms').resolves({ 'enum.rooms': mockRoomsData });
 
         const result = await repository.getRooms('en');
-        expect(result).to.be.instanceOf(VuiRoomCache);
         expect(result.values()).to.have.lengthOf(2);
     });
 
@@ -59,7 +57,6 @@ describe('VisionaryUiIoBrokerRepository', () => {
         adapter.getEnumsAsync.withArgs('enum.functions').resolves({ 'enum.functions': mockFunctionsData });
 
         const result = await repository.getFunctions('en');
-        expect(result).to.be.instanceOf(VuiFunctionCache);
         expect(result.values()).to.have.lengthOf(2);
     });
 
@@ -71,7 +68,6 @@ describe('VisionaryUiIoBrokerRepository', () => {
         adapter.getForeignObjectsAsync.withArgs('*', { type: 'state' }).resolves(mockStateObjectsData);
 
         const result = await repository.getIoBrokerStateObjects('en');
-        expect(result).to.be.instanceOf(VuiStateObjectCache);
         expect(result.values()).to.have.lengthOf(2);
     });
 
@@ -83,7 +79,6 @@ describe('VisionaryUiIoBrokerRepository', () => {
         adapter.getForeignStatesAsync.withArgs('*', {}).resolves(mockStateValuesData);
 
         const result = await repository.getIoBrokerStateValues();
-        expect(result).to.be.instanceOf(VuiStateValueCache);
         expect(result.values()).to.have.lengthOf(2);
     });
 

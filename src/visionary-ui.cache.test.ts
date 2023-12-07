@@ -1,8 +1,8 @@
 import { expect } from 'chai';
-import { Cache } from './cache';
+import { VuiCache } from './visionary-ui.cache';
 
 describe('Cache class', () => {
-    class TestCache extends Cache<{ id: string; data: string }> {}
+    class TestCache extends VuiCache<{ id: string; data: string }> {}
 
     let cache: TestCache;
     beforeEach(() => {

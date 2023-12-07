@@ -1,20 +1,12 @@
-import {
-    VuiFunction,
-    VuiFunctionCache,
-    VuiRoom,
-    VuiRoomCache,
-    VuiStateObject,
-    VuiStateObjectCache,
-    VuiStateValue,
-    VuiStateValueCache,
-} from './domain';
+import { VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from './domain';
+import { VuiCache } from './visionary-ui.cache';
 
 export class VisionaryUiDomainRepository {
     private language: string = 'en';
-    private rooms: VuiRoomCache = new VuiRoomCache();
-    private functions: VuiFunctionCache = new VuiFunctionCache();
-    private stateObjectCache: VuiStateObjectCache = new VuiStateObjectCache();
-    private stateValueCache: VuiStateValueCache = new VuiStateValueCache();
+    private rooms: VuiCache<VuiRoom> = new VuiCache<VuiRoom>();
+    private functions: VuiCache<VuiFunction> = new VuiCache<VuiFunction>();
+    private stateObjectCache: VuiCache<VuiStateObject> = new VuiCache<VuiStateObject>();
+    private stateValueCache: VuiCache<VuiStateValue> = new VuiCache<VuiStateValue>();
 
     constructor() {}
 
@@ -22,11 +14,11 @@ export class VisionaryUiDomainRepository {
         this.language = language;
     }
 
-    getRooms(): VuiRoomCache {
+    getRooms(): VuiCache<VuiRoom> {
         return this.rooms;
     }
 
-    setRooms(elements: VuiRoomCache): void {
+    setRooms(elements: VuiCache<VuiRoom>): void {
         this.rooms = elements;
     }
 
@@ -38,11 +30,11 @@ export class VisionaryUiDomainRepository {
         this.rooms.delete(id);
     }
 
-    getFunctions(): VuiFunctionCache {
+    getFunctions(): VuiCache<VuiFunction> {
         return this.functions;
     }
 
-    setFunctions(elements: VuiFunctionCache): void {
+    setFunctions(elements: VuiCache<VuiFunction>): void {
         this.functions = elements;
     }
 
@@ -54,7 +46,7 @@ export class VisionaryUiDomainRepository {
         this.functions.delete(id);
     }
 
-    getStateObjects(): VuiStateObjectCache {
+    getStateObjects(): VuiCache<VuiStateObject> {
         return this.stateObjectCache;
     }
 
@@ -63,7 +55,7 @@ export class VisionaryUiDomainRepository {
         this.stateValueCache.delete(id);
     }
 
-    setStateObjects(elements: VuiStateObjectCache): void {
+    setStateObjects(elements: VuiCache<VuiStateObject>): void {
         this.stateObjectCache = elements;
     }
 
@@ -71,11 +63,11 @@ export class VisionaryUiDomainRepository {
         this.stateObjectCache.set(element);
     }
 
-    getStateValues(): VuiStateValueCache {
+    getStateValues(): VuiCache<VuiStateValue> {
         return this.stateValueCache;
     }
 
-    setStateValues(elements: VuiStateValueCache): void {
+    setStateValues(elements: VuiCache<VuiStateValue>): void {
         this.stateValueCache = elements;
     }
 

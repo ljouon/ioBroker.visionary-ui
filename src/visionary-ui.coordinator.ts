@@ -1,17 +1,8 @@
-import {
-    VuiEnvelope,
-    VuiFunction,
-    VuiFunctionCache,
-    VuiRoom,
-    VuiRoomCache,
-    VuiStateObject,
-    VuiStateObjectCache,
-    VuiStateValue,
-    VuiStateValueCache,
-} from './domain';
+import { VuiEnvelope, VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from './domain';
 import { VisionaryUiWebServer } from './visionary-ui.web';
 import { ClientInboundHandler, VisionaryUiSocketServer } from './visionary-ui.socket';
 import { VisionaryUiDomainRepository } from './visionary-ui.domain.repository';
+import { VuiCache } from './visionary-ui.cache';
 
 export type StateSetter = (clientId: string, stateId: string, value: string | number | boolean) => void;
 
@@ -59,7 +50,7 @@ export class VisionaryUiCoordinator {
         this.adapter = null;
     }
 
-    setRooms(rooms: VuiRoomCache): void {
+    setRooms(rooms: VuiCache<VuiRoom>): void {
         this.repository.setRooms(rooms);
         const envelope: VuiEnvelope = { type: 'allRooms', data: rooms.values() };
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
@@ -77,7 +68,7 @@ export class VisionaryUiCoordinator {
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
-    setFunctions(functions: VuiFunctionCache): void {
+    setFunctions(functions: VuiCache<VuiFunction>): void {
         this.repository.setFunctions(functions);
         const envelope: VuiEnvelope = { type: 'allFunctions', data: this.repository.getFunctions().values() };
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
@@ -95,7 +86,7 @@ export class VisionaryUiCoordinator {
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
-    setObjects(vuiStateObjectCache: VuiStateObjectCache): void {
+    setObjects(vuiStateObjectCache: VuiCache<VuiStateObject>): void {
         // Only store vuiStateObjectCache mapped to at least one room
         vuiStateObjectCache.deleteByFilter((object) => !this.repository.isMappedToRoom(object));
 
@@ -122,7 +113,7 @@ export class VisionaryUiCoordinator {
         this.socketServer.messageToAllClients(JSON.stringify(envelopeValues));
     }
 
-    setStates(vuiStateCache: VuiStateValueCache): void {
+    setStates(vuiStateCache: VuiCache<VuiStateValue>): void {
         // Only store states if object is managed
         const managedObjectIds = this.repository.getStateObjects().ids();
         vuiStateCache.deleteByFilter((state) => !managedObjectIds.includes(state.id));
