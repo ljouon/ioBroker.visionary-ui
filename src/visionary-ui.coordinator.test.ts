@@ -4,14 +4,14 @@ import { VisionaryUiWebServer } from './visionary-ui.web';
 import { VisionaryUiSocketServer } from './visionary-ui.socket';
 import { VisionaryUiDomainRepository } from './visionary-ui.domain.repository';
 import {
-    IobFunction,
-    IobFunctionCache,
-    IobObject,
-    IobObjectCache,
-    IobRoom,
-    IobRoomCache,
-    IobState,
-    IobStateCache,
+    VuiFunction,
+    VuiFunctionCache,
+    VuiRoom,
+    VuiRoomCache,
+    VuiStateObject,
+    VuiStateObjectCache,
+    VuiStateValue,
+    VuiStateValueCache,
 } from './domain';
 
 describe('VisionaryUiCoordinator', () => {
@@ -76,24 +76,27 @@ describe('VisionaryUiCoordinator', () => {
     describe('Room management', () => {
         // Test for setting rooms
         it('should set rooms', () => {
-            const iobRoomCache = new IobRoomCache();
+            const vuiRoomCache = new VuiRoomCache();
             const room = {
                 id: 'roomId',
-            } as unknown as IobRoom;
-            iobRoomCache.set(room);
-            coordinator.setRooms(iobRoomCache);
+            } as unknown as VuiRoom;
+            vuiRoomCache.set(room);
+            coordinator.setRooms(vuiRoomCache);
 
-            sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify([room]));
+            sinon.assert.calledWith(
+                socketServer.messageToAllClients,
+                JSON.stringify({ type: 'allRooms', data: [room] }),
+            );
         });
 
         // Test for setting a single room
         it('should set a single room', () => {
             const room = {
                 id: 'roomId',
-            } as unknown as IobRoom;
+            } as unknown as VuiRoom;
             coordinator.setRoom(room);
 
-            sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify(room));
+            sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify({ type: 'room', data: room }));
         });
 
         // Test for deleting a room
@@ -104,7 +107,7 @@ describe('VisionaryUiCoordinator', () => {
             // Assuming getRooms() returns the updated state of rooms after deletion
             sinon.assert.calledWith(
                 socketServer.messageToAllClients,
-                JSON.stringify(domainRepository.getRooms().values()),
+                JSON.stringify({ type: 'allRooms', data: domainRepository.getRooms().values() }),
             );
         });
     });
@@ -112,24 +115,36 @@ describe('VisionaryUiCoordinator', () => {
     describe('Function management', () => {
         // Test for setting functions
         it('should set functions', () => {
-            const iobFunctionCache = new IobFunctionCache();
+            const vuiFunctionCache = new VuiFunctionCache();
             const functionElement = {
                 id: 'functionId',
-            } as unknown as IobFunction;
-            iobFunctionCache.set(functionElement);
-            coordinator.setFunctions(iobFunctionCache);
+            } as unknown as VuiFunction;
+            vuiFunctionCache.set(functionElement);
+            coordinator.setFunctions(vuiFunctionCache);
 
-            sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify([functionElement]));
+            sinon.assert.calledWith(
+                socketServer.messageToAllClients,
+                JSON.stringify({
+                    type: 'allFunctions',
+                    data: [functionElement],
+                }),
+            );
         });
 
         // Test for setting a single function
         it('should set a single function', () => {
             const functionElement = {
                 id: 'functionId',
-            } as unknown as IobFunction;
+            } as unknown as VuiFunction;
             coordinator.setFunction(functionElement);
 
-            sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify(functionElement));
+            sinon.assert.calledWith(
+                socketServer.messageToAllClients,
+                JSON.stringify({
+                    type: 'function',
+                    data: functionElement,
+                }),
+            );
         });
 
         // Test for deleting a function
@@ -140,7 +155,7 @@ describe('VisionaryUiCoordinator', () => {
             // Assuming getFunctions() returns the updated state of functions after deletion
             sinon.assert.calledWith(
                 socketServer.messageToAllClients,
-                JSON.stringify(domainRepository.getFunctions().values()),
+                JSON.stringify({ type: 'allFunctions', data: domainRepository.getFunctions().values() }),
             );
         });
     });
@@ -151,16 +166,22 @@ describe('VisionaryUiCoordinator', () => {
             const room = {
                 id: 'roomId',
                 members: ['objectId'],
-            } as unknown as IobRoom;
+            } as unknown as VuiRoom;
             coordinator.setRoom(room);
-            const iobObjectCache = new IobObjectCache();
-            const objectElement = {
+            const vuiStateObjectCache = new VuiStateObjectCache();
+            const vuiStateObject = {
                 id: 'objectId',
-            } as unknown as IobObject;
-            iobObjectCache.set(objectElement);
-            coordinator.setObjects(iobObjectCache);
+            } as unknown as VuiStateObject;
+            vuiStateObjectCache.set(vuiStateObject);
+            coordinator.setObjects(vuiStateObjectCache);
 
-            sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify([objectElement]));
+            sinon.assert.calledWith(
+                socketServer.messageToAllClients,
+                JSON.stringify({
+                    type: 'allStates',
+                    data: [vuiStateObject],
+                }),
+            );
         });
 
         // Test for setting a single object
@@ -168,15 +189,18 @@ describe('VisionaryUiCoordinator', () => {
             const room = {
                 id: 'roomId',
                 members: ['objectId'],
-            } as unknown as IobRoom;
+            } as unknown as VuiRoom;
             coordinator.setRoom(room);
 
-            const objectElement = {
+            const vuiStateObject = {
                 id: 'objectId',
-            } as unknown as IobObject;
-            coordinator.setObject(objectElement);
+            } as unknown as VuiStateObject;
+            coordinator.setObject(vuiStateObject);
 
-            sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify(objectElement));
+            sinon.assert.calledWith(
+                socketServer.messageToAllClients,
+                JSON.stringify({ type: 'state', data: vuiStateObject }),
+            );
         });
 
         // Test for deleting an object
@@ -187,11 +211,11 @@ describe('VisionaryUiCoordinator', () => {
             // Assuming getObjects() and getStates() return the updated states after deletion
             sinon.assert.calledWith(
                 socketServer.messageToAllClients,
-                JSON.stringify(domainRepository.getObjects().values()),
+                JSON.stringify({ type: 'allStates', data: domainRepository.getStateObjects().values() }),
             );
             sinon.assert.calledWith(
                 socketServer.messageToAllClients,
-                JSON.stringify(domainRepository.getStates().values()),
+                JSON.stringify({ type: 'allValues', data: domainRepository.getStateValues().values() }),
             );
         });
 
@@ -200,24 +224,30 @@ describe('VisionaryUiCoordinator', () => {
             const room = {
                 id: 'roomId',
                 members: ['objectId'],
-            } as unknown as IobRoom;
+            } as unknown as VuiRoom;
             coordinator.setRoom(room);
 
             const objectElement = {
                 id: 'objectId',
-            } as unknown as IobObject;
+            } as unknown as VuiStateObject;
             coordinator.setObject(objectElement);
 
             sinon.restore();
 
-            const iobStateCache = new IobStateCache();
+            const vuiStateValueCache = new VuiStateValueCache();
             const stateElement = {
                 id: 'objectId',
-            } as unknown as IobState;
-            iobStateCache.set(stateElement);
-            coordinator.setStates(iobStateCache);
+            } as unknown as VuiStateValue;
+            vuiStateValueCache.set(stateElement);
+            coordinator.setStates(vuiStateValueCache);
 
-            sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify([stateElement]));
+            sinon.assert.calledWith(
+                socketServer.messageToAllClients,
+                JSON.stringify({
+                    type: 'allValues',
+                    data: [stateElement],
+                }),
+            );
         });
 
         // Test for setting a single state
@@ -225,18 +255,21 @@ describe('VisionaryUiCoordinator', () => {
             const room = {
                 id: 'roomId',
                 members: ['objectId'],
-            } as unknown as IobRoom;
+            } as unknown as VuiRoom;
             coordinator.setRoom(room);
-            const objectElement = {
+            const vuiStateObject = {
                 id: 'objectId',
-            } as unknown as IobObject;
-            coordinator.setObject(objectElement);
-            const stateElement = {
+            } as unknown as VuiStateObject;
+            coordinator.setObject(vuiStateObject);
+            const vuiStateValue = {
                 id: 'objectId',
-            } as unknown as IobState;
-            coordinator.setState(stateElement);
+            } as unknown as VuiStateValue;
+            coordinator.setState(vuiStateValue);
 
-            sinon.assert.calledWith(socketServer.messageToAllClients, JSON.stringify(stateElement));
+            sinon.assert.calledWith(
+                socketServer.messageToAllClients,
+                JSON.stringify({ type: 'state', data: vuiStateValue }),
+            );
         });
     });
 
@@ -247,23 +280,23 @@ describe('VisionaryUiCoordinator', () => {
             const room = {
                 id: 'roomId',
                 members: ['objectId'],
-            } as unknown as IobRoom;
+            } as unknown as VuiRoom;
             coordinator.setRoom(room);
 
             const functionEntry = {
                 id: 'functionId',
-            } as unknown as IobFunction;
+            } as unknown as VuiFunction;
             coordinator.setFunction(functionEntry);
 
             const objectEntry = {
                 id: 'objectId',
-            } as unknown as IobObject;
+            } as unknown as VuiStateObject;
             coordinator.setObject(objectEntry);
 
             const stateEntry = {
                 id: 'objectId',
                 value: 'value',
-            } as unknown as IobState;
+            } as unknown as VuiStateValue;
             coordinator.setState(stateEntry);
 
             coordinator['onClientConnect'](clientId);
@@ -272,14 +305,22 @@ describe('VisionaryUiCoordinator', () => {
             sinon.assert.calledWithExactly(
                 socketServer.messageToClient.getCall(0),
                 'client1',
-                '[{"id":"roomId","members":["objectId"]}]',
+                '{"type":"rooms","data":[{"id":"roomId","members":["objectId"]}]}',
             );
-            sinon.assert.calledWithExactly(socketServer.messageToClient.getCall(1), 'client1', '[{"id":"functionId"}]');
-            sinon.assert.calledWithExactly(socketServer.messageToClient.getCall(2), 'client1', '[{"id":"objectId"}]');
+            sinon.assert.calledWithExactly(
+                socketServer.messageToClient.getCall(1),
+                'client1',
+                '{"type":"functions","data":[{"id":"functionId"}]}',
+            );
+            sinon.assert.calledWithExactly(
+                socketServer.messageToClient.getCall(2),
+                'client1',
+                '{"type":"objects","data":[{"id":"objectId"}]}',
+            );
             sinon.assert.calledWithExactly(
                 socketServer.messageToClient.getCall(3),
                 'client1',
-                '[{"id":"objectId","value":"value"}]',
+                '{"type":"states","data":[{"id":"objectId","value":"value"}]}',
             );
         });
 

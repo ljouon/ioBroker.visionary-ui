@@ -1,7 +1,7 @@
 import * as utils from '@iobroker/adapter-core';
 import { VisionaryUiCoordinator } from './visionary-ui.coordinator';
 import { VisionaryUiIoBrokerRepository } from './visionary-ui-iobroker.repository';
-import { mapToIobEnum, mapToIobObject, mapToIobState } from './visionary-ui.mapper';
+import { mapToIobEnum, mapToVuiStateObject, mapToVuiStateValue } from './visionary-ui.mapper';
 
 type VisionaryUiManagedObjectTypes = 'state' | 'room' | 'function';
 
@@ -106,7 +106,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
 
         const adapterHandle = {
             setState: (clientId: string, stateId: string, value: string | number | boolean): void =>
-                this.repository.setIobState(clientId, stateId, value),
+                this.repository.setVuiStateValue(clientId, stateId, value),
             config: {
                 language: language,
                 webPort,
@@ -143,8 +143,8 @@ you will notice that each setState will cause the stateChange event to fire (bec
         }
 
         // The state has been changed
-        const iobState = mapToIobState(id, state);
-        this.coordinator.setState(iobState);
+        const vuiStateValue = mapToVuiStateValue(id, state);
+        this.coordinator.setState(vuiStateValue);
     }
 
     private async onObjectChange(id: string, object: ioBroker.Object | null | undefined): Promise<void> {
@@ -205,8 +205,8 @@ you will notice that each setState will cause the stateChange event to fire (bec
     }
 
     private handleStateObjectChange(id: string, object: ioBroker.Object, language: ioBroker.Languages): Promise<void> {
-        const iobObject = mapToIobObject(id, object, language);
-        this.coordinator.setObject(iobObject);
+        const vuiStateObject = mapToVuiStateObject(id, object, language);
+        this.coordinator.setObject(vuiStateObject);
         return Promise.resolve();
     }
 
@@ -216,7 +216,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
         language: ioBroker.Languages,
     ): Promise<void> {
         const iobEnum = mapToIobEnum(id, object, language);
-        this.coordinator.setRoom(iobEnum);
+        this.coordinator.setRoom({ ...iobEnum, type: 'room' });
         await this.loadOrRefreshObjectData(language);
     }
 
@@ -226,7 +226,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
         language: ioBroker.Languages,
     ): Promise<void> {
         const iobEnum = mapToIobEnum(id, object, language);
-        this.coordinator.setFunction(iobEnum);
+        this.coordinator.setFunction({ ...iobEnum, type: 'function' });
         await this.loadOrRefreshObjectData(language);
     }
 

@@ -1,62 +1,29 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 import reactLogo from './assets/react.svg';
 import viteLogo from '/vite.svg';
 import './App.css';
-import useWebSocket, { ReadyState } from 'react-use-websocket';
 import { Box } from '@mui/joy';
 import Icon from '@mui/material/Icon';
 import green from '@mui/material/colors/green';
+import { SubComponent } from './SubComponent.tsx';
+import { useVuiDataContext } from './vui-data.context.tsx';
 
 function App() {
     const [count, setCount] = useState<number>(0);
 
-    // --- TEMP ----
+    const { rooms, functions, stateObjects, stateValues, connectionState, sendMessage } = useVuiDataContext();
 
-    // const ws = new WebSocket('ws://localhost:8888');
-    //
-    // ws.addEventListener('open', () => {
-    //     console.log('Connected to server');
-    //
-    //     ws.send('Hello, server!');
-    // });
-    //
-    // ws.addEventListener('message', (event: MessageEvent) => {
-    //     console.log(`Received message from server: ${event.data}`);
-    // });
-    //
-    // ws.addEventListener('close', () => {
-    //     console.log('Disconnected from server');
-    // });
-
-    const [socketUrl] = useState('ws://localhost:8888');
-    const [messageHistory, setMessageHistory] = useState<MessageEvent[]>([]);
-
-    const { sendMessage, lastMessage, readyState } = useWebSocket(socketUrl, {
-        shouldReconnect: () => true,
-    });
-
-    useEffect(() => {
-        if (lastMessage !== null) {
-            setMessageHistory((prev) => prev.concat(lastMessage));
-        }
-    }, [lastMessage, setMessageHistory]);
+    // const sendMessage = (text: string) => {};
+    // const rooms = [];
 
     const handleClickSendMessage = useCallback(
         (counter: number) => {
             const newCount = counter + 1;
             setCount(newCount);
-            sendMessage('' + newCount);
+            sendMessage(`Hello WebSocket! ${newCount}`);
         },
         [sendMessage],
     );
-
-    const connectionStatus = {
-        [ReadyState.CONNECTING]: 'Connecting',
-        [ReadyState.OPEN]: 'Open',
-        [ReadyState.CLOSING]: 'Closing',
-        [ReadyState.CLOSED]: 'Closed',
-        [ReadyState.UNINSTANTIATED]: 'Uninstantiated',
-    }[readyState];
 
     return (
         <>
@@ -85,16 +52,27 @@ function App() {
                     <Icon sx={{ fontSize: 50 }}>camera</Icon>
                 </Box>
 
-                <p>{connectionStatus}</p>
-                <button disabled={readyState !== ReadyState.OPEN} onClick={() => handleClickSendMessage(count)}>
-                    count is {count}
-                </button>
-                <p>{connectionStatus}</p>
+                <p>
+                    {connectionState === 'OPEN' ? (
+                        <Icon sx={{ fontSize: 50 }}>sync</Icon>
+                    ) : (
+                        <Icon sx={{ fontSize: 50 }}>sync_problem</Icon>
+                    )}
+                </p>
+                {/*disabled={readyState !== ReadyState.OPEN}*/}
+                <button onClick={() => handleClickSendMessage(count)}>count is {count}</button>
             </div>
             <ul>
-                {messageHistory.map((message, idx) => (
-                    <p key={idx}>{message ? message.data : null}</p>
-                ))}
+                <p>Rooms: {rooms.length}</p>
+                <p>Functions: {functions.length}</p>
+                <p>Objects: {stateObjects.length}</p>
+                <p>States: {stateValues.length}</p>
+            </ul>
+            <ul>
+                <SubComponent />
+                {/*{messages.map((message, idx) => (*/}
+                {/*    <p key={idx}>{message ? message : null}</p>*/}
+                {/*))}*/}
             </ul>
         </>
     );

@@ -1,13 +1,13 @@
 import {
-    Envelope,
-    IobFunction,
-    IobFunctionCache,
-    IobObject,
-    IobObjectCache,
-    IobRoom,
-    IobRoomCache,
-    IobState,
-    IobStateCache,
+    VuiEnvelope,
+    VuiFunction,
+    VuiFunctionCache,
+    VuiRoom,
+    VuiRoomCache,
+    VuiStateObject,
+    VuiStateObjectCache,
+    VuiStateValue,
+    VuiStateValueCache,
 } from './domain';
 import { VisionaryUiWebServer } from './visionary-ui.web';
 import { ClientInboundHandler, VisionaryUiSocketServer } from './visionary-ui.socket';
@@ -59,83 +59,83 @@ export class VisionaryUiCoordinator {
         this.adapter = null;
     }
 
-    setRooms(rooms: IobRoomCache): void {
+    setRooms(rooms: VuiRoomCache): void {
         this.repository.setRooms(rooms);
-        const envelope: Envelope = { type: 'rooms', data: rooms.values() };
+        const envelope: VuiEnvelope = { type: 'allRooms', data: rooms.values() };
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
-    setRoom(element: IobRoom): void {
-        this.repository.setRoom(element);
-        const envelope: Envelope = { type: 'room', data: element };
+    setRoom(vuiRoom: VuiRoom): void {
+        this.repository.setRoom(vuiRoom);
+        const envelope: VuiEnvelope = { type: 'room', data: vuiRoom };
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
     deleteRoom(id: string): void {
         this.repository.deleteRoom(id);
-        const envelope: Envelope = { type: 'rooms', data: this.repository.getRooms().values() };
+        const envelope: VuiEnvelope = { type: 'allRooms', data: this.repository.getRooms().values() };
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
-    setFunctions(functions: IobFunctionCache): void {
+    setFunctions(functions: VuiFunctionCache): void {
         this.repository.setFunctions(functions);
-        const envelope: Envelope = { type: 'functions', data: functions.values() };
+        const envelope: VuiEnvelope = { type: 'allFunctions', data: this.repository.getFunctions().values() };
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
-    setFunction(element: IobFunction): void {
+    setFunction(element: VuiFunction): void {
         this.repository.setFunction(element);
-        const envelope: Envelope = { type: 'function', data: element };
+        const envelope: VuiEnvelope = { type: 'function', data: element };
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
     deleteFunction(id: string): void {
         this.repository.deleteFunction(id);
-        const envelope: Envelope = { type: 'functions', data: this.repository.getFunctions().values() };
+        const envelope: VuiEnvelope = { type: 'allFunctions', data: this.repository.getFunctions().values() };
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
-    setObjects(objects: IobObjectCache): void {
-        // Only store objects mapped to at least one room
-        objects.deleteByFilter((object) => !this.repository.isMappedToRoom(object));
+    setObjects(vuiStateObjectCache: VuiStateObjectCache): void {
+        // Only store vuiStateObjectCache mapped to at least one room
+        vuiStateObjectCache.deleteByFilter((object) => !this.repository.isMappedToRoom(object));
 
-        this.repository.setObjects(objects);
-        const envelope: Envelope = { type: 'objects', data: objects.values() };
+        this.repository.setStateObjects(vuiStateObjectCache);
+        const envelope: VuiEnvelope = { type: 'allStates', data: vuiStateObjectCache.values() };
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
-    setObject(iobObject: IobObject): void {
+    setObject(vuiStateObject: VuiStateObject): void {
         // Only store objects mapped to at least one room
-        if (this.repository.isMappedToRoom(iobObject)) {
-            this.repository.setObject(iobObject);
-            const envelope: Envelope = { type: 'object', data: iobObject };
+        if (this.repository.isMappedToRoom(vuiStateObject)) {
+            this.repository.setStateObject(vuiStateObject);
+            const envelope: VuiEnvelope = { type: 'state', data: vuiStateObject };
             this.socketServer.messageToAllClients(JSON.stringify(envelope));
         }
     }
 
     deleteObject(id: string): void {
-        this.repository.deleteObject(id);
-        this.repository.deleteState(id);
-        const objectsEnvelope = { type: 'objects', data: this.repository.getObjects().values() };
-        this.socketServer.messageToAllClients(JSON.stringify(objectsEnvelope));
-        const statesEnvelope = { type: 'states', data: this.repository.getStates().values() };
-        this.socketServer.messageToAllClients(JSON.stringify(statesEnvelope));
+        this.repository.deleteStateObject(id);
+        this.repository.deleteStateValue(id);
+        const envelopeStates: VuiEnvelope = { type: 'allStates', data: this.repository.getStateObjects().values() };
+        this.socketServer.messageToAllClients(JSON.stringify(envelopeStates));
+        const envelopeValues: VuiEnvelope = { type: 'allValues', data: this.repository.getStateValues().values() };
+        this.socketServer.messageToAllClients(JSON.stringify(envelopeValues));
     }
 
-    setStates(iobStates: IobStateCache): void {
+    setStates(vuiStateCache: VuiStateValueCache): void {
         // Only store states if object is managed
-        const managedObjectIds = this.repository.getObjects().ids();
-        iobStates.deleteByFilter((state) => !managedObjectIds.includes(state.id));
-        this.repository.setStates(iobStates);
-        const envelope: Envelope = { type: 'states', data: iobStates.values() };
+        const managedObjectIds = this.repository.getStateObjects().ids();
+        vuiStateCache.deleteByFilter((state) => !managedObjectIds.includes(state.id));
+        this.repository.setStateValues(vuiStateCache);
+        const envelope: VuiEnvelope = { type: 'allValues', data: vuiStateCache.values() };
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
-    setState(iobState: IobState): void {
+    setState(vuiStateValue: VuiStateValue): void {
         // Only store state if object is managed
-        if (this.repository.getObjects().has(iobState.id)) {
-            this.repository.setState(iobState);
-            const envelope: Envelope = { type: 'state', data: iobState };
+        if (this.repository.getStateObjects().has(vuiStateValue.id)) {
+            this.repository.setStateValue(vuiStateValue);
+            const envelope: VuiEnvelope = { type: 'value', data: vuiStateValue };
             this.socketServer.messageToAllClients(JSON.stringify(envelope));
         }
     }
@@ -143,20 +143,20 @@ export class VisionaryUiCoordinator {
     private onClientConnect(clientId: string): void {
         console.log(`Client connected: ${clientId}`);
         const rooms = this.repository.getRooms().values();
-        const roomsEnvelope = { type: 'rooms', data: rooms };
-        this.socketServer.messageToClient(clientId, JSON.stringify(roomsEnvelope));
+        const envelopeRooms: VuiEnvelope = { type: 'allRooms', data: rooms };
+        this.socketServer.messageToClient(clientId, JSON.stringify(envelopeRooms));
 
         const functions = this.repository.getFunctions().values();
-        const functionsEnvelope = { type: 'functions', data: functions };
-        this.socketServer.messageToClient(clientId, JSON.stringify(functionsEnvelope));
+        const envelopeFunctions: VuiEnvelope = { type: 'allFunctions', data: functions };
+        this.socketServer.messageToClient(clientId, JSON.stringify(envelopeFunctions));
 
-        const objects = this.repository.getObjects().values();
-        const objectsEnvelope = { type: 'objects', data: objects };
-        this.socketServer.messageToClient(clientId, JSON.stringify(objectsEnvelope));
+        const stateObjects = this.repository.getStateObjects().values();
+        const envelopeStateObjects: VuiEnvelope = { type: 'allStates', data: stateObjects };
+        this.socketServer.messageToClient(clientId, JSON.stringify(envelopeStateObjects));
 
-        const states = this.repository.getStates().values();
-        const statesEnvelope = { type: 'states', data: states };
-        this.socketServer.messageToClient(clientId, JSON.stringify(statesEnvelope));
+        const states = this.repository.getStateValues().values();
+        const envelopeStateValues: VuiEnvelope = { type: 'allValues', data: states };
+        this.socketServer.messageToClient(clientId, JSON.stringify(envelopeStateValues));
     }
 
     private onClientDisconnect(clientId: string): void {

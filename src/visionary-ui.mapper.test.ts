@@ -3,12 +3,12 @@ import {
     findVisionaryCustomProperties,
     mapToFunctionIds,
     mapToIobEnum,
-    mapToIobObject,
-    mapToIobState,
     mapToRoomIds,
+    mapToVuiStateObject,
+    mapToVuiStateValue,
     mapTranslation,
 } from './visionary-ui.mapper';
-import { IobObject, IobRoom, IobState } from './domain';
+import { VuiEnum, VuiStateObject, VuiStateValue } from './domain';
 
 describe('Visionary UI Mapper', () => {
     describe('mapTranslation', () => {
@@ -28,8 +28,8 @@ describe('Visionary UI Mapper', () => {
         });
     });
 
-    describe('mapToIobObject', () => {
-        it('should correctly map an ioBroker Object to an IobObject', () => {
+    describe('mapToVuiStateObject', () => {
+        it('should correctly map an ioBroker Object to an VuiStateObject', () => {
             const mockIoBrokerObject = {
                 _id: 'object1',
                 common: {
@@ -46,7 +46,8 @@ describe('Visionary UI Mapper', () => {
                 enums: { 'enum.rooms.room1': true },
             } as unknown as ioBroker.Object;
 
-            const expectedIobObject: IobObject = {
+            const expectedVuiStateObject: VuiStateObject = {
+                type: 'state',
                 id: 'object1',
                 name: 'Object 1',
                 displayName: 'Display Name 1',
@@ -63,13 +64,13 @@ describe('Visionary UI Mapper', () => {
                 roomIds: ['enum.rooms.room1'],
             };
 
-            const result = mapToIobObject('object1', mockIoBrokerObject, 'en');
-            expect(result).to.deep.equal(expectedIobObject);
+            const result = mapToVuiStateObject('object1', mockIoBrokerObject, 'en');
+            expect(result).to.deep.equal(expectedVuiStateObject);
         });
     });
 
     describe('mapToIobEnum', () => {
-        it('should correctly map an ioBroker Object to an IobRoom', () => {
+        it('should correctly map an ioBroker Object to an VuiRoom', () => {
             const mockIoBrokerRoom = {
                 _id: 'room1',
                 common: {
@@ -81,7 +82,7 @@ describe('Visionary UI Mapper', () => {
                 type: 'enum',
             } as unknown as ioBroker.Object;
 
-            const expectedIobRoom: IobRoom = {
+            const expectedVuiEnum: VuiEnum = {
                 id: 'room1',
                 name: 'Living Room',
                 color: '#FF0000',
@@ -91,7 +92,7 @@ describe('Visionary UI Mapper', () => {
             };
 
             const result = mapToIobEnum('room1', mockIoBrokerRoom, 'en');
-            expect(result).to.deep.equal(expectedIobRoom);
+            expect(result).to.deep.equal(expectedVuiEnum);
         });
 
         it('should handle missing common fields in ioBrokerRoom', () => {
@@ -101,7 +102,7 @@ describe('Visionary UI Mapper', () => {
                 type: 'enum',
             } as unknown as ioBroker.Object;
 
-            const expectedIobRoom: IobRoom = {
+            const expectedVuiEnum: VuiEnum = {
                 id: 'room1',
                 name: '',
                 color: null,
@@ -111,7 +112,7 @@ describe('Visionary UI Mapper', () => {
             };
 
             const result = mapToIobEnum('room1', mockIoBrokerRoom, 'en');
-            expect(result).to.deep.equal(expectedIobRoom);
+            expect(result).to.deep.equal(expectedVuiEnum);
         });
     });
 
@@ -195,33 +196,35 @@ describe('Visionary UI Mapper', () => {
         });
     });
 
-    describe('mapToIobState', () => {
-        it('should correctly map an ioBroker State to an IobState', () => {
+    describe('mapToVuiStateValue', () => {
+        it('should correctly map an ioBroker State to an VuiStateValue', () => {
             const mockIoBrokerState = {
                 val: 123,
                 lc: 1609459200000, // Unix timestamp for 2021-01-01 00:00:00
             } as unknown as ioBroker.State;
 
-            const expectedIobState: IobState = {
+            const expectedVuiStateValue: VuiStateValue = {
+                type: 'value',
                 id: 'state1',
                 value: 123,
                 lastChange: 1609459200000,
             };
 
-            const result = mapToIobState('state1', mockIoBrokerState);
-            expect(result).to.deep.equal(expectedIobState);
+            const result = mapToVuiStateValue('state1', mockIoBrokerState);
+            expect(result).to.deep.equal(expectedVuiStateValue);
         });
 
         it('should handle null state values', () => {
             const mockIoBrokerState = { val: null, lc: 1609459200000 } as unknown as ioBroker.State;
-            const expectedIobState: IobState = {
+            const expectedVuiStateValue: VuiStateValue = {
+                type: 'value',
                 id: 'state1',
                 value: null,
                 lastChange: 1609459200000,
             };
 
-            const result = mapToIobState('state1', mockIoBrokerState);
-            expect(result).to.deep.equal(expectedIobState);
+            const result = mapToVuiStateValue('state1', mockIoBrokerState);
+            expect(result).to.deep.equal(expectedVuiStateValue);
         });
     });
 });

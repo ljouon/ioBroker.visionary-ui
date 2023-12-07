@@ -1,20 +1,20 @@
 import {
-    IobFunction,
-    IobFunctionCache,
-    IobObject,
-    IobObjectCache,
-    IobRoom,
-    IobRoomCache,
-    IobState,
-    IobStateCache,
+    VuiFunction,
+    VuiFunctionCache,
+    VuiRoom,
+    VuiRoomCache,
+    VuiStateObject,
+    VuiStateObjectCache,
+    VuiStateValue,
+    VuiStateValueCache,
 } from './domain';
 
 export class VisionaryUiDomainRepository {
     private language: string = 'en';
-    private rooms: IobRoomCache = new IobRoomCache();
-    private functions: IobFunctionCache = new IobFunctionCache();
-    private objects: IobObjectCache = new IobObjectCache();
-    private states: IobStateCache = new IobStateCache();
+    private rooms: VuiRoomCache = new VuiRoomCache();
+    private functions: VuiFunctionCache = new VuiFunctionCache();
+    private stateObjectCache: VuiStateObjectCache = new VuiStateObjectCache();
+    private stateValueCache: VuiStateValueCache = new VuiStateValueCache();
 
     constructor() {}
 
@@ -22,73 +22,73 @@ export class VisionaryUiDomainRepository {
         this.language = language;
     }
 
-    getRooms(): IobRoomCache {
+    getRooms(): VuiRoomCache {
         return this.rooms;
     }
 
-    setRooms(elements: IobRoomCache): void {
+    setRooms(elements: VuiRoomCache): void {
         this.rooms = elements;
     }
 
-    setRoom(element: IobRoom): void {
+    setRoom(element: VuiRoom): void {
         this.rooms.set(element);
-    }
-
-    getFunctions(): IobFunctionCache {
-        return this.functions;
-    }
-
-    setFunctions(elements: IobFunctionCache): void {
-        this.functions = elements;
-    }
-
-    setFunction(element: IobFunction): void {
-        this.functions.set(element);
-    }
-
-    getObjects(): IobObjectCache {
-        return this.objects;
-    }
-
-    deleteObject(id: string): void {
-        this.objects.delete(id);
-        this.states.delete(id);
-    }
-
-    setObjects(elements: IobObjectCache): void {
-        this.objects = elements;
-    }
-
-    setObject(element: IobObject): void {
-        this.objects.set(element);
-    }
-
-    getStates(): IobStateCache {
-        return this.states;
-    }
-
-    setStates(elements: IobStateCache): void {
-        this.states = elements;
-    }
-
-    setState(element: IobState): void {
-        this.states.set(element);
-    }
-
-    isMappedToRoom(object: IobObject): boolean {
-        const values = this.rooms.values().map((room) => room.members?.includes(object.id) || false);
-        return values.includes(true);
     }
 
     deleteRoom(id: string): void {
         this.rooms.delete(id);
     }
 
+    getFunctions(): VuiFunctionCache {
+        return this.functions;
+    }
+
+    setFunctions(elements: VuiFunctionCache): void {
+        this.functions = elements;
+    }
+
+    setFunction(element: VuiFunction): void {
+        this.functions.set(element);
+    }
+
     deleteFunction(id: string): void {
         this.functions.delete(id);
     }
 
-    deleteState(id: string): void {
-        this.states.delete(id);
+    getStateObjects(): VuiStateObjectCache {
+        return this.stateObjectCache;
+    }
+
+    deleteStateObject(id: string): void {
+        this.stateObjectCache.delete(id);
+        this.stateValueCache.delete(id);
+    }
+
+    setStateObjects(elements: VuiStateObjectCache): void {
+        this.stateObjectCache = elements;
+    }
+
+    setStateObject(element: VuiStateObject): void {
+        this.stateObjectCache.set(element);
+    }
+
+    getStateValues(): VuiStateValueCache {
+        return this.stateValueCache;
+    }
+
+    setStateValues(elements: VuiStateValueCache): void {
+        this.stateValueCache = elements;
+    }
+
+    setStateValue(element: VuiStateValue): void {
+        this.stateValueCache.set(element);
+    }
+
+    deleteStateValue(id: string): void {
+        this.stateValueCache.delete(id);
+    }
+
+    isMappedToRoom(object: VuiStateObject): boolean {
+        const values = this.rooms.values().map((room) => room.members?.includes(object.id) || false);
+        return values.includes(true);
     }
 }
