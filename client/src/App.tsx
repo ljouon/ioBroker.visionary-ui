@@ -1,8 +1,12 @@
-import { ReactNode, useCallback, useState } from 'react';
+import { useCallback, useState } from 'react';
 import './App.css';
 import { useVuiDataContext } from './vui-data.context.tsx';
-import { VuiEnum, VuiFunction, VuiRoom } from '../../src/domain.ts';
+import { VuiEnum, VuiRoom } from '../../src/domain.ts';
 import { Sidebar } from '@/components/ui/sidebar.tsx';
+import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.tsx';
+import { Menu } from '@/components/ui/menu.tsx';
+import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet.tsx';
+import { Icon } from '@mui/material';
 
 export type TreeNode<T> = {
     level: number;
@@ -58,32 +62,70 @@ function App() {
     }
 
     const roomStructure = createStructure<VuiRoom>(rooms, 'enum.rooms');
-    console.log(roomStructure);
-    const functionStructure = createStructure<VuiFunction>(functions, 'enum.functions');
-    console.log(functionStructure);
 
-    function mapToTreeView<T extends VuiEnum>(roomStructure: TreeNode<T>[]): ReactNode {
-        return roomStructure.map((node) => {
-            const classNames = `text-sm text-gray-500 pl-${node.level * 4}`;
-
-            return (
-                <div key={node.canonicalPath}>
-                    <div className={classNames}>{node.data?.name}</div>
-                    {mapToTreeView<T>(node.children)}
-                </div>
-            );
-        });
-    }
+    // // console.log(roomStructure);
+    //
+    // const functionStructure = createStructure<VuiFunction>(functions, 'enum.functions');
+    //
+    // // console.log(functionStructure);
+    //
+    // function mapToTreeView<T extends VuiEnum>(roomStructure: TreeNode<T>[]): ReactNode {
+    //     return roomStructure.map((node) => {
+    //         const classNames = `text-sm text-gray-500 pl-${node.level * 4}`;
+    //
+    //         return (
+    //             <div key={node.canonicalPath}>
+    //                 <div className={classNames}>{node.data?.name}</div>
+    //                 {mapToTreeView<T>(node.children)}
+    //             </div>
+    //         );
+    //     });
+    // }
 
     return (
-        <>
-            <div className="md:hidden"></div>
-            <div className="hidden md:block">
-                {/*<Menu />*/}
+        <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow">
+            <div className="block">
+                <div className="space-between flex items-center">
+                    <Sheet>
+                        <SheetTrigger className="block sm:hidden">
+                            <div className="ml-3 mt-1">
+                                <Icon sx={{ fontSize: 28 }}>menu</Icon>
+                            </div>
+                        </SheetTrigger>
+                        <SheetContent side="left" className="w-[300px] sm:w-[300px] overflow-y-auto	">
+                            <Sidebar treeNodes={roomStructure} />
+                        </SheetContent>
+                    </Sheet>
+
+                    <Menu />
+                </div>
                 <div className="border-t">
                     <div className="bg-background">
-                        <div className="grid lg:grid-cols-5">
-                            <Sidebar treeNodes={roomStructure} className="hidden lg:block" />
+                        <div className="grid md:grid-cols-4">
+                            <Sidebar treeNodes={roomStructure} className="hidden md:block" />
+                            <div className="col-span-3 sm:col-span-3 md:border-l">
+                                <div className="h-full px-4 py-6 sm:px-8">
+                                    <Tabs defaultValue="music" className="h-full space-y-6">
+                                        <div className="space-between flex items-center">
+                                            <TabsList>
+                                                <TabsTrigger value="music" className="relative">
+                                                    Music
+                                                </TabsTrigger>
+                                                <TabsTrigger value="podcasts">Podcasts</TabsTrigger>
+                                                <TabsTrigger value="live" disabled>
+                                                    Live
+                                                </TabsTrigger>
+                                            </TabsList>
+                                            {/*<div className="ml-auto mr-4">*/}
+                                            {/*    <Button>Add music</Button>*/}
+                                            {/*</div>*/}
+                                        </div>
+                                        <TabsContent value="music" className="border-none p-0 outline-none">
+                                            <div className="flex items-center justify-between">inhalt</div>
+                                        </TabsContent>
+                                    </Tabs>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -124,7 +166,7 @@ function App() {
             {/*<ul>*/}
             {/*    <SubComponent />*/}
             {/*</ul>*/}
-        </>
+        </div>
     );
 }
 
