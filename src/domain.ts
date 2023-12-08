@@ -54,7 +54,7 @@ export type WithId = {
 
 export type VuiObject = VuiRoom | VuiFunction | VuiStateObject | VuiStateValue;
 
-export type VuiObjectTypes = 'room' | 'function' | 'state' | 'value';
+export type VuiObjectType = 'room' | 'function' | 'state' | 'value';
 
 export type VuiEnum = WithId & {
     id: string;
