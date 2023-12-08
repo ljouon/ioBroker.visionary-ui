@@ -45,7 +45,7 @@ export function VuiDataProvider({ children }: VuiDataProviderProps) {
         });
     }
 
-    const handleNewMessage = (messageEvent: MessageEvent) => {
+    function handleNewMessage(messageEvent: MessageEvent) {
         const data = messageEvent.data;
         // setMessages((prev) => [...prev, data]);
         const envelope: VuiEnvelope = JSON.parse(data);
@@ -85,7 +85,7 @@ export function VuiDataProvider({ children }: VuiDataProviderProps) {
             default:
                 console.error(`unknown element type: ${JSON.stringify(envelope)}`);
         }
-    };
+    }
 
     const { sendMessage, connectionState } = useWebSocket(handleNewMessage);
 
