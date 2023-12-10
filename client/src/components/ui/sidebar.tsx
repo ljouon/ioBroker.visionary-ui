@@ -10,10 +10,12 @@ interface SidebarProps<T extends VuiEnum> extends React.HTMLAttributes<HTMLDivEl
 
 export function Sidebar<T extends VuiEnum>({ className, treeNodes }: SidebarProps<T>) {
     function hasStateObjects<T extends VuiEnum>(node: TreeNode<T>) {
+        // return true;
         return node.data && node.data.members ? node.data.members.length > 0 : false;
     }
 
-    function hasChildren<T>(node: TreeNode<T>) {
+    function hasChildren<T extends VuiEnum>(node: TreeNode<T>) {
+        // return true;
         return node.children.length > 0;
     }
 
@@ -21,7 +23,7 @@ export function Sidebar<T extends VuiEnum>({ className, treeNodes }: SidebarProp
         <div className={cn('pb-12', className)}>
             <div className="space-y-4 py-4">
                 {treeNodes?.map((node) => {
-                    if (hasChildren(node)) {
+                    if (hasChildren(node) || hasStateObjects(node)) {
                         return (
                             <div key={node.canonicalPath} className="py-1">
                                 <h2 className="relative px-7 text-lg font-semibold tracking-tight">
@@ -38,7 +40,11 @@ export function Sidebar<T extends VuiEnum>({ className, treeNodes }: SidebarProp
                                                         className="w-full justify-start font-normal"
                                                     >
                                                         <div className={'w-8 pr-2'}>
-                                                            <img src={child.data?.icon ?? undefined} alt={'icon'} />
+                                                            <img
+                                                                className="dark:invert opacity-50"
+                                                                src={child.data?.icon ?? undefined}
+                                                                alt={'icon'}
+                                                            />
                                                         </div>
                                                         {child.data?.name}
                                                     </Button>
