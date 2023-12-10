@@ -1,12 +1,13 @@
-import { useCallback, useState } from 'react';
 import './App.css';
-import { useVuiDataContext } from './vui-data.context.tsx';
-import { VuiEnum, VuiRoom } from '../../src/domain.ts';
-import { Sidebar } from '@/components/ui/sidebar.tsx';
+import { VuiEnum, VuiFunction, VuiRoom } from '../../src/domain.ts';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs.tsx';
-import { Menu } from '@/components/ui/menu.tsx';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet.tsx';
 import { Icon } from '@mui/material';
+import { useEffect, useState } from 'react';
+import { useVuiDataContext } from '@/vui-data.context.tsx';
+import { Menu } from './components/ui/menu.tsx';
+import { Sidebar } from '@/components/ui/sidebar.tsx';
+import ToggleSwitch from '@/components/ui/toggle-switch.tsx';
 
 export type TreeNode<T> = {
     level: number;
@@ -15,55 +16,63 @@ export type TreeNode<T> = {
     children: TreeNode<T>[];
 };
 
-function App() {
-    const [count, setCount] = useState<number>(0);
+function getPathSegments(id: string, prefix: string): string[] {
+    return id.replace(prefix, '').split('.').filter(Boolean);
+}
 
-    const { rooms, functions, stateObjects, stateValues, connectionState, sendMessage } = useVuiDataContext();
+function buildCanonicalPath(segments: string[], index: number): string {
+    return segments.slice(0, index + 1).join('.');
+}
 
-    const handleClickSendMessage = useCallback(
-        (counter: number) => {
-            const newCount = counter + 1;
-            setCount(newCount);
-            sendMessage(`Hello WebSocket! ${newCount}`);
-        },
-        [sendMessage],
-    );
+function createStructure<T extends VuiEnum>(elements: T[], prefix: string): TreeNode<T>[] {
+    const sortedElements = elements.sort((a, b) => a.id.localeCompare(b.id));
+    const firstLevelNodes: TreeNode<T>[] = [];
 
-    function getPathSegments(id: string, prefix: string): string[] {
-        return id.replace(prefix, '').split('.').filter(Boolean);
-    }
+    sortedElements.forEach((element) => {
+        const pathSegments = getPathSegments(element.id, prefix);
+        let currentLevelNodes = firstLevelNodes;
 
-    function buildCanonicalPath(segments: string[], index: number): string {
-        return segments.slice(0, index + 1).join('.');
-    }
+        pathSegments.forEach((_, level) => {
+            const isLeaf = level === pathSegments.length - 1;
+            const canonicalPath = buildCanonicalPath(pathSegments, level);
+            let childNode = currentLevelNodes.find((node) => node.canonicalPath === canonicalPath);
+            if (!childNode) {
+                childNode = { data: isLeaf ? element : null, canonicalPath, level, children: [] };
+                currentLevelNodes.push(childNode);
+            }
 
-    function createStructure<T extends VuiEnum>(elements: T[], prefix: string): TreeNode<T>[] {
-        const sortedElements = elements.sort((a, b) => a.id.localeCompare(b.id));
-        const firstLevelNodes: TreeNode<T>[] = [];
-
-        sortedElements.forEach((element) => {
-            const pathSegments = getPathSegments(element.id, prefix);
-            let currentLevelNodes = firstLevelNodes;
-
-            pathSegments.forEach((_, level) => {
-                const isLeaf = level === pathSegments.length - 1;
-                const canonicalPath = buildCanonicalPath(pathSegments, level);
-                let childNode = currentLevelNodes.find((node) => node.canonicalPath === canonicalPath);
-                if (!childNode) {
-                    childNode = { data: isLeaf ? element : null, canonicalPath, level, children: [] };
-                    currentLevelNodes.push(childNode);
-                }
-
-                currentLevelNodes = childNode.children;
-            });
+            currentLevelNodes = childNode.children;
         });
+    });
 
-        return firstLevelNodes;
-    }
+    return firstLevelNodes;
+}
 
-    const roomStructure = createStructure<VuiRoom>(rooms, 'enum.rooms');
+function App() {
+    const [roomMode, setRoomMode] = useState<boolean>(true);
+    const [roomsStructure, setRoomsStructure] = useState<TreeNode<VuiEnum>[]>([]);
+    const [functionsStructure, setFunctionsStructure] = useState<TreeNode<VuiEnum>[]>([]);
 
-    // // console.log(roomStructure);
+    const { rooms, functions } = useVuiDataContext();
+
+    useEffect(() => {
+        const roomStructure = createStructure<VuiRoom>(rooms, 'enum.rooms');
+        setRoomsStructure(roomStructure);
+    }, [rooms]);
+
+    useEffect(() => {
+        const functionStructure = createStructure<VuiFunction>(functions, 'enum.functions');
+        console.log(functionStructure);
+        setFunctionsStructure(functionStructure);
+    }, [functions]);
+
+    // const handleClickSendMessage = useCallback(() => {
+    //     sendMessage(`Hello WebSocket!`);
+    // }, [sendMessage]);
+
+    // const roomStructure = createStructure<VuiRoom>(rooms, 'enum.rooms');
+
+    console.log('roomStructure');
     //
     // const functionStructure = createStructure<VuiFunction>(functions, 'enum.functions');
     //
@@ -82,27 +91,49 @@ function App() {
     //     });
     // }
 
+    const handleToggle = (value: string) => {
+        setRoomMode(value === 'rooms');
+    };
+
     return (
         <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow">
             <div className="block">
                 <div className="space-between flex items-center">
                     <Sheet>
-                        <SheetTrigger className="block sm:hidden">
+                        <SheetTrigger className="block md:hidden">
                             <div className="ml-3 mt-1">
                                 <Icon sx={{ fontSize: 28 }}>menu</Icon>
                             </div>
                         </SheetTrigger>
                         <SheetContent side="left" className="w-[300px] sm:w-[300px] overflow-y-auto	">
-                            <Sidebar treeNodes={roomStructure} />
+                            <div className="p-4">
+                                <ToggleSwitch
+                                    initialValue="rooms"
+                                    left={{ value: 'rooms', label: 'Räume' }}
+                                    right={{ value: 'functions', label: 'Funktionen' }}
+                                    onSwitch={handleToggle}
+                                />
+                                <Sidebar treeNodes={roomMode ? roomsStructure : functionsStructure} />
+                            </div>
                         </SheetContent>
                     </Sheet>
-
                     <Menu />
+                    <div className="ml-auto mr-2">Text rechts</div>
                 </div>
                 <div className="border-t">
                     <div className="bg-background">
                         <div className="grid md:grid-cols-4">
-                            <Sidebar treeNodes={roomStructure} className="hidden md:block" />
+                            <div className="hidden md:block">
+                                <div className="p-4">
+                                    <ToggleSwitch
+                                        initialValue="rooms"
+                                        left={{ value: 'rooms', label: 'Räume' }}
+                                        right={{ value: 'functions', label: 'Funktionen' }}
+                                        onSwitch={handleToggle}
+                                    />
+                                </div>
+                                <Sidebar treeNodes={roomMode ? roomsStructure : functionsStructure} />
+                            </div>
                             <div className="col-span-3 sm:col-span-3 md:border-l">
                                 <div className="h-full px-4 py-6 sm:px-8">
                                     <Tabs defaultValue="music" className="h-full space-y-6">
@@ -116,9 +147,6 @@ function App() {
                                                     Live
                                                 </TabsTrigger>
                                             </TabsList>
-                                            {/*<div className="ml-auto mr-4">*/}
-                                            {/*    <Button>Add music</Button>*/}
-                                            {/*</div>*/}
                                         </div>
                                         <TabsContent value="music" className="border-none p-0 outline-none">
                                             <div className="flex items-center justify-between">inhalt</div>
@@ -130,16 +158,6 @@ function App() {
                     </div>
                 </div>
             </div>
-            {/*<div>*/}
-            {/*    <a href="https://vitejs.dev" target="_blank">*/}
-            {/*        <img src={viteLogo} className="logo" alt="Vite logo" />*/}
-            {/*    </a>*/}
-            {/*    <a href="https://react.dev" target="_blank">*/}
-            {/*        <img src={reactLogo} className="logo react" alt="React logo" />*/}
-            {/*    </a>*/}
-            {/*</div>*/}
-            {/*<h1>Client with websocket connection</h1>*/}
-            {/*<h2 className="text-2xl font-bold">Hello world!</h2>*/}
 
             {/*<div className="card">*/}
             {/*    <Icon sx={{ fontSize: 50 }}>camera</Icon>*/}
