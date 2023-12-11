@@ -58,6 +58,7 @@ export type VuiObjectType = 'room' | 'function' | 'state' | 'value';
 
 export type VuiEnum = WithId & {
     id: string;
+    type: VuiObjectType;
     name: string;
     color: string | null;
     icon: string | null;
@@ -68,6 +69,18 @@ export type VuiEnum = WithId & {
 export type VuiRoom = VuiEnum & {
     type: 'room';
 };
+
+export function isRoom(vuiEnum: VuiEnum | null): boolean {
+    return vuiEnum?.type === 'room'
+}
+
+export function isFunction(vuiEnum: VuiEnum | null): boolean {
+    return vuiEnum?.type === 'function';
+}
+
+export function hasStateObjects(vuiEnum: VuiEnum | null): boolean {
+    return vuiEnum && vuiEnum.members ? vuiEnum.members.length > 0 : false;
+}
 
 export type VuiFunction = VuiEnum & {
     type: 'function';

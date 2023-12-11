@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useRef, useState } from 'react';
+import {useCallback, useEffect, useRef, useState} from 'react';
 
 type MessageHandler = (message: MessageEvent) => void;
 
@@ -12,6 +12,7 @@ function useWebSocket(onMessage: MessageHandler) {
     // Connect
     useEffect(() => {
         const webSocket = new WebSocket('ws://localhost:8888');
+        //const webSocket = new WebSocket('ws://192.168.0.212:8888');
 
         webSocket.onopen = () => {
             console.log('WebSocket connected');
@@ -73,7 +74,7 @@ function useWebSocket(onMessage: MessageHandler) {
         [socket],
     );
 
-    return { sendMessage, connectionState };
+    return {sendMessage, connectionState};
 }
 
 export default useWebSocket;
