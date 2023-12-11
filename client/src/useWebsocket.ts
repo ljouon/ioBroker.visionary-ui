@@ -11,7 +11,6 @@ function useWebSocket(onMessage: MessageHandler) {
 
     // Connect
     useEffect(() => {
-        console.log('use effect triggered');
         const webSocket = new WebSocket('ws://localhost:8888');
 
         webSocket.onopen = () => {
@@ -34,7 +33,6 @@ function useWebSocket(onMessage: MessageHandler) {
 
         // Cleanup function
         return () => {
-            console.log('Cleanup function called');
             if (webSocket?.readyState === WebSocket.OPEN) {
                 webSocket.close();
             }

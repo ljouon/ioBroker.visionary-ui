@@ -11,7 +11,7 @@ import {
     MenubarTrigger,
 } from '@/components/ui/menubar';
 import Icon from '@mui/material/Icon';
-import { useTheme } from '@/theme-provider.tsx';
+import { useTheme } from '@/theme-provider';
 
 export function Menu() {
     const { setTheme, theme } = useTheme();
