@@ -1,4 +1,4 @@
-import { useVuiDataContext } from './vui-data.context.tsx';
+import { useVuiDataContext } from './vui-data.context';
 
 export function SubComponent() {
     const { stateObjects } = useVuiDataContext();

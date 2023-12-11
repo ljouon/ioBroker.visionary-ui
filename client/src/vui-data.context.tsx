@@ -1,6 +1,6 @@
 import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
 import { VuiEnvelope, VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from '../../src/domain';
-import useWebSocket, { ConnectionState } from './useWebsocket.ts';
+import useWebSocket, { ConnectionState } from './useWebsocket';
 
 export type VuiDataContextType = {
     rooms: VuiRoom[];
@@ -67,8 +67,7 @@ export function VuiDataProvider({ children }: VuiDataProviderProps) {
                     break;
                 case 'room':
                     {
-                        console.log('handle room change');
-                        // setRooms(replaceElementInArray(rooms, envelope.data));
+                        setRooms(replaceElementInArray(rooms, envelope.data));
                     }
                     break;
                 case 'function':

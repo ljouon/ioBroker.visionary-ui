@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
-import { TreeNode } from '@/App.tsx';
-import { ScrollArea } from '@/components/ui/scroll-area.tsx';
-import { Button } from '@/components/ui/button.tsx';
+import { TreeNode } from '@/App';
+import { ScrollArea } from '@/components/ui/scroll-area';
+import { Button } from '@/components/ui/button';
 import { VuiEnum } from '../../../../src/domain';
 
 interface SidebarProps<T extends VuiEnum> extends React.HTMLAttributes<HTMLDivElement> {
