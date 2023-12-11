@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 
 export type SwitchingValue = {
     value: string;
@@ -12,13 +12,11 @@ interface ToggleSwitchProps {
     onSwitch: (value: string) => void; // Callback function prop
 }
 
-const ToggleSwitch: React.FC<ToggleSwitchProps> = ({ initialValue, left, right, onSwitch }) => {
-    const initialState = initialValue === left.value;
-    const [active, setActive] = useState(initialState);
+const ToggleSwitch: React.FC<ToggleSwitchProps> = ({initialValue, left, right, onSwitch}) => {
+    const active = initialValue === left.value;
 
     const toggle = () => {
         const newValue = active ? right.value : left.value; // Determine the new value based on the toggle state
-        setActive(!active);
         onSwitch(newValue); // Trigger the callback with the new value
     };
 
