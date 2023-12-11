@@ -28,7 +28,6 @@ export function FunctionCard({id, title, roomId}: FunctionCardProps) {
             </CardHeader>
             <CardContent className="grid gap-6">
                 <Separator/>
-                CONTENT
                 <div className="flex justify-between items-center">
                     <div className="flex items-center space-x-2">
                         <img
@@ -48,7 +47,6 @@ export function FunctionCard({id, title, roomId}: FunctionCardProps) {
                 </div>
             </CardContent>
             <CardFooter>
-                FOOTER
             </CardFooter>
         </Card>
     );
