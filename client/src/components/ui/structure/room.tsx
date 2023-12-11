@@ -23,9 +23,13 @@ export function Room({id, title, icon}: RoomProps) {
                 {/*<div className="h-full px-4 py-6 sm:px-8">*/}
                 {/*    <div className="flex items-center justify-center [&>div]:w-full">*/}
                 <FunctionCard title='Licht' id='light' roomId={id}/>
-                <FunctionCard title='Thermostate' id='Thermostate' roomId={id}/>
-                <FunctionCard title='Sonstiges' id='Sonstiges' roomId={id}/>
-                <FunctionCard title='Fenster' id='Fenster' roomId={id}/>
+                <FunctionCard title='Heizung' id='heating' roomId={id}/>
+                <FunctionCard title='Fenster' id='windows' roomId={id}/>
+                <FunctionCard title='Sicherheit' id='security' roomId={id}/>
+                <FunctionCard title='Sonstiges' id='other' roomId={id}/>
+                <FunctionCard title='Wetter' id='weather' roomId={id}/>
+                <FunctionCard title='Systeme' id='systems' roomId={id}/>
+                <FunctionCard title='Waschen' id='wasching' roomId={id}/>
                 {/*</div>*/}
             </div>
         </>
