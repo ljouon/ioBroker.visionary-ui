@@ -31,6 +31,7 @@ export function FunctionCard({id, title, roomId, objects}: FunctionCardProps) {
                 <Separator/>
                 {objects.map(object =>
                     <div className="flex items-center w-full">
+
                         <div className="flex-none">
                             <img
                                 className="dark:invert h-8 w-8 lg:w-10 lg:h-10 mr-2"
@@ -38,18 +39,20 @@ export function FunctionCard({id, title, roomId, objects}: FunctionCardProps) {
                                 alt={'icon'}
                             />
                         </div>
-
                         <div className="flex-grow truncate mx-2">
-                            <CardTitle><span className="whitespace-nowrap overflow-hidden">{object}</span></CardTitle>
-                            <CardDescription><span
-                                className="whitespace-nowrap overflow-hidden">Beschreibung</span></CardDescription>
+                            <Label htmlFor={`${roomId}_${id}_${object}`}>
+                                <CardTitle><span
+                                    className="whitespace-nowrap overflow-hidden">{object}</span></CardTitle>
+                                <CardDescription><span
+                                    className="whitespace-nowrap overflow-hidden">Beschreibung</span></CardDescription>
+                            </Label>
                         </div>
-
                         <div className="flex-none">
-                            <Switch id={`${roomId}_${id}_object_id`} defaultChecked/>
+                            <Switch id={`${roomId}_${id}_${object}`} defaultChecked/>
                         </div>
                     </div>
                 )}
+
             </CardContent>
             <CardFooter>
             </CardFooter>
