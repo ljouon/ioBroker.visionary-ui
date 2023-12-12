@@ -87,7 +87,7 @@ function App() {
                             </div>
                         </SheetTrigger>
                         <SheetContent side="left" className="w-[300px] sm:w-[300px] overflow-y-auto	">
-                            <div className="p-4">
+                            <div className="p-2">
                                 <ToggleSwitch
                                     initialValue={roomMode}
                                     left={{value: 'rooms', label: 'Räume'}}
@@ -109,7 +109,7 @@ function App() {
                     <div className="bg-background">
                         <div className="grid grid-cols-6 md:grid-cols-7 lg:grid-cols-8 xl:grid-cols-7">
                             <div className="hidden md:block md:col-span-2 lg:col-span-2 xl:col-span-1 col-span-1">
-                                <div className="p-4">
+                                <div className="p-2">
                                     <ToggleSwitch
                                         initialValue={roomMode}
                                         left={{value: 'rooms', label: 'Räume'}}
