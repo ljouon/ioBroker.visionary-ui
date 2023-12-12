@@ -102,13 +102,13 @@ function App() {
                     <Menu/>
                     <div className="ml-auto mr-2 mt-1 "><Icon sx={{
                         fontSize: 24,
-                        color: connectionState === 'OPEN' ? 'darkblue' : 'gray'
-                    }}>{connectionState === 'OPEN' ? 'sync' : 'sync_problem'}</Icon></div>
+                        color: connectionState === 'OPEN' ? '' : 'red'
+                    }}>{connectionState === 'OPEN' ? '' : 'cloud_off'}</Icon></div>
                 </div>
                 <div className="border-t">
                     <div className="bg-background">
-                        <div className="grid grid-cols-6 md:grid-cols-6">
-                            <div className="hidden md:block col-span-1">
+                        <div className="grid grid-cols-6 md:grid-cols-7 lg:grid-cols-8 xl:grid-cols-7">
+                            <div className="hidden md:block md:col-span-2 lg:col-span-2 xl:col-span-1 col-span-1">
                                 <div className="p-4">
                                     <ToggleSwitch
                                         initialValue={roomMode}
@@ -120,9 +120,9 @@ function App() {
                                              onTreeNodeClicked={onTreeNodeClicked}/>
                                 </div>
                             </div>
-                            {<div className="col-span-4 md:col-span-5 md:border-l">
+                            <div className="md:col-span-5 lg:col-span-6 xl:col-span-6 col-span-6 md:border-l">
                                 {createContent(selectedTreeNode)}
-                            </div>}
+                            </div>
                         </div>
                     </div>
                 </div>
