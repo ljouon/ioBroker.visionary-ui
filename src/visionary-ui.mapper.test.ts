@@ -51,7 +51,7 @@ describe('Visionary UI Mapper', () => {
                 id: 'object1',
                 name: 'Object 1',
                 displayName: 'Display Name 1',
-                desc: 'Description 1',
+                description: 'Description 1',
                 role: 'switch',
                 datatype: 'boolean',
                 iobType: 'state',
@@ -60,8 +60,6 @@ describe('Visionary UI Mapper', () => {
                 unit: '°C',
                 customIcon: 'icon1',
                 rank: 1,
-                functionIds: [],
-                roomIds: ['enum.rooms.room1'],
             };
 
             const result = mapToVuiStateObject('object1', mockIoBrokerObject, 'en');
@@ -84,6 +82,7 @@ describe('Visionary UI Mapper', () => {
 
             const expectedVuiEnum: VuiEnum = {
                 id: 'room1',
+                type: 'room',
                 name: 'Living Room',
                 color: '#FF0000',
                 icon: 'icon-living-room',
@@ -104,6 +103,7 @@ describe('Visionary UI Mapper', () => {
 
             const expectedVuiEnum: VuiEnum = {
                 id: 'room1',
+                type: 'room',
                 name: '',
                 color: null,
                 icon: null,

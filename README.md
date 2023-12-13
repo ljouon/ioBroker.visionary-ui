@@ -40,6 +40,7 @@ This section is intended for the developer. It can be deleted later
 - [ ] how to define the port between client and server? maybe add info via express endpoint or data on
   serving: https://stackoverflow.com/questions/44354763/how-do-i-get-http-headers-in-react-js
 - [ ] implement client UI
+- [ ] handle/flatten level depth for rooms and functions
 - [ ] Sortierung der Räume?
 - [ ] invalid config message!?
 - [ ] business logics for UI: rooms, categories, devices, states
