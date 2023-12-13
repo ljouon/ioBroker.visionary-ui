@@ -1,4 +1,4 @@
-import {VuiEnum} from "../../../src/domain";
+import {VuiEnum, VuiStateObject} from '../../../src/domain';
 
 export type TreeNode<T, S> = {
     level: number;
@@ -6,6 +6,11 @@ export type TreeNode<T, S> = {
     basisData: T | null;
     matchingData: S[] | null;
     children: TreeNode<T, S>[];
+};
+
+export type UiStateObject = VuiStateObject & {
+    value: string | number | boolean | null;
+    lastChange: number | null;
 };
 
 export function getPathSegments(id: string, prefix: string): string[] {
@@ -20,11 +25,11 @@ function attachMatchingElements<T extends VuiEnum, S extends VuiEnum>(basisData:
     const result: S[] = [];
 
     if (basisData.members) {
-        sortedMElements.forEach(m => {
+        sortedMElements.forEach((m) => {
             if (m.members) {
-                const ids = basisData.members?.filter(element => m.members!.includes(element));
+                const ids = basisData.members?.filter((element) => m.members!.includes(element));
                 if (ids && ids.length > 0) {
-                    result.push({...m, members: ids})
+                    result.push({...m, members: ids});
                 }
             }
         });
@@ -32,7 +37,11 @@ function attachMatchingElements<T extends VuiEnum, S extends VuiEnum>(basisData:
     return result;
 }
 
-export function createStructure<T extends VuiEnum, S extends VuiEnum>(baseElements: T[], prefix: string, matchingElements: S[]): TreeNode<T, S>[] {
+export function createStructure<T extends VuiEnum, S extends VuiEnum>(
+    baseElements: T[],
+    prefix: string,
+    matchingElements: S[],
+): TreeNode<T, S>[] {
     const sortedBElements = baseElements.sort((a, b) => a.id.localeCompare(b.id));
     const sortedMElements = matchingElements.sort((a, b) => a.id.localeCompare(b.id));
     const firstLevelNodes: TreeNode<T, S>[] = [];
@@ -46,7 +55,13 @@ export function createStructure<T extends VuiEnum, S extends VuiEnum>(baseElemen
             const canonicalPath = buildCanonicalPath(pathSegments, level);
             let childNode = currentLevelNodes.find((node) => node.canonicalPath === canonicalPath);
             if (!childNode) {
-                childNode = {basisData: isLeaf ? element : null, canonicalPath, level, children: [], matchingData: []};
+                childNode = {
+                    basisData: isLeaf ? element : null,
+                    canonicalPath,
+                    level,
+                    children: [],
+                    matchingData: [],
+                };
                 if (childNode.basisData) {
                     childNode.matchingData = attachMatchingElements(childNode.basisData, sortedMElements) ?? null;
                 }

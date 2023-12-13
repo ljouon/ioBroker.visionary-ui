@@ -22,17 +22,19 @@ export function Room({id, title, icon, sub}: RoomProps) {
                 </h1>
             </div>
             <div className="gap-6 rounded-lg p-8 lg:columns-2 xl:columns-3 space-y-6">
-                {sub.filter(element => element.members && element.members.length > 0).map((element) => {
-                    return (
-                        <FunctionCard
-                            title={element.name}
-                            key={element.id}
-                            id={element.id}
-                            roomId={id}
-                            functionObjectIds={element.members ?? []}
-                        />
-                    );
-                })}
+                {sub
+                    .filter((element) => element.members && element.members.length > 0)
+                    .map((element) => {
+                        return (
+                            <FunctionCard
+                                title={element.name}
+                                key={element.id}
+                                id={element.id}
+                                parentId={id}
+                                functionObjectIds={element.members ?? []}
+                            />
+                        );
+                    })}
             </div>
         </>
     );

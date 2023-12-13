@@ -246,6 +246,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
 
     private async loadOrRefreshObjectData(language: ioBroker.Languages): Promise<void> {
         const objects = await this.repository.getIoBrokerStateObjects(language);
+        this.log.info(JSON.stringify(objects));
         this.coordinator.setObjects(objects);
 
         const states = await this.repository.getIoBrokerStateValues();
