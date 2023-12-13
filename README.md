@@ -36,7 +36,7 @@ This section is intended for the developer. It can be deleted later
 - [x] handle enum changes (might be an object change with id starting with 'enum.')
 - [x] handle object to enum association changes, add/remove
 - [x] adapter tests
-- [ ] WIP: API Definition: how to tell client the type of the message (wrap in object: envelop)
+- [x] WIP: API Definition: how to tell client the type of the message (wrap in object: envelop)
 - [ ] how to define the port between client and server? maybe add info via express endpoint or data on
   serving: https://stackoverflow.com/questions/44354763/how-do-i-get-http-headers-in-react-js
 - [ ] implement client UI

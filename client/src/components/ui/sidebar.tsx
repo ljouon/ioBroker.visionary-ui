@@ -17,16 +17,16 @@ export function Sidebar<T extends VuiEnum, S extends VuiEnum>({
                                                               }: SidebarProps<T, S>) {
     return (
         <div className={cn('pb-12', className)}>
-            <div className="space-y-4 py-4">
+            <div className="space-y-2 py-2">
                 {treeNodes?.map((node) => {
                     if (hasChildren(node) || hasStateObjects(node.basisData)) {
                         return (
                             <div key={node.canonicalPath} className="py-1">
                                 <h2
-                                    className="flex items-baseline px-2 text-lg font-semibold tracking-tight cursor-pointer"
+                                    className="flex w-full items-baseline px-2 text-lg font-semibold tracking-tight cursor-pointer"
                                     onClick={() => onTreeNodeClicked(node)}>
                                     <span
-                                        className="uppercase font-bold text-sm opacity-40 flex-grow">{node.basisData?.name}</span>
+                                        className="uppercase font-bold text-sm opacity-40 flex-grow truncate">{node.basisData?.name}</span>
                                     <div className={'w-6 h-6 flex-none'}>
                                         {(node.basisData?.icon) ? <img
                                             className="dark:invert opacity-50"
@@ -37,18 +37,18 @@ export function Sidebar<T extends VuiEnum, S extends VuiEnum>({
                                     </div>
                                 </h2>
                                 {/*<Separator/>*/}
-                                <ScrollArea className="pt-2 px-1">
-                                    <div className="space-y-1 p-1">
+                                <ScrollArea className="pt-2">
+                                    <div className="space-y-1">
                                         {node.children?.map((child, i) => {
                                             if (hasStateObjects(child.basisData)) {
                                                 return (
                                                     <Button
                                                         key={`${child}-${i}`}
                                                         variant="ghost"
-                                                        className="w-full justify-start font-normal"
+                                                        className="flex font-normal px-2 w-full"
                                                         onClick={() => onTreeNodeClicked(child)}
                                                     >
-                                                        <div className={'w-8 h-8 mr-2'}>
+                                                        <div className={'w-8 h-8 mr-2 flex-none'}>
                                                             {(child.basisData?.icon) ? <img
                                                                 className="dark:invert opacity-50"
                                                                 src={child.basisData?.icon ?? undefined}
@@ -57,8 +57,7 @@ export function Sidebar<T extends VuiEnum, S extends VuiEnum>({
                                                             }
                                                         </div>
                                                         <span
-                                                            className="font-bold">{child.basisData?.name}</span>
-
+                                                            className="flex-grow mx-2 text-left">{child.basisData?.name}</span>
                                                     </Button>
                                                 );
                                             }

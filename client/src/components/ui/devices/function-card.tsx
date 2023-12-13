@@ -31,10 +31,9 @@ export function FunctionCard({id, title, roomId, objects}: FunctionCardProps) {
                 <Separator/>
                 {objects.map(object =>
                     <div className="flex items-center w-full">
-
                         <div className="flex-none">
                             <img
-                                className="dark:invert h-8 w-8 lg:w-10 lg:h-10 mr-2"
+                                className="dark:invert h-8 w-8 lg:w-10 lg:h-10 mr-2 opacity-50"
                                 src={icon ?? undefined}
                                 alt={'icon'}
                             />
