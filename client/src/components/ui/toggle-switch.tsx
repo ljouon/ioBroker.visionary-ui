@@ -21,12 +21,12 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({initialValue, left, right, o
     };
 
     return (
-        <div className="relative inline-block w-full p-2 bg-accent rounded-lg cursor-pointer"
+        <div className="relative inline-block w-full py-2 bg-accent rounded-md cursor-pointer"
              onClick={toggle}>
             <div
                 className={`absolute top-0 bottom-0 ${
                     active ? 'left-0 right-1/2' : 'right-0 left-1/2'
-                } bg-background shadow bg-opacity-80 transition-all duration-500 ease-in-out rounded-lg m-1`}
+                } bg-background shadow bg-opacity-80 transition-all duration-500 ease-in-out rounded-sm m-0.5`}
             ></div>
             <div className="flex w-full">
                 <span
