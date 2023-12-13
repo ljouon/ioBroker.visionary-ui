@@ -15,7 +15,7 @@ export function Room({id, title, icon, sub}: RoomProps) {
                 <h1
                     className="m- flex items-center text-lg font-extrabold leading-none tracking-tight text-gray-900 md:text-xl lg:text-2xl dark:text-white">
                     <img
-                        className="dark:invert h-8 w-8 lg:w-10 lg:h-10"
+                        className="dark:invert h-8 w-8 lg:w-10 lg:h-10 opacity-50"
                         src={icon ?? undefined}
                         alt={'icon'}
                     />
