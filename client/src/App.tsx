@@ -21,7 +21,6 @@ function App() {
 
     useEffect(() => {
         const roomStructure = createStructure<VuiRoom, VuiFunction>(rooms, 'enum.rooms', functions);
-        console.log(roomStructure);
         setRoomsStructure(roomStructure);
     }, [rooms, functions]);
 
@@ -39,7 +38,6 @@ function App() {
     };
 
     const onTreeNodeClicked = useCallback((treeNode: TreeNode<VuiEnum, VuiEnum>) => {
-        console.log(treeNode);
         setSelectedTreeNode(treeNode);
         setSheetOpen(false)
     }, [setSelectedTreeNode]);
