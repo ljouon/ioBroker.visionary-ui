@@ -1,7 +1,7 @@
 import './App.css';
 import {hasStateObjects, isRoom, VuiEnum, VuiFunction, VuiRoom} from '../../src/domain';
 import {Sheet, SheetContent, SheetTrigger} from '@/components/ui/sheet';
-import {Icon} from '@mui/material';
+
 import {useCallback, useEffect, useState} from 'react';
 import {useVuiDataContext} from '@/vui-data.context';
 import {Menu} from './components/ui/menu';
@@ -9,6 +9,7 @@ import {Sidebar} from '@/components/ui/sidebar';
 import ToggleSwitch from '@/components/ui/toggle-switch';
 import {Room} from "@/components/ui/structure/room";
 import {createStructure, TreeNode} from "@/domain/logics";
+import {DynamicIcon} from "@/components/ui/icons/DynamicIcon";
 
 
 function App() {
@@ -81,7 +82,8 @@ function App() {
                     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                         <SheetTrigger className="block md:hidden">
                             <div className="ml-3 mt-1">
-                                <Icon sx={{fontSize: 28}}>menu</Icon>
+                                <DynamicIcon className={"w-8 h-8 dark:invert opacity-50"}
+                                             iconKey="menu"/>
                             </div>
                         </SheetTrigger>
                         <SheetContent side="left" className="w-[300px] sm:w-[300px] overflow-y-auto	">
@@ -98,10 +100,10 @@ function App() {
                         </SheetContent>
                     </Sheet>
                     <Menu/>
-                    <div className="ml-auto mr-2 mt-1 "><Icon sx={{
-                        fontSize: 24,
-                        color: connectionState === 'OPEN' ? '' : 'red'
-                    }}>{connectionState === 'OPEN' ? '' : 'cloud_off'}</Icon></div>
+                    <div className="ml-auto mr-2 mt-1 ">
+                        <DynamicIcon className={"w-2 h-2 dark:invert opacity-50"}
+                                     iconKey={connectionState === 'OPEN' ? '' : 'cloud_off'}/>
+                    </div>
                 </div>
                 <div className="border-t">
                     <div className="bg-background">
@@ -127,15 +129,6 @@ function App() {
             </div>
 
             {/*<div className="card">*/}
-            {/*    <Icon sx={{ fontSize: 50 }}>camera</Icon>*/}
-
-            {/*    <p>*/}
-            {/*        {connectionState === 'OPEN' ? (*/}
-            {/*            <Icon sx={{ fontSize: 50 }}>sync</Icon>*/}
-            {/*        ) : (*/}
-            {/*            <Icon sx={{ fontSize: 50 }}>sync_problem</Icon>*/}
-            {/*        )}*/}
-            {/*    </p>*/}
             {/*    <Button disabled={connectionState !== 'OPEN'} onClick={() => handleClickSendMessage(count)}>*/}
             {/*        count is {count}*/}
             {/*    </Button>*/}
