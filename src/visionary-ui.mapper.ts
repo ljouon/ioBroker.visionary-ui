@@ -15,12 +15,14 @@ export function mapToVuiStateObject(
 ): VuiStateObject {
     const customProperties = findVisionaryCustomProperties(ioBrokerObject);
 
+    console.log(ioBrokerObject.common.role);
+
     return {
         type: 'state',
         id: id,
         name: mapTranslation(ioBrokerObject.common.name, language),
         displayName: customProperties?.displayName || null,
-        desc: mapTranslation(ioBrokerObject.common.desc, language),
+        description: mapTranslation(ioBrokerObject.common.desc, language),
         role: ioBrokerObject.common.role || 'unknown',
         datatype: ioBrokerObject.common.type,
         iobType: ioBrokerObject.type,
@@ -29,14 +31,13 @@ export function mapToVuiStateObject(
         unit: ioBrokerObject.common.unit,
         customIcon: customProperties?.customIcon || null,
         rank: customProperties?.rank || null,
-        functionIds: mapToFunctionIds(ioBrokerObject),
-        roomIds: mapToRoomIds(ioBrokerObject),
     };
 }
 
 export function mapToIobEnum(id: string, ioBrokerRoom: ioBroker.Object, language: ioBroker.Languages): VuiEnum {
     return {
         id: id,
+        type: 'unknown',
         name: mapTranslation(ioBrokerRoom.common.name, language),
         color: ioBrokerRoom.common.color ?? null,
         icon: ioBrokerRoom.common.icon ?? null,
