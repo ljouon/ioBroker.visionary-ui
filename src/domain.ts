@@ -54,7 +54,7 @@ export type WithId = {
 
 export type VuiObject = VuiRoom | VuiFunction | VuiStateObject | VuiStateValue;
 
-export type VuiObjectType = 'room' | 'function' | 'state' | 'value';
+export type VuiObjectType = 'room' | 'function' | 'state' | 'value' | 'unknown';
 
 export type VuiEnum = WithId & {
     id: string;
@@ -71,7 +71,7 @@ export type VuiRoom = VuiEnum & {
 };
 
 export function isRoom(vuiEnum: VuiEnum | null): boolean {
-    return vuiEnum?.type === 'room'
+    return vuiEnum?.type === 'room';
 }
 
 export function isFunction(vuiEnum: VuiEnum | null): boolean {
@@ -91,7 +91,7 @@ export type VuiStateObject = {
     id: string;
     name: string;
     displayName: string | null;
-    desc: string;
+    description: string;
     role: string;
     datatype: string;
     iobType: string;
@@ -100,8 +100,6 @@ export type VuiStateObject = {
     unit: string;
     customIcon: string | null;
     rank: number | null;
-    functionIds: string[];
-    roomIds: string[];
 };
 
 export type VuiStateValue = {

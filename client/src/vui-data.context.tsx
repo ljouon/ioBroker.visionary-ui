@@ -1,6 +1,6 @@
-import {createContext, ReactNode, useCallback, useContext, useState} from 'react';
-import {VuiEnvelope, VuiFunction, VuiRoom, VuiStateObject, VuiStateValue} from '../../src/domain';
-import useWebSocket, {ConnectionState} from './useWebsocket';
+import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
+import { VuiEnvelope, VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from '../../src/domain';
+import useWebSocket, { ConnectionState } from './useWebsocket';
 
 export type VuiDataContextType = {
     rooms: VuiRoom[];
@@ -11,8 +11,7 @@ export type VuiDataContextType = {
     sendMessage: (message: string) => void;
 };
 
-const noop = () => {
-};
+const noop = () => {};
 
 const VuiDataContext = createContext<VuiDataContextType>({
     rooms: [],
@@ -27,7 +26,7 @@ export type VuiDataProviderProps = {
     children: ReactNode;
 };
 
-export function VuiDataProvider({children}: VuiDataProviderProps) {
+export function VuiDataProvider({ children }: VuiDataProviderProps) {
     const [rooms, setRooms] = useState<VuiRoom[]>([]);
     const [functions, setFunctions] = useState<VuiFunction[]>([]);
     const [stateObjects, setStateObjects] = useState<VuiStateObject[]>([]);
@@ -42,8 +41,9 @@ export function VuiDataProvider({children}: VuiDataProviderProps) {
         elements.forEach((element) => {
             if (element.id === data.id) {
                 result.push(data);
+            } else {
+                result.push(element);
             }
-            result.push(element);
         });
         return result;
     }
@@ -66,21 +66,25 @@ export function VuiDataProvider({children}: VuiDataProviderProps) {
                 case 'allValues':
                     setStateValues(envelope.data);
                     break;
-                case 'room': {
-                    setRooms(replaceElementInArray(rooms, envelope.data));
-                }
+                case 'room':
+                    {
+                        setRooms(replaceElementInArray(rooms, envelope.data));
+                    }
                     break;
-                case 'function': {
-                    setFunctions(replaceElementInArray(functions, envelope.data));
-                }
+                case 'function':
+                    {
+                        setFunctions(replaceElementInArray(functions, envelope.data));
+                    }
                     break;
-                case 'state': {
-                    setStateObjects(replaceElementInArray(stateObjects, envelope.data));
-                }
+                case 'state':
+                    {
+                        setStateObjects(replaceElementInArray(stateObjects, envelope.data));
+                    }
                     break;
-                case 'value': {
-                    setStateValues(replaceElementInArray(stateValues, envelope.data));
-                }
+                case 'value':
+                    {
+                        setStateValues(replaceElementInArray(stateValues, envelope.data));
+                    }
                     break;
                 default:
                     console.error(`unknown element type: ${JSON.stringify(envelope)}`);
@@ -89,7 +93,7 @@ export function VuiDataProvider({children}: VuiDataProviderProps) {
         [rooms, functions, stateObjects, stateValues],
     );
 
-    const {sendMessage, connectionState} = useWebSocket(handleNewMessage);
+    const { sendMessage, connectionState } = useWebSocket(handleNewMessage);
 
     const contextValue = {
         rooms,
