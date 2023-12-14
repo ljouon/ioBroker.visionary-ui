@@ -7,14 +7,14 @@ import { ReactNode, useEffect, useState } from 'react';
 import { UiStateObject } from '@/domain/logics';
 import { mapToUiObjectComponent } from '@/components/ui/devices/object-mapper';
 
-type FunctionCardProps = {
+type DeviceCardProps = {
     id: string;
     sectionId: string;
     title: string;
     functionObjectIds: string[];
 };
 
-export function DeviceCard({ id, title, sectionId, functionObjectIds }: FunctionCardProps): ReactNode | undefined {
+export function DeviceCard({ id, title, sectionId, functionObjectIds }: DeviceCardProps): ReactNode | undefined {
     const { stateObjects, stateValues } = useVuiDataContext();
 
     const [vuiStateObjects, setVuiStateObjects] = useState<UiStateObject[]>([]);
