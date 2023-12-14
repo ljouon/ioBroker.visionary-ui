@@ -2,17 +2,16 @@ import { UiStateObject } from '@/domain/logics';
 import { DynamicIcon } from '@/components/ui/icons/DynamicIcon';
 import { Label } from '@/components/ui/label';
 import { CardDescription, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
 
-export type ObjectSwitchProps = {
+export type ObjectUnknownProps = {
     sectionId: string;
     cardId: string;
     uiStateObject: UiStateObject;
 };
 
-export function ObjectSwitch({ uiStateObject, sectionId, cardId }: ObjectSwitchProps) {
+export function ObjectUnknown({ uiStateObject, sectionId, cardId }: ObjectUnknownProps) {
     return (
-        <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${uiStateObject.id}`}>
+        <div className="flex items-center w-full" key={sectionId + '-' + cardId + '-' + uiStateObject.id}>
             <div className="flex-none flex items-center ">
                 {uiStateObject.customIcon ? (
                     <DynamicIcon
@@ -21,7 +20,7 @@ export function ObjectSwitch({ uiStateObject, sectionId, cardId }: ObjectSwitchP
                     />
                 ) : undefined}
             </div>
-            <div className="flex-grow truncate pl-2">
+            <div className="flex-grow truncate mx-2">
                 <Label htmlFor={`${sectionId}_${cardId}_${uiStateObject.id}`}>
                     <CardTitle>
                         <span className="whitespace-nowrap overflow-hidden">
@@ -37,12 +36,11 @@ export function ObjectSwitch({ uiStateObject, sectionId, cardId }: ObjectSwitchP
                     )}
                 </Label>
             </div>
-            <div className="flex-none">
-                <Switch
-                    id={`${sectionId}_${cardId}_${uiStateObject.id}`}
-                    defaultChecked={uiStateObject.value === true}
-                />
-            </div>
+            {uiStateObject.isWriteable ? (
+                <div className="flex-none">write: {uiStateObject.value}</div>
+            ) : (
+                <div className="flex-none">read: {uiStateObject.value}</div>
+            )}
         </div>
     );
 }
