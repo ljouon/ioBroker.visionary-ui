@@ -15,8 +15,6 @@ export function mapToVuiStateObject(
 ): VuiStateObject {
     const customProperties = findVisionaryCustomProperties(ioBrokerObject);
 
-    console.log(ioBrokerObject.common.role);
-
     return {
         type: 'state',
         id: id,
@@ -31,6 +29,10 @@ export function mapToVuiStateObject(
         unit: ioBrokerObject.common.unit,
         customIcon: customProperties?.customIcon || null,
         rank: customProperties?.rank || null,
+        states: ioBrokerObject.common.states,
+        minValue: ioBrokerObject.common.min,
+        maxValue: ioBrokerObject.common.max,
+        step: ioBrokerObject.common.step,
     };
 }
 

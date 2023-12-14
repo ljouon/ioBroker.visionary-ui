@@ -48,13 +48,13 @@ export type OneStateValue = {
     data: VuiStateValue;
 };
 
-export type WithId = {
-    id: string;
-};
-
 export type VuiObject = VuiRoom | VuiFunction | VuiStateObject | VuiStateValue;
 
 export type VuiObjectType = 'room' | 'function' | 'state' | 'value' | 'unknown';
+
+export type WithId = {
+    id: string;
+};
 
 export type VuiEnum = WithId & {
     id: string;
@@ -86,6 +86,10 @@ export type VuiFunction = VuiEnum & {
     type: 'function';
 };
 
+interface NumberOrStringDictionary {
+    [index: number | string]: number | string;
+}
+
 export type VuiStateObject = {
     type: 'state';
     id: string;
@@ -97,6 +101,10 @@ export type VuiStateObject = {
     iobType: string;
     isWriteable: boolean;
     defaultValue: string | number | boolean | null;
+    minValue: number | null;
+    maxValue: number | null;
+    step: number | null;
+    states: NumberOrStringDictionary | null;
     unit: string;
     customIcon: string | null;
     rank: number | null;

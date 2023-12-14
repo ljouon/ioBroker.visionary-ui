@@ -1,4 +1,4 @@
-import {VuiEnum, VuiStateObject} from '../../../src/domain';
+import { VuiEnum, VuiStateObject } from '../../../src/domain';
 
 export type TreeNode<T, S> = {
     level: number;
@@ -29,7 +29,7 @@ function attachMatchingElements<T extends VuiEnum, S extends VuiEnum>(basisData:
             if (m.members) {
                 const ids = basisData.members?.filter((element) => m.members!.includes(element));
                 if (ids && ids.length > 0) {
-                    result.push({...m, members: ids});
+                    result.push({ ...m, members: ids });
                 }
             }
         });
