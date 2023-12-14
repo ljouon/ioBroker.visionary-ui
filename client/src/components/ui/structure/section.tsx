@@ -43,20 +43,6 @@ export function Section({ id, type }: SectionProps) {
     const devices =
         element?.matchingData?.filter((subElement) => subElement.members && subElement.members.length > 0) || [];
 
-    console.log({
-        sectionContent: devices?.map((element) => {
-            return (
-                <DeviceCard
-                    title={element.name}
-                    key={element.id}
-                    id={element.id}
-                    sectionId={id}
-                    functionObjectIds={element.members ?? []}
-                />
-            );
-        }),
-    });
-
     return (
         <>
             <div className="pt-8 pl-8">
