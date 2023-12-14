@@ -105,7 +105,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
         const socketPort = parseInt(this.config.socketPort, 10) || 8888;
 
         const adapterHandle = {
-            setState: (clientId: string, stateId: string, value: string | number | boolean): void =>
+            setState: (clientId: string, stateId: string, value: string | number | boolean | null): void =>
                 this.repository.setVuiStateValue(clientId, stateId, value),
             config: {
                 language: language,

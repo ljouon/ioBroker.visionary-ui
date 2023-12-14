@@ -85,7 +85,7 @@ export class VisionaryUiIoBrokerRepository {
         );
     }
 
-    public setVuiStateValue(clientId: string, stateId: string, value: string | number | boolean): void {
+    public setVuiStateValue(clientId: string, stateId: string, value: string | number | boolean | null): void {
         // const user = this.config.defaultUser)
         new Date().getUTCMilliseconds();
         const state = {

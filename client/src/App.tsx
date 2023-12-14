@@ -1,42 +1,41 @@
 import './App.css';
 import { hasStateObjects, isRoom, VuiEnum } from '../../src/domain';
 import { Sheet, SheetContent, SheetTrigger } from '@/components/ui/sheet';
-
 import { useCallback, useState } from 'react';
 import { useVuiDataContext } from '@/vui-data.context';
-import { Menu } from './components/ui/menu';
-import { Sidebar } from '@/components/ui/sidebar';
 import ToggleSwitch from '@/components/ui/toggle-switch';
-import { Section } from '@/components/ui/structure/section';
-import { TreeNode } from '@/domain/logics';
-import { DynamicIcon } from '@/components/ui/icons/DynamicIcon';
+import { AspectKey, AspectNode } from '@/domain/aspect';
+import { MainAspectSection } from '@/components/domain/main-aspect.section';
+import { MainAspectsSidebar } from '@/components/domain/main-aspects.sidebar';
+import { TopMenu } from '@/components/domain/top-menu';
+import { DynamicIcon } from '@/components/icons/dynamic-icon';
 
-function App() {
-    const [roomMode, setRoomMode] = useState<string>('rooms');
-    const [selectedTreeNode, setSelectedTreeNode] = useState<TreeNode<VuiEnum, VuiEnum>>();
-    const { roomTreeList, functionTreeList, connectionState } = useVuiDataContext();
+export function App() {
+    const [mainAspect, setMainAspect] = useState<AspectKey>('rooms');
+    const [selectedAspectNode, setSelectedAspectNode] = useState<AspectNode<VuiEnum, VuiEnum>>();
+    const { roomAspectNodes, functionAspectNodes, connectionState } = useVuiDataContext();
 
-    const handleToggle = (value: string) => {
-        setRoomMode(value);
+    const handleToggle = (value: AspectKey) => {
+        setMainAspect(value);
     };
 
-    const onTreeNodeClicked = useCallback(
-        (treeNode: TreeNode<VuiEnum, VuiEnum>) => {
-            setSelectedTreeNode(treeNode);
+    const onAspectNodeClicked = useCallback(
+        (aspectNode: AspectNode<VuiEnum, VuiEnum>) => {
+            setSelectedAspectNode(aspectNode);
             setSheetOpen(false);
         },
-        [setSelectedTreeNode],
+        [setSelectedAspectNode],
     );
 
     const [sheetOpen, setSheetOpen] = useState(false);
 
-    const elements: TreeNode<VuiEnum, VuiEnum>[] = [];
+    const elements: AspectNode<VuiEnum, VuiEnum>[] = [];
 
-    if (selectedTreeNode && selectedTreeNode.basisData && selectedTreeNode.level < 2) {
-        elements.push(selectedTreeNode);
-        if (selectedTreeNode.children.length > 0) {
-            selectedTreeNode.children.forEach((node) => {
-                if (node && node.basisData && hasStateObjects(node.basisData)) {
+    if (selectedAspectNode && selectedAspectNode.mainAspect && selectedAspectNode.level < 2) {
+        elements.push(selectedAspectNode);
+        if (selectedAspectNode.children.length > 0) {
+            selectedAspectNode.children.forEach((node) => {
+                if (node && node.mainAspect && hasStateObjects(node.mainAspect)) {
                     elements.push(node);
                 }
             });
@@ -44,8 +43,8 @@ function App() {
     }
 
     const pageContent = elements.map((node) => {
-        const element = node.basisData!;
-        return <Section key={element.id} id={element.id} type={isRoom(element) ? 'room' : 'function'} />;
+        const element = node.mainAspect!;
+        return <MainAspectSection key={element.id} id={element.id} type={isRoom(element) ? 'room' : 'function'} />;
     });
 
     return (
@@ -61,19 +60,19 @@ function App() {
                         <SheetContent side="left" className="w-[300px] sm:w-[300px] overflow-y-auto	">
                             <div className="p-2">
                                 <ToggleSwitch
-                                    initialValue={roomMode}
+                                    initialValue={mainAspect}
                                     left={{ value: 'rooms', label: 'Räume' }}
                                     right={{ value: 'functions', label: 'Funktionen' }}
                                     onSwitch={handleToggle}
                                 />
-                                <Sidebar
-                                    treeNodes={roomMode === 'rooms' ? roomTreeList : functionTreeList}
-                                    onTreeNodeClicked={onTreeNodeClicked}
+                                <MainAspectsSidebar
+                                    aspectNodes={mainAspect === 'rooms' ? roomAspectNodes : functionAspectNodes}
+                                    onAspectNodeClicked={onAspectNodeClicked}
                                 />
                             </div>
                         </SheetContent>
                     </Sheet>
-                    <Menu />
+                    <TopMenu />
                     <div className="ml-auto mr-2 mt-1 ">
                         <DynamicIcon
                             className={'w-2 h-2 dark:invert opacity-50'}
@@ -87,14 +86,14 @@ function App() {
                             <div className="hidden md:block md:col-span-2 lg:col-span-2 xl:col-span-1 col-span-1">
                                 <div className="p-2">
                                     <ToggleSwitch
-                                        initialValue={roomMode}
+                                        initialValue={mainAspect}
                                         left={{ value: 'rooms', label: 'Räume' }}
                                         right={{ value: 'functions', label: 'Funktionen' }}
                                         onSwitch={handleToggle}
                                     />
-                                    <Sidebar
-                                        treeNodes={roomMode === 'rooms' ? roomTreeList : functionTreeList}
-                                        onTreeNodeClicked={onTreeNodeClicked}
+                                    <MainAspectsSidebar
+                                        aspectNodes={mainAspect === 'rooms' ? roomAspectNodes : functionAspectNodes}
+                                        onAspectNodeClicked={onAspectNodeClicked}
                                     />
                                 </div>
                             </div>
@@ -105,25 +104,6 @@ function App() {
                     </div>
                 </div>
             </div>
-
-            {/*<div className="card">*/}
-            {/*    <Button disabled={connectionState !== 'OPEN'} onClick={() => handleClickSendMessage(count)}>*/}
-            {/*        count is {count}*/}
-            {/*    </Button>*/}
-            {/*</div>*/}
-            {/*<ul>*/}
-            {/*    <p>Rooms: {rooms.length}</p>*/}
-            {/*    <p>Functions: {functions.length}</p>*/}
-            {/*    <p>Objects: {stateObjects.length}</p>*/}
-            {/*    <p>States: {stateValues.length}</p>*/}
-            {/*</ul>*/}
-
-            {/*{mapToTreeView<VuiRoom>(roomStructure)}*/}
-            {/*<ul>*/}
-            {/*    <SubComponent />*/}
-            {/*</ul>*/}
         </div>
     );
 }
-
-export default App;

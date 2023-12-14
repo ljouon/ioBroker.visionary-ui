@@ -13,7 +13,7 @@ import {
 import Icon from '@mui/material/Icon';
 import { useTheme } from '@/theme-provider';
 
-export function Menu() {
+export function TopMenu() {
     const { setTheme, theme } = useTheme();
 
     return (
