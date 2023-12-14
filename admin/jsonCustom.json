@@ -9,18 +9,18 @@
       "maxLength": 64,
       "default": "",
       "sm": 6,
-      "help": "Name of the custom Material UI icon"
+      "help": "Name of the custom Material Design Icon"
     },
     "info": {
       "newLine": true,
       "type": "staticText",
-      "text": "Please provide the name in \"snake case\" form like \"thumb_up\" for the \"Thumb Up\" Icon"
+      "text": "Please provide the name of an icon in this form \"home-automation\" (small letters with dashes between the words) or in this form \"mdiHomeAutomation\" (with leading 'mdi' prefix and camel case words) for the \"Home Automation\" Icon"
     },
     "link": {
       "newLine": true,
       "type": "staticLink",
-      "href": "https://fonts.google.com/icons?icon.set=Material+Icons",
-      "label": "Material UI Icons",
+      "href": "https://pictogrammers.com/library/mdi/",
+      "label": "Material Design Icons",
       "variant": "outlined",
       "icon": "info"
     },

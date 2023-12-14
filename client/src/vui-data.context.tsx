@@ -1,10 +1,11 @@
-import { createContext, ReactNode, useCallback, useContext, useState } from 'react';
+import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
 import { VuiEnvelope, VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from '../../src/domain';
 import useWebSocket, { ConnectionState } from './useWebsocket';
+import { createStructure, TreeNode } from '@/domain/logics';
 
 export type VuiDataContextType = {
-    rooms: VuiRoom[];
-    functions: VuiFunction[];
+    roomTreeList: TreeNode<VuiRoom, VuiFunction>[];
+    functionTreeList: TreeNode<VuiFunction, VuiRoom>[];
     stateObjects: VuiStateObject[];
     stateValues: VuiStateValue[];
     connectionState: ConnectionState;
@@ -14,12 +15,12 @@ export type VuiDataContextType = {
 const noop = () => {};
 
 const VuiDataContext = createContext<VuiDataContextType>({
-    rooms: [],
-    functions: [],
+    roomTreeList: [],
+    functionTreeList: [],
     stateObjects: [],
     stateValues: [],
     connectionState: 'UNKNOWN',
-    sendMessage: noop, // Will be replaced be the correct implementation below
+    sendMessage: noop, // Will be replaced by the correct implementation below
 });
 
 export type VuiDataProviderProps = {
@@ -31,6 +32,8 @@ export function VuiDataProvider({ children }: VuiDataProviderProps) {
     const [functions, setFunctions] = useState<VuiFunction[]>([]);
     const [stateObjects, setStateObjects] = useState<VuiStateObject[]>([]);
     const [stateValues, setStateValues] = useState<VuiStateValue[]>([]);
+    const [roomTreeList, setRoomTreeList] = useState<TreeNode<VuiRoom, VuiFunction>[]>([]);
+    const [functionTreeList, setFunctionTreeList] = useState<TreeNode<VuiFunction, VuiRoom>[]>([]);
 
     function replaceElementInArray<
         T extends {
@@ -93,11 +96,21 @@ export function VuiDataProvider({ children }: VuiDataProviderProps) {
         [rooms, functions, stateObjects, stateValues],
     );
 
+    useEffect(() => {
+        const roomStructure = createStructure<VuiRoom, VuiFunction>(rooms, 'enum.rooms', functions);
+        setRoomTreeList(roomStructure);
+    }, [rooms, functions]);
+
+    useEffect(() => {
+        const functionStructure = createStructure<VuiFunction, VuiRoom>(functions, 'enum.functions', rooms);
+        setFunctionTreeList(functionStructure);
+    }, [functions, rooms]);
+
     const { sendMessage, connectionState } = useWebSocket(handleNewMessage);
 
     const contextValue = {
-        rooms,
-        functions,
+        roomTreeList,
+        functionTreeList,
         stateObjects,
         stateValues,
         connectionState,
