@@ -5,14 +5,14 @@ import { CardDescription, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
 
 export type ObjectSwitchProps = {
-    pageId: string;
+    sectionId: string;
     cardId: string;
     stateObject: UiStateObject;
 };
 
-export function ObjectSwitch({ stateObject, pageId, cardId }: ObjectSwitchProps) {
+export function ObjectSwitch({ stateObject, sectionId, cardId }: ObjectSwitchProps) {
     return (
-        <div className="flex items-center w-full" key={`div_${pageId}_${cardId}_${stateObject.id}`}>
+        <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${stateObject.id}`}>
             <div className="flex-none flex items-center ">
                 {stateObject.customIcon ? (
                     <DynamicIcon
@@ -22,7 +22,7 @@ export function ObjectSwitch({ stateObject, pageId, cardId }: ObjectSwitchProps)
                 ) : undefined}
             </div>
             <div className="flex-grow truncate mx-2">
-                <Label htmlFor={`${pageId}_${cardId}_${stateObject.id}`}>
+                <Label htmlFor={`${sectionId}_${cardId}_${stateObject.id}`}>
                     <CardTitle>
                         <span className="whitespace-nowrap overflow-hidden">
                             {stateObject.displayName ? stateObject.displayName : stateObject.name}
@@ -38,7 +38,7 @@ export function ObjectSwitch({ stateObject, pageId, cardId }: ObjectSwitchProps)
                 </Label>
             </div>
             <div className="flex-none">
-                <Switch id={`${pageId}_${cardId}_${stateObject.id}`} checked={stateObject.value === true} />
+                <Switch id={`${sectionId}_${cardId}_${stateObject.id}`} checked={stateObject.value === true} />
             </div>
         </div>
     );
