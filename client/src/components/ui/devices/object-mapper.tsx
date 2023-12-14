@@ -1,11 +1,11 @@
 import { UiStateObject } from '@/domain/logics';
 import { ObjectSwitch } from '@/components/ui/devices/object-switch';
-import { DynamicIcon } from '@/components/ui/icons/DynamicIcon';
-import { Label } from '@/components/ui/label';
-import { CardDescription, CardTitle } from '@/components/ui/card';
+import { ObjectUnknown } from '@/components/ui/devices/object-unknown';
+import { ObjectSlider } from '@/components/ui/devices/object-slider';
+import { ObjectEnum } from '@/components/ui/devices/object-enum';
 
-const switchable = ['boolean'];
-const possibleDataTypes = ['array', 'boolean', 'file', 'json', 'mixed', 'number', 'object', 'string'];
+// const switchable = ['boolean'];
+// const possibleDataTypes = ['array', 'boolean', 'file', 'json', 'mixed', 'number', 'object', 'string'];
 
 /*
 brightness:
@@ -167,13 +167,22 @@ Illumination lichtsensor
 
  */
 
-function isSwitch(uiStateObject: UiStateObject) {
+function shouldBeSwitch(uiStateObject: UiStateObject) {
     return 'boolean' === uiStateObject.datatype;
 }
 
-function isRangeObject(uiStateObject: UiStateObject) {
+function shouldBeSlider(uiStateObject: UiStateObject) {
     if ('number' === uiStateObject.datatype) {
         if (!uiStateObject.states) {
+            return true;
+        }
+    }
+    return false;
+}
+
+function shouldBeEnumObject(uiStateObject: UiStateObject) {
+    if ('number' === uiStateObject.datatype) {
+        if (uiStateObject.states) {
             return true;
         }
     }
@@ -183,54 +192,45 @@ function isRangeObject(uiStateObject: UiStateObject) {
 export function mapToUiObjectComponent(sectionId: string, cardId: string, uiStateObject: UiStateObject) {
     console.log(uiStateObject.id, uiStateObject.role, uiStateObject.datatype);
 
-    if (isSwitch(uiStateObject)) {
+    if (shouldBeSwitch(uiStateObject)) {
         return (
             <ObjectSwitch
                 key={sectionId + '-' + cardId + '-' + uiStateObject.id}
-                stateObject={uiStateObject}
+                uiStateObject={uiStateObject}
                 sectionId={sectionId}
                 cardId={cardId}
             />
         );
     }
 
-    if (isRangeObject(uiStateObject)) {
-        return createUnknownObjectComponent(sectionId, cardId, uiStateObject);
+    if (shouldBeSlider(uiStateObject)) {
+        return (
+            <ObjectSlider
+                key={sectionId + '-' + cardId + '-' + uiStateObject.id}
+                uiStateObject={uiStateObject}
+                sectionId={sectionId}
+                cardId={cardId}
+            />
+        );
     }
-}
 
-function createUnknownObjectComponent(sectionId: string, cardId: string, uiStateObject: UiStateObject) {
+    if (shouldBeEnumObject(uiStateObject)) {
+        return (
+            <ObjectEnum
+                key={sectionId + '-' + cardId + '-' + uiStateObject.id}
+                uiStateObject={uiStateObject}
+                sectionId={sectionId}
+                cardId={cardId}
+            />
+        );
+    }
+
     return (
-        <div className="flex items-center w-full" key={sectionId + '-' + cardId + '-' + uiStateObject.id}>
-            <div className="flex-none flex items-center ">
-                {uiStateObject.customIcon ? (
-                    <DynamicIcon
-                        className="dark:prose-invert h-8 w-8 lg:w-10 lg:h-10 mr-2 opacity-50"
-                        iconKey={uiStateObject.customIcon}
-                    />
-                ) : undefined}
-            </div>
-            <div className="flex-grow truncate mx-2">
-                <Label htmlFor={`${sectionId}_${cardId}_${uiStateObject.id}`}>
-                    <CardTitle>
-                        <span className="whitespace-nowrap overflow-hidden">
-                            {uiStateObject.displayName ? uiStateObject.displayName : uiStateObject.name}
-                        </span>
-                    </CardTitle>
-                    {uiStateObject.description ? (
-                        <CardDescription>
-                            <span className="whitespace-nowrap overflow-hidden">{uiStateObject.description}</span>
-                        </CardDescription>
-                    ) : (
-                        ''
-                    )}
-                </Label>
-            </div>
-            {uiStateObject.isWriteable ? (
-                <div className="flex-none">input: {uiStateObject.value}</div>
-            ) : (
-                <div className="flex-none">{uiStateObject.value}</div>
-            )}
-        </div>
+        <ObjectUnknown
+            key={sectionId + '-' + cardId + '-' + uiStateObject.id}
+            uiStateObject={uiStateObject}
+            sectionId={sectionId}
+            cardId={cardId}
+        />
     );
 }

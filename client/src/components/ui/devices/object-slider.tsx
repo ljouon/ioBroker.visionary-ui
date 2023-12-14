@@ -1,16 +1,16 @@
 import { UiStateObject } from '@/domain/logics';
 import { DynamicIcon } from '@/components/ui/icons/DynamicIcon';
-import { Label } from '@/components/ui/label';
+import { Slider } from '@/components/ui/slider';
 import { CardDescription, CardTitle } from '@/components/ui/card';
-import { Switch } from '@/components/ui/switch';
+import { Label } from '@/components/ui/label';
 
-export type ObjectSwitchProps = {
+export type ObjectSliderProps = {
     sectionId: string;
     cardId: string;
     uiStateObject: UiStateObject;
 };
 
-export function ObjectSwitch({ uiStateObject, sectionId, cardId }: ObjectSwitchProps) {
+export function ObjectSlider({ uiStateObject, sectionId, cardId }: ObjectSliderProps) {
     return (
         <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${uiStateObject.id}`}>
             <div className="flex-none flex items-center ">
@@ -35,13 +35,16 @@ export function ObjectSwitch({ uiStateObject, sectionId, cardId }: ObjectSwitchP
                     ) : (
                         ''
                     )}
+                    <Slider
+                        hideThumb={!uiStateObject.isWriteable}
+                        className={'my-2'}
+                        id={`${sectionId}_${cardId}_${uiStateObject.id}`}
+                        min={uiStateObject.minValue || undefined}
+                        max={uiStateObject.maxValue || undefined}
+                        defaultValue={uiStateObject.value ? [Number(uiStateObject.value)] : []}
+                        //value={uiStateObject.value ? [Number(uiStateObject.value)] : []}
+                    />
                 </Label>
-            </div>
-            <div className="flex-none">
-                <Switch
-                    id={`${sectionId}_${cardId}_${uiStateObject.id}`}
-                    defaultChecked={uiStateObject.value === true}
-                />
             </div>
         </div>
     );
