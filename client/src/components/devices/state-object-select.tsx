@@ -1,16 +1,16 @@
-import { UiStateObject } from '@/domain/logics';
-import { DynamicIcon } from '@/components/ui/icons/DynamicIcon';
 import { CardDescription, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
+import { StateObject } from '@/domain/aspect';
+import { DynamicIcon } from '@/components/icons/dynamic-icon';
 
 export type ObjectEnumProps = {
     sectionId: string;
     cardId: string;
-    uiStateObject: UiStateObject;
+    uiStateObject: StateObject;
 };
 
-export function ObjectEnum({ uiStateObject, sectionId, cardId }: ObjectEnumProps) {
+export function StateObjectSelect({ uiStateObject, sectionId, cardId }: ObjectEnumProps) {
     return (
         <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${uiStateObject.id}`}>
             <div className="flex-none flex items-center ">

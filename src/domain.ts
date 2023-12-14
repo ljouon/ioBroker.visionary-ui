@@ -1,4 +1,4 @@
-export type VuiEnvelope =
+export type VuiDataEnvelope =
     | AllRooms
     | AllFunctions
     | AllStateObjects
@@ -110,9 +110,19 @@ export type VuiStateObject = {
     rank: number | null;
 };
 
-export type VuiStateValue = {
-    type: 'value';
+export type StateValue = {
     id: string;
     value: string | number | boolean | null;
+};
+
+export type VuiStateValue = StateValue & {
+    type: 'value';
     lastChange: number;
+};
+
+export type VuiActionEnvelope = SetValues;
+
+export type SetValues = {
+    type: 'setValues';
+    data: StateValue[];
 };

@@ -38,9 +38,9 @@ export class VisionaryUiSocketServer extends ClientCommunication {
                     console.log(`Received message: ${message}`);
                     this.clientInboundHandler?.onMessageFromClient(clientId, message);
 
-                    this.socketServer?.clients.forEach((client) => {
-                        client.send(`Server received your message: ${message}`);
-                    });
+                    // this.socketServer?.clients.forEach((client) => {
+                    //     client.send(`Server received your message: ${message}`);
+                    // });
                 });
 
                 ws.on('close', (_) => {
