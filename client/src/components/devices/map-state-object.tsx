@@ -1,8 +1,8 @@
-import { UiStateObject } from '@/domain/logics';
-import { ObjectSwitch } from '@/components/ui/devices/object-switch';
-import { ObjectUnknown } from '@/components/ui/devices/object-unknown';
-import { ObjectSlider } from '@/components/ui/devices/object-slider';
-import { ObjectEnum } from '@/components/ui/devices/object-enum';
+import { StateObjectSwitch } from '@/components/devices/state-object-switch';
+import { StateObjectSlider } from '@/components/devices/state-object-slider';
+import { StateObjectSelect } from '@/components/devices/state-object-select';
+import { StateObjectUnknown } from '@/components/devices/state-object-unknown';
+import { StateObject } from '@/domain/aspect';
 
 // const switchable = ['boolean'];
 // const possibleDataTypes = ['array', 'boolean', 'file', 'json', 'mixed', 'number', 'object', 'string'];
@@ -167,11 +167,11 @@ Illumination lichtsensor
 
  */
 
-function shouldBeSwitch(uiStateObject: UiStateObject) {
+function shouldBeSwitch(uiStateObject: StateObject) {
     return 'boolean' === uiStateObject.datatype;
 }
 
-function shouldBeSlider(uiStateObject: UiStateObject) {
+function shouldBeSlider(uiStateObject: StateObject) {
     if ('number' === uiStateObject.datatype) {
         if (!uiStateObject.states) {
             return true;
@@ -180,7 +180,7 @@ function shouldBeSlider(uiStateObject: UiStateObject) {
     return false;
 }
 
-function shouldBeEnumObject(uiStateObject: UiStateObject) {
+function shouldBeSelect(uiStateObject: StateObject) {
     if ('number' === uiStateObject.datatype) {
         if (uiStateObject.states) {
             return true;
@@ -189,12 +189,12 @@ function shouldBeEnumObject(uiStateObject: UiStateObject) {
     return false;
 }
 
-export function mapToUiObjectComponent(sectionId: string, cardId: string, uiStateObject: UiStateObject) {
+export function mapToStateObjectComponent(sectionId: string, cardId: string, uiStateObject: StateObject) {
     console.log(uiStateObject.id, uiStateObject.role, uiStateObject.datatype);
 
     if (shouldBeSwitch(uiStateObject)) {
         return (
-            <ObjectSwitch
+            <StateObjectSwitch
                 key={sectionId + '-' + cardId + '-' + uiStateObject.id}
                 uiStateObject={uiStateObject}
                 sectionId={sectionId}
@@ -205,7 +205,7 @@ export function mapToUiObjectComponent(sectionId: string, cardId: string, uiStat
 
     if (shouldBeSlider(uiStateObject)) {
         return (
-            <ObjectSlider
+            <StateObjectSlider
                 key={sectionId + '-' + cardId + '-' + uiStateObject.id}
                 uiStateObject={uiStateObject}
                 sectionId={sectionId}
@@ -214,9 +214,9 @@ export function mapToUiObjectComponent(sectionId: string, cardId: string, uiStat
         );
     }
 
-    if (shouldBeEnumObject(uiStateObject)) {
+    if (shouldBeSelect(uiStateObject)) {
         return (
-            <ObjectEnum
+            <StateObjectSelect
                 key={sectionId + '-' + cardId + '-' + uiStateObject.id}
                 uiStateObject={uiStateObject}
                 sectionId={sectionId}
@@ -226,7 +226,7 @@ export function mapToUiObjectComponent(sectionId: string, cardId: string, uiStat
     }
 
     return (
-        <ObjectUnknown
+        <StateObjectUnknown
             key={sectionId + '-' + cardId + '-' + uiStateObject.id}
             uiStateObject={uiStateObject}
             sectionId={sectionId}

@@ -1,9 +1,9 @@
 import { useVuiDataContext } from '@/vui-data.context';
-import { TreeNode } from '@/domain/logics';
-import { VuiEnum } from '../../../../../src/domain';
-import { DeviceCard } from '@/components/ui/devices/device-card';
+import { AspectNode } from '@/domain/aspect';
+import { VuiEnum } from '../../../../src/domain';
+import { SupplementalAspectCard } from './supplemental-aspect.card';
 
-type SectionProps = {
+type MainAspectSectionProps = {
     id: string;
     type: 'room' | 'function';
 };
@@ -11,10 +11,10 @@ type SectionProps = {
 // TODO: Collect objects from children and merge them
 // TODO: Section Order
 
-function findNodeById(nodes: TreeNode<VuiEnum, VuiEnum>[], id: string): TreeNode<VuiEnum, VuiEnum> | null {
+function findNodeById(nodes: AspectNode<VuiEnum, VuiEnum>[], id: string): AspectNode<VuiEnum, VuiEnum> | null {
     let result = null;
     for (const node of nodes) {
-        if (node.basisData && node.basisData.id === id) {
+        if (node.mainAspect && node.mainAspect.id === id) {
             result = node;
             break;
         }
@@ -30,18 +30,18 @@ function findNodeById(nodes: TreeNode<VuiEnum, VuiEnum>[], id: string): TreeNode
     return result;
 }
 
-export function Section({ id, type }: SectionProps) {
-    const { roomTreeList, functionTreeList } = useVuiDataContext();
+export function MainAspectSection({ id, type }: MainAspectSectionProps) {
+    const { roomAspectNodes, functionAspectNodes } = useVuiDataContext();
 
     let element = undefined;
     if (type === 'room') {
-        element = findNodeById(roomTreeList, id);
+        element = findNodeById(roomAspectNodes, id);
     } else if (type === 'function') {
-        element = findNodeById(functionTreeList, id);
+        element = findNodeById(functionAspectNodes, id);
     }
 
     const devices =
-        element?.matchingData?.filter((subElement) => subElement.members && subElement.members.length > 0) || [];
+        element?.supplementalAspects?.filter((subElement) => subElement.members && subElement.members.length > 0) || [];
 
     return (
         <>
@@ -49,16 +49,16 @@ export function Section({ id, type }: SectionProps) {
                 <h1 className="m- flex items-center text-lg font-extrabold leading-none tracking-tight text-gray-900 md:text-xl lg:text-2xl dark:text-white">
                     <img
                         className="dark:invert h-8 w-8 lg:w-10 lg:h-10 opacity-50"
-                        src={element?.basisData?.icon ?? undefined}
+                        src={element?.mainAspect?.icon ?? undefined}
                         alt={'icon'}
                     />
-                    <span className="ml-2">{element?.basisData?.name}</span>
+                    <span className="ml-2">{element?.mainAspect?.name}</span>
                 </h1>
             </div>
             <div className="gap-6 rounded-lg p-8 lg:columns-2 xl:columns-3 space-y-6">
                 {devices?.map((element) => {
                     return (
-                        <DeviceCard
+                        <SupplementalAspectCard
                             title={element.name}
                             key={element.id}
                             id={element.id}

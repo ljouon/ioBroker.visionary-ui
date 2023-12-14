@@ -1,7 +1,7 @@
 import Icon from '@mdi/react';
 import * as mdiIcons from '@mdi/js';
 import { ReactNode } from 'react';
-import { convertIconKeyToMdiFormat, isValidIconKey } from '@/components/ui/icons/icon-tools';
+import { convertIconKeyToMdiFormat, isValidIconKey } from './icon-tools';
 
 type DynamicIconProps = { iconKey: string; className: string };
 

@@ -1,15 +1,15 @@
-import { UiStateObject } from '@/domain/logics';
-import { DynamicIcon } from '@/components/ui/icons/DynamicIcon';
 import { Label } from '@/components/ui/label';
 import { CardDescription, CardTitle } from '@/components/ui/card';
+import { StateObject } from '@/domain/aspect';
+import { DynamicIcon } from '@/components/icons/dynamic-icon';
 
-export type ObjectUnknownProps = {
+export type StateObjectUnknownProps = {
     sectionId: string;
     cardId: string;
-    uiStateObject: UiStateObject;
+    uiStateObject: StateObject;
 };
 
-export function ObjectUnknown({ uiStateObject, sectionId, cardId }: ObjectUnknownProps) {
+export function StateObjectUnknown({ uiStateObject, sectionId, cardId }: StateObjectUnknownProps) {
     return (
         <div className="flex items-center w-full" key={sectionId + '-' + cardId + '-' + uiStateObject.id}>
             <div className="flex-none flex items-center ">
