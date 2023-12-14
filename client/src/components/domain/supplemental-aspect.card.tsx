@@ -3,21 +3,21 @@ import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
 import { useVuiDataContext } from '@/vui-data.context';
-import { ReactNode, useEffect, useState } from 'react';
-import { UiStateObject } from '@/domain/logics';
-import { mapToUiObjectComponent } from '@/components/ui/devices/object-mapper';
+import { useEffect, useState } from 'react';
+import { StateObject } from '@/domain/aspect';
+import { mapToStateObjectComponent } from '../devices/map-state-object';
 
-type DeviceCardProps = {
+type SupplementalAspectCardProps = {
     id: string;
     sectionId: string;
     title: string;
     functionObjectIds: string[];
 };
 
-export function DeviceCard({ id, title, sectionId, functionObjectIds }: DeviceCardProps): ReactNode | undefined {
+export function SupplementalAspectCard({ id, title, sectionId, functionObjectIds }: SupplementalAspectCardProps) {
     const { stateObjects, stateValues } = useVuiDataContext();
 
-    const [vuiStateObjects, setVuiStateObjects] = useState<UiStateObject[]>([]);
+    const [vuiStateObjects, setVuiStateObjects] = useState<StateObject[]>([]);
 
     useEffect(() => {
         const vuiObjects = stateObjects
@@ -49,7 +49,7 @@ export function DeviceCard({ id, title, sectionId, functionObjectIds }: DeviceCa
                             <CardTitle>{title}</CardTitle>
                             <CardDescription>Beschreibung</CardDescription>
                         </div>
-                        <div className="flex items-center">
+                        <div className="flex items-center hidden">
                             <Label htmlFor={`${sectionId}_all_${id}`} className="mr-2">
                                 <span className="font-bold leading-snug text-muted-foreground">Alle</span>
                             </Label>
@@ -61,7 +61,7 @@ export function DeviceCard({ id, title, sectionId, functionObjectIds }: DeviceCa
                     <Separator />
                     {vuiStateObjects.map((object) => {
                         // TODO: map multiple objects to a specific card and let unused objects remain for other cards.
-                        return mapToUiObjectComponent(sectionId, id, object);
+                        return mapToStateObjectComponent(sectionId, id, object);
                     })}
                 </CardContent>
                 <CardFooter></CardFooter>

@@ -1,18 +1,18 @@
-import React from 'react';
+import { ReactNode } from 'react';
 
-export type SwitchingValue = {
-    value: string;
+export type SwitchingValue<T> = {
+    value: T;
     label: string;
 };
 
-interface ToggleSwitchProps {
+interface ToggleSwitchProps<T> {
     initialValue: string;
-    left: SwitchingValue;
-    right: SwitchingValue;
-    onSwitch: (value: string) => void; // Callback function prop
+    left: SwitchingValue<T>;
+    right: SwitchingValue<T>;
+    onSwitch: (value: T) => void; // Callback function prop
 }
 
-const ToggleSwitch: React.FC<ToggleSwitchProps> = ({initialValue, left, right, onSwitch}) => {
+export function ToggleSwitch<T>({ initialValue, left, right, onSwitch }: ToggleSwitchProps<T>): ReactNode {
     const active = initialValue === left.value;
 
     const toggle = () => {
@@ -21,8 +21,7 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({initialValue, left, right, o
     };
 
     return (
-        <div className="relative inline-block w-full py-2 bg-accent rounded-md cursor-pointer"
-             onClick={toggle}>
+        <div className="relative inline-block w-full py-2 bg-accent rounded-md cursor-pointer" onClick={toggle}>
             <div
                 className={`absolute top-0 bottom-0 ${
                     active ? 'left-0 right-1/2' : 'right-0 left-1/2'
@@ -46,6 +45,6 @@ const ToggleSwitch: React.FC<ToggleSwitchProps> = ({initialValue, left, right, o
             </div>
         </div>
     );
-};
+}
 
 export default ToggleSwitch;

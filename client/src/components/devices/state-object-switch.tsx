@@ -1,16 +1,23 @@
-import { UiStateObject } from '@/domain/logics';
-import { DynamicIcon } from '@/components/ui/icons/DynamicIcon';
 import { Label } from '@/components/ui/label';
 import { CardDescription, CardTitle } from '@/components/ui/card';
 import { Switch } from '@/components/ui/switch';
+import { StateObject } from '@/domain/aspect';
+import { DynamicIcon } from '@/components/icons/dynamic-icon';
+import { useVuiDataContext } from '@/vui-data.context';
 
-export type ObjectSwitchProps = {
+export type StateObjectSwitchProps = {
     sectionId: string;
     cardId: string;
-    uiStateObject: UiStateObject;
+    uiStateObject: StateObject;
 };
 
-export function ObjectSwitch({ uiStateObject, sectionId, cardId }: ObjectSwitchProps) {
+export function StateObjectSwitch({ uiStateObject, sectionId, cardId }: StateObjectSwitchProps) {
+    const { sendVuiAction } = useVuiDataContext();
+
+    function onCheckedChange(value: boolean) {
+        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value }] });
+    }
+
     return (
         <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${uiStateObject.id}`}>
             <div className="flex-none flex items-center ">
@@ -41,6 +48,7 @@ export function ObjectSwitch({ uiStateObject, sectionId, cardId }: ObjectSwitchP
                 <Switch
                     id={`${sectionId}_${cardId}_${uiStateObject.id}`}
                     defaultChecked={uiStateObject.value === true}
+                    onCheckedChange={onCheckedChange}
                 />
             </div>
         </div>

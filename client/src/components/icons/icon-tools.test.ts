@@ -1,4 +1,4 @@
-import {convertIconKeyToMdiFormat, isValidIconKey} from '@/components/ui/icons/icon-tools';
+import { convertIconKeyToMdiFormat, isValidIconKey } from './icon-tools';
 
 describe('icon tools', () => {
     describe('isValidIconKey', () => {
