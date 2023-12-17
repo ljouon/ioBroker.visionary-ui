@@ -40,8 +40,13 @@ This section is intended for the developer. It can be deleted later
 - [ ] how to define the port between client and server? maybe add info via express endpoint or data on
   serving: https://stackoverflow.com/questions/44354763/how-do-i-get-http-headers-in-react-js
 - [ ] implement client UI
+- [ ] Switch external state update (like slider)
+- [ ] Select external state update (like slider)
 - [ ] handle/flatten level depth for rooms and functions
-- [ ] Sortierung der Räume?
+- [ ] Sorting of rooms and functions?
+- [ ] Switch between rooms und functions via click on headlines/card headers
+- [ ] Popover info on icon click
+- [ ] show only if the value of a specific other object is true (rules engine support)
 - [ ] invalid config message!?
 - [ ] business logics for UI: rooms, categories, devices, states
 - [ ] multi language in client? Server language file via api?
