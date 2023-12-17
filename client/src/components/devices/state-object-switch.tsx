@@ -4,6 +4,7 @@ import { Switch } from '@/components/ui/switch';
 import { StateObject } from '@/domain/aspect';
 import { DynamicIcon } from '@/components/icons/dynamic-icon';
 import { useVuiDataContext } from '@/vui-data.context';
+import { useEffect, useState } from 'react';
 
 export type StateObjectSwitchProps = {
     sectionId: string;
@@ -12,11 +13,18 @@ export type StateObjectSwitchProps = {
 };
 
 export function StateObjectSwitch({ uiStateObject, sectionId, cardId }: StateObjectSwitchProps) {
+    const defaultChecked = uiStateObject.value === true;
+    const [internalValue, setInternalValue] = useState(defaultChecked);
     const { sendVuiAction } = useVuiDataContext();
 
-    function onCheckedChange(value: boolean) {
-        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value }] });
-    }
+    const handleValueChange = (newValue: boolean) => {
+        setInternalValue(newValue);
+        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value: newValue }] });
+    };
+
+    useEffect(() => {
+        setInternalValue(defaultChecked);
+    }, [defaultChecked]);
 
     return (
         <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${uiStateObject.id}`}>
@@ -47,8 +55,9 @@ export function StateObjectSwitch({ uiStateObject, sectionId, cardId }: StateObj
             <div className="flex-none">
                 <Switch
                     id={`${sectionId}_${cardId}_${uiStateObject.id}`}
-                    defaultChecked={uiStateObject.value === true}
-                    onCheckedChange={onCheckedChange}
+                    defaultChecked={defaultChecked}
+                    checked={internalValue}
+                    onCheckedChange={handleValueChange}
                 />
             </div>
         </div>
