@@ -172,7 +172,7 @@ function shouldBeSwitch(uiStateObject: StateObject) {
 }
 
 function shouldBeSlider(uiStateObject: StateObject) {
-    if ('number' === uiStateObject.datatype) {
+    if ('number' === uiStateObject.datatype && uiStateObject.minValue !== null) {
         if (!uiStateObject.states) {
             return true;
         }

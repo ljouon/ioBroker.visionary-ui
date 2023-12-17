@@ -54,7 +54,7 @@ export function App() {
                     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                         <SheetTrigger className="block md:hidden">
                             <div className="ml-3 mt-1">
-                                <DynamicIcon className={'w-8 h-8 dark:invert opacity-50'} iconKey="menu" />
+                                <DynamicIcon className={'w-8 h-8 accent-gray-300 opacity-50'} iconKey="menu" />
                             </div>
                         </SheetTrigger>
                         <SheetContent side="left" className="w-[300px] sm:w-[300px] overflow-y-auto	">
