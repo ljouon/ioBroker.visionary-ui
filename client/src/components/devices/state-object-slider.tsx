@@ -3,6 +3,8 @@ import { CardDescription, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { StateObject } from '@/domain/aspect';
 import { DynamicIcon } from '@/components/icons/dynamic-icon';
+import { useVuiDataContext } from '@/vui-data.context';
+import { useEffect, useState } from 'react';
 
 export type StateObjectSliderProps = {
     sectionId: string;
@@ -11,17 +13,28 @@ export type StateObjectSliderProps = {
 };
 
 export function StateObjectSlider({ uiStateObject, sectionId, cardId }: StateObjectSliderProps) {
+    const [internalValue, setInternalValue] = useState(uiStateObject.value);
+    const { sendVuiAction } = useVuiDataContext();
+
     let valueString = '';
-    console.log(uiStateObject.value);
+
     if (uiStateObject.unit) {
         valueString = uiStateObject.value + ' ' + uiStateObject.unit;
-    } else if (
-        (Number(uiStateObject.value) || uiStateObject.value === 0) &&
-        uiStateObject.maxValue &&
-        uiStateObject.maxValue > 0
-    ) {
+    } else if (uiStateObject.value !== null && uiStateObject.maxValue && uiStateObject.maxValue > 0) {
         valueString = Math.round((Number(uiStateObject.value) / uiStateObject.maxValue) * 100) + ' %';
     }
+
+    const handleValueChange = (newValue: number[]) => {
+        setInternalValue(newValue[0]);
+    };
+
+    const handleValueCommit = (newValue: number[]) => {
+        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value: newValue[0] }] });
+    };
+
+    useEffect(() => {
+        setInternalValue(uiStateObject.value);
+    }, [uiStateObject.value]);
 
     return (
         <div className="flex-row w-full">
@@ -46,20 +59,26 @@ export function StateObjectSlider({ uiStateObject, sectionId, cardId }: StateObj
                                 <span className="whitespace-nowrap overflow-hidden">{uiStateObject.description}</span>
                             </CardDescription>
                         ) : (
-                            'blblblbllb'
+                            'Beschreibung'
                         )}
                     </Label>
                 </div>
                 {valueString}
             </div>
-            <Slider
-                hideThumb={!uiStateObject.isWriteable}
-                className={'my-4'}
-                id={`${sectionId}_${cardId}_${uiStateObject.id}`}
-                min={uiStateObject.minValue || undefined}
-                max={uiStateObject.maxValue || undefined}
-                defaultValue={uiStateObject.value ? [Number(uiStateObject.value)] : []}
-            />
+            {uiStateObject.isWriteable ? (
+                <Slider
+                    hideThumb={!uiStateObject.isWriteable}
+                    disabled={!uiStateObject.isWriteable}
+                    className={'ml-1 pr-2 my-4'}
+                    id={`${sectionId}_${cardId}_${uiStateObject.id}`}
+                    min={uiStateObject.minValue || undefined}
+                    max={uiStateObject.maxValue || undefined}
+                    onValueChange={handleValueChange}
+                    onValueCommit={handleValueCommit}
+                    value={internalValue !== null ? [Number(internalValue)] : []}
+                    defaultValue={uiStateObject.value !== null ? [Number(uiStateObject.value)] : []}
+                />
+            ) : undefined}
         </div>
     );
 }
