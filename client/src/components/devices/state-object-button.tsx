@@ -1,17 +1,25 @@
 import { Label } from '@/components/ui/label';
 import { CardDescription, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
 import { StateObject } from '@/domain/aspect';
 import { DynamicIcon } from '@/components/icons/dynamic-icon';
+import { useVuiDataContext } from '@/vui-data.context';
 
-export type StateObjectUnknownProps = {
+export type StateObjectButtonProps = {
     sectionId: string;
     cardId: string;
     uiStateObject: StateObject;
 };
 
-export function StateObjectUnknown({ uiStateObject, sectionId, cardId }: StateObjectUnknownProps) {
+export function StateObjectButton({ uiStateObject, sectionId, cardId }: StateObjectButtonProps) {
+    const { sendVuiAction } = useVuiDataContext();
+
+    const handleValueChange = () => {
+        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value: true }] });
+    };
+
     return (
-        <div className="flex items-center w-full" key={sectionId + '-' + cardId + '-' + uiStateObject.id}>
+        <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${uiStateObject.id}`}>
             <div className="flex-none flex items-center ">
                 {uiStateObject.customIcon ? (
                     <DynamicIcon
@@ -20,7 +28,7 @@ export function StateObjectUnknown({ uiStateObject, sectionId, cardId }: StateOb
                     />
                 ) : undefined}
             </div>
-            <div className="flex-grow truncate mx-2">
+            <div className="flex-grow truncate pl-2">
                 <Label htmlFor={`${sectionId}_${cardId}_${uiStateObject.id}`}>
                     <CardTitle>
                         <span className="whitespace-nowrap overflow-hidden">
@@ -36,11 +44,11 @@ export function StateObjectUnknown({ uiStateObject, sectionId, cardId }: StateOb
                     )}
                 </Label>
             </div>
-            {uiStateObject.isWriteable ? (
-                <div className="flex-none">write: {uiStateObject.value}</div>
-            ) : (
-                <div className="flex-none">read: {uiStateObject.value}</div>
-            )}
+            <div className="flex-none">
+                <Button id={`${sectionId}_${cardId}_${uiStateObject.id}`} onClick={handleValueChange}>
+                    <DynamicIcon iconKey="check-bold" className="w-6 h-6" />
+                </Button>
+            </div>
         </div>
     );
 }
