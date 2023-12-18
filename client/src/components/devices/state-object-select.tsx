@@ -36,10 +36,9 @@ export function StateObjectSelect({ uiStateObject, sectionId, cardId }: ObjectEn
     let states = uiStateObject.states;
     if (!states && uiStateObject.minValue !== null && uiStateObject.maxValue !== null) {
         states = {};
-        for (let i = uiStateObject.minValue; i < uiStateObject.maxValue; i++) {
+        for (let i = uiStateObject.minValue; i <= uiStateObject.maxValue; i++) {
             states[i] = String(i);
         }
-        console.log(states);
     }
 
     return (
@@ -63,33 +62,27 @@ export function StateObjectSelect({ uiStateObject, sectionId, cardId }: ObjectEn
                         <CardDescription>
                             <span className="whitespace-nowrap overflow-hidden">{uiStateObject.description}</span>
                         </CardDescription>
-                    ) : (
-                        ''
-                    )}
-                    {uiStateObject.isWriteable ? (
-                        <Select defaultValue={defaultValue} value={internalValue} onValueChange={handleValueChange}>
-                            <SelectTrigger className="my-4 w-full">
-                                <SelectValue placeholder="No value" />
-                            </SelectTrigger>
-                            <SelectContent>
-                                <SelectGroup>
-                                    {states &&
-                                        Object.entries(states).map((entry) => {
-                                            return (
-                                                <SelectItem
-                                                    value={entry[0]}
-                                                    key={`${sectionId}_${cardId}_${uiStateObject.id}_${entry[0]}_select`}
-                                                >
-                                                    {entry[1]}
-                                                </SelectItem>
-                                            );
-                                        })}
-                                </SelectGroup>
-                            </SelectContent>
-                        </Select>
-                    ) : (
-                        ''
-                    )}
+                    ) : undefined}
+                    <Select defaultValue={defaultValue} value={internalValue} onValueChange={handleValueChange}>
+                        <SelectTrigger className="my-4 w-full">
+                            <SelectValue placeholder="No value" />
+                        </SelectTrigger>
+                        <SelectContent>
+                            <SelectGroup>
+                                {states &&
+                                    Object.entries(states).map((entry) => {
+                                        return (
+                                            <SelectItem
+                                                value={entry[0]}
+                                                key={`${sectionId}_${cardId}_${uiStateObject.id}_${entry[0]}_select`}
+                                            >
+                                                {entry[1]}
+                                            </SelectItem>
+                                        );
+                                    })}
+                            </SelectGroup>
+                        </SelectContent>
+                    </Select>
                 </Label>
             </div>
         </div>

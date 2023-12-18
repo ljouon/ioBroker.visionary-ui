@@ -1,4 +1,3 @@
-import { Label } from '@/components/ui/label';
 import { CardDescription, CardTitle } from '@/components/ui/card';
 import { StateObject } from '@/domain/aspect';
 import { DynamicIcon } from '@/components/icons/dynamic-icon';
@@ -10,7 +9,7 @@ export type StateObjectValueOnlyProps = {
 };
 
 export function StateObjectValueOnly({ uiStateObject, sectionId, cardId }: StateObjectValueOnlyProps) {
-    let displayElement = undefined;
+    let displayElement;
     if ('boolean' === uiStateObject.datatype) {
         displayElement =
             uiStateObject.value === true ? (
@@ -18,8 +17,11 @@ export function StateObjectValueOnly({ uiStateObject, sectionId, cardId }: State
             ) : (
                 <DynamicIcon iconKey="close-circle-outline" className="w-6 h-6" />
             );
+    } else if ('number' === uiStateObject.datatype && uiStateObject.states && uiStateObject.value !== null) {
+        const stateLabel = uiStateObject.states[Number(uiStateObject.value)];
+        displayElement = `${stateLabel}${uiStateObject.unit ? ` ${uiStateObject.unit}` : ''}`;
     } else {
-        displayElement = uiStateObject.value + (uiStateObject.unit ? ' ' + uiStateObject.unit : '');
+        displayElement = `${uiStateObject.value}${uiStateObject.unit ? ` ${uiStateObject.unit}` : ''}`;
     }
 
     return (
@@ -33,20 +35,16 @@ export function StateObjectValueOnly({ uiStateObject, sectionId, cardId }: State
                 ) : undefined}
             </div>
             <div className="flex-grow truncate mx-2">
-                <Label htmlFor={`${sectionId}_${cardId}_${uiStateObject.id}`}>
-                    <CardTitle>
-                        <span className="whitespace-nowrap overflow-hidden">
-                            {uiStateObject.displayName ? uiStateObject.displayName : uiStateObject.name}
-                        </span>
-                    </CardTitle>
-                    {uiStateObject.description ? (
-                        <CardDescription>
-                            <span className="whitespace-nowrap overflow-hidden">{uiStateObject.description}</span>
-                        </CardDescription>
-                    ) : (
-                        ''
-                    )}
-                </Label>
+                <CardTitle>
+                    <span className="ml-0 whitespace-nowrap overflow-hidden text-sm font-semibold leading-none tracking-tight">
+                        {uiStateObject.displayName ? uiStateObject.displayName : uiStateObject.name}
+                    </span>
+                </CardTitle>
+                {uiStateObject.description ? (
+                    <CardDescription>
+                        <span className="whitespace-nowrap overflow-hidden">{uiStateObject.description}</span>
+                    </CardDescription>
+                ) : undefined}
             </div>
             <div className="flex-none">{displayElement}</div>
         </div>

@@ -1,10 +1,10 @@
-import { Slider } from '@/components/ui/slider';
 import { CardDescription, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { StateObject } from '@/domain/aspect';
 import { DynamicIcon } from '@/components/icons/dynamic-icon';
 import { useVuiDataContext } from '@/vui-data.context';
 import { useEffect, useState } from 'react';
+import { Slider } from '@/components/ui/slider';
 
 export type StateObjectSliderProps = {
     sectionId: string;
@@ -58,9 +58,7 @@ export function StateObjectSlider({ uiStateObject, sectionId, cardId }: StateObj
                             <CardDescription>
                                 <span className="whitespace-nowrap overflow-hidden">{uiStateObject.description}</span>
                             </CardDescription>
-                        ) : (
-                            'Beschreibung'
-                        )}
+                        ) : undefined}
                     </Label>
                 </div>
                 {valueString}
