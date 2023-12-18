@@ -26,6 +26,22 @@ export function StateObjectSelect({ uiStateObject, sectionId, cardId }: ObjectEn
         setInternalValue(defaultValue);
     }, [defaultValue]);
 
+    /**
+   HmIP set point mode
+   0 Auto
+   1 Manual
+   2 ?
+   **/
+
+    let states = uiStateObject.states;
+    if (!states && uiStateObject.minValue !== null && uiStateObject.maxValue !== null) {
+        states = {};
+        for (let i = uiStateObject.minValue; i < uiStateObject.maxValue; i++) {
+            states[i] = String(i);
+        }
+        console.log(states);
+    }
+
     return (
         <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${uiStateObject.id}`}>
             <div className="flex-none flex items-center ">
@@ -57,8 +73,8 @@ export function StateObjectSelect({ uiStateObject, sectionId, cardId }: ObjectEn
                             </SelectTrigger>
                             <SelectContent>
                                 <SelectGroup>
-                                    {uiStateObject.states &&
-                                        Object.entries(uiStateObject.states).map((entry) => {
+                                    {states &&
+                                        Object.entries(states).map((entry) => {
                                             return (
                                                 <SelectItem
                                                     value={entry[0]}
@@ -76,13 +92,6 @@ export function StateObjectSelect({ uiStateObject, sectionId, cardId }: ObjectEn
                     )}
                 </Label>
             </div>
-            {!uiStateObject.isWriteable ? (
-                <div className={'flex-none'}>
-                    <span>{uiStateObject.states && uiStateObject.states['' + uiStateObject.value]}</span>
-                </div>
-            ) : (
-                ''
-            )}
         </div>
     );
 }
