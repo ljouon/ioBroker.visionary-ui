@@ -1,8 +1,9 @@
+import { StateObject } from '@/domain/aspect';
 import { StateObjectSwitch } from '@/components/devices/state-object-switch';
 import { StateObjectSlider } from '@/components/devices/state-object-slider';
 import { StateObjectSelect } from '@/components/devices/state-object-select';
-import { StateObjectUnknown } from '@/components/devices/state-object-unknown';
-import { StateObject } from '@/domain/aspect';
+import { StateObjectButton } from '@/components/devices/state-object-button';
+import { StateObjectValueOnly } from '@/components/devices/state-object-value-only';
 
 // const switchable = ['boolean'];
 // const possibleDataTypes = ['array', 'boolean', 'file', 'json', 'mixed', 'number', 'object', 'string'];
@@ -167,12 +168,27 @@ Illumination lichtsensor
 
  */
 
-function shouldBeSwitch(uiStateObject: StateObject) {
-    return 'boolean' === uiStateObject.datatype;
+// TODO: Explain logics in readme
+
+function shouldBeValueOnly(uiStateObject: StateObject): boolean {
+    return !uiStateObject.isWriteable;
 }
 
-function shouldBeSlider(uiStateObject: StateObject) {
-    if ('number' === uiStateObject.datatype && uiStateObject.minValue !== null) {
+function shouldBeSwitch(uiStateObject: StateObject): boolean {
+    return 'boolean' === uiStateObject.datatype && uiStateObject.role !== 'button';
+}
+
+function shouldBeButton(uiStateObject: StateObject): boolean {
+    return 'boolean' === uiStateObject.datatype && uiStateObject.role === 'button';
+}
+
+function shouldBeSlider(uiStateObject: StateObject): boolean {
+    if (
+        'number' === uiStateObject.datatype &&
+        uiStateObject.minValue !== null &&
+        uiStateObject.maxValue !== null &&
+        uiStateObject.role.includes('level')
+    ) {
         if (!uiStateObject.states) {
             return true;
         }
@@ -182,7 +198,7 @@ function shouldBeSlider(uiStateObject: StateObject) {
 
 function shouldBeSelect(uiStateObject: StateObject) {
     if ('number' === uiStateObject.datatype) {
-        if (uiStateObject.states) {
+        if (uiStateObject.states || (uiStateObject.minValue !== null && uiStateObject.maxValue !== null)) {
             return true;
         }
     }
@@ -190,9 +206,20 @@ function shouldBeSelect(uiStateObject: StateObject) {
 }
 
 export function mapToStateObjectComponent(sectionId: string, cardId: string, uiStateObject: StateObject) {
-    console.log(uiStateObject.id, uiStateObject.role, uiStateObject.datatype);
+    if (shouldBeValueOnly(uiStateObject)) {
+        console.log(uiStateObject.id + ' => value only');
+        return (
+            <StateObjectValueOnly
+                key={sectionId + '-' + cardId + '-' + uiStateObject.id}
+                uiStateObject={uiStateObject}
+                sectionId={sectionId}
+                cardId={cardId}
+            />
+        );
+    }
 
     if (shouldBeSwitch(uiStateObject)) {
+        console.log(uiStateObject.id + ' => switch');
         return (
             <StateObjectSwitch
                 key={sectionId + '-' + cardId + '-' + uiStateObject.id}
@@ -203,7 +230,31 @@ export function mapToStateObjectComponent(sectionId: string, cardId: string, uiS
         );
     }
 
+    if (shouldBeButton(uiStateObject)) {
+        console.log(uiStateObject.id + ' => button');
+        return (
+            <div key={sectionId + '-' + cardId + '-' + uiStateObject.id}>
+                Button
+                <StateObjectButton
+                    key={sectionId + '-' + cardId + '-' + uiStateObject.id}
+                    uiStateObject={uiStateObject}
+                    sectionId={sectionId}
+                    cardId={cardId}
+                />
+            </div>
+        );
+    }
+
     if (shouldBeSlider(uiStateObject)) {
+        console.log(uiStateObject.id + ' => slider');
+        console.log(uiStateObject.id, uiStateObject.role, uiStateObject.datatype);
+
+        const ids = ['hm-rpc.0.000C98A98C4C95.1.SET_POINT_TEMPERATURE', 'hm-rpc.0.000C98A98C4C95.1.CONTROL_MODE'];
+
+        if (ids.includes(uiStateObject.id)) {
+            console.log(uiStateObject);
+        }
+
         return (
             <StateObjectSlider
                 key={sectionId + '-' + cardId + '-' + uiStateObject.id}
@@ -215,6 +266,7 @@ export function mapToStateObjectComponent(sectionId: string, cardId: string, uiS
     }
 
     if (shouldBeSelect(uiStateObject)) {
+        console.log(uiStateObject.id + ' => select');
         return (
             <StateObjectSelect
                 key={sectionId + '-' + cardId + '-' + uiStateObject.id}
@@ -225,8 +277,9 @@ export function mapToStateObjectComponent(sectionId: string, cardId: string, uiS
         );
     }
 
+    console.log(uiStateObject.id + ' => unknown => value only');
     return (
-        <StateObjectUnknown
+        <StateObjectValueOnly
             key={sectionId + '-' + cardId + '-' + uiStateObject.id}
             uiStateObject={uiStateObject}
             sectionId={sectionId}
