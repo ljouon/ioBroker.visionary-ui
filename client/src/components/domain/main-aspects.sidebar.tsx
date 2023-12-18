@@ -1,8 +1,7 @@
 import { cn } from '@/lib/utils';
-import { ScrollArea } from '@/components/ui/scroll-area';
-import { Button } from '@/components/ui/button';
 import { AspectNode, hasChildren } from '@/domain/aspect';
 import { hasStateObjects, VuiEnum } from '../../../../src/domain';
+import { Button } from '@/__generated__/components/button';
 
 interface MainAspectsSidebarProps<T extends VuiEnum, S extends VuiEnum> extends React.HTMLAttributes<HTMLDivElement> {
     aspectNodes: AspectNode<T, S>[];
@@ -41,7 +40,7 @@ export function MainAspectsSidebar<T extends VuiEnum, S extends VuiEnum>({
                                     </div>
                                 </h2>
                                 {/*<Separator/>*/}
-                                <ScrollArea className="pt-2">
+                                <div className="pt-2 relative overflow-hidden h-full w-full rounded-[inherit]">
                                     <div className="space-y-1">
                                         {node.children?.map((child, i) => {
                                             if (hasStateObjects(child.mainAspect)) {
@@ -71,7 +70,7 @@ export function MainAspectsSidebar<T extends VuiEnum, S extends VuiEnum>({
                                             }
                                         })}
                                     </div>
-                                </ScrollArea>
+                                </div>
                             </div>
                         );
                     }
