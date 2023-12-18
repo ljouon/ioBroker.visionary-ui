@@ -1,10 +1,10 @@
-import { CardDescription, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
 import { StateObject } from '@/domain/aspect';
 import { DynamicIcon } from '@/components/icons/dynamic-icon';
 import { useVuiDataContext } from '@/vui-data.context';
 import { useEffect, useState } from 'react';
-import { Slider } from '@/components/ui/slider';
+import { Label } from '@/__generated__/components/label';
+import { CardDescription, CardTitle } from '@/__generated__/components/card';
+import { Slider } from '@/__generated__/components/slider';
 
 export type StateObjectSliderProps = {
     sectionId: string;

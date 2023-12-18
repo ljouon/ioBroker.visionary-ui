@@ -5,7 +5,7 @@ import { describe, expect, it, vi } from 'vitest';
 import { render } from '@/test/testing-library-setup';
 
 // Mock the custom Select component
-vi.mock('@/components/ui/select', () => ({
+vi.mock('@/__generated__/components/select', () => ({
     Select: vi.fn().mockImplementation(({ children, defaultValue, onValueChange }) => (
         <select defaultValue={defaultValue} onChange={(e) => onValueChange(e.target.value)}>
             {children}

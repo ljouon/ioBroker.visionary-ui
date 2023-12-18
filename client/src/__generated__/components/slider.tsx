@@ -4,7 +4,7 @@ import * as SliderPrimitive from '@radix-ui/react-slider';
 import { cn } from '@/lib/utils';
 
 // Extend the component props to include the new hideThumb prop
-const Slider = React.forwardRef<
+export const Slider = React.forwardRef<
     React.ElementRef<typeof SliderPrimitive.Root>,
     React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & { hideThumb?: boolean }
 >(({ className, hideThumb, ...props }, ref) => {
@@ -25,5 +25,3 @@ const Slider = React.forwardRef<
     );
 });
 Slider.displayName = SliderPrimitive.Root.displayName;
-
-export { Slider };
