@@ -11,10 +11,11 @@ import {
     MenubarTrigger,
 } from '@/components/ui/menubar';
 import Icon from '@mui/material/Icon';
-import { useTheme } from '@/theme-provider';
+import { useContext } from 'react';
+import { ThemeContext } from '@/theme-provider';
 
 export function TopMenu() {
-    const { setTheme, theme } = useTheme();
+    const { setTheme, theme } = useContext(ThemeContext);
 
     return (
         <Menubar className="rounded-none border-b border-none px-2 lg:px-4">
