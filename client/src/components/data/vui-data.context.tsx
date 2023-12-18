@@ -6,7 +6,7 @@ import {
     VuiRoom,
     VuiStateObject,
     VuiStateValue,
-} from '../../src/domain';
+} from '../../../../src/domain';
 import useWebSocket, { ConnectionState } from './useWebsocket';
 import { AspectNode, createAspectStructure } from '@/domain/aspect';
 
