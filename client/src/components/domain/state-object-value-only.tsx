@@ -1,6 +1,6 @@
 import { StateObject } from '@/domain/aspect';
-import { DynamicIcon } from '@/components/icons/dynamic-icon';
 import { CardDescription, CardTitle } from '@/__generated__/components/card';
+import { DynamicIcon } from '@/components/dynamic-icon';
 
 export type StateObjectValueOnlyProps = {
     sectionId: string;

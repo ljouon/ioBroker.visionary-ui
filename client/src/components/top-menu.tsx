@@ -1,6 +1,5 @@
 import Icon from '@mui/material/Icon';
 import { useContext } from 'react';
-import { ThemeContext } from '@/theme-provider';
 import {
     Menubar,
     MenubarCheckboxItem,
@@ -13,6 +12,7 @@ import {
     MenubarSubTrigger,
     MenubarTrigger,
 } from '@/__generated__/components/menubar';
+import { ThemeContext } from '@/components/theme-provider';
 
 export function TopMenu() {
     const { setTheme, theme } = useContext(ThemeContext);

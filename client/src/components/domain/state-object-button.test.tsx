@@ -1,11 +1,11 @@
 import { render } from '@/test/testing-library-setup';
 import { fireEvent, screen } from '@testing-library/react';
-import { StateObjectButton } from '@/components/devices/state-object-button';
+import { StateObjectButton } from '@/components/domain/state-object-button';
 import { StateObject } from '@/domain/aspect';
 import { describe, expect, it, vi } from 'vitest';
 
 const sendVuiAction = vi.fn();
-vi.mock('@/vui-data.context', () => ({
+vi.mock('@/components/data/vui-data.context', () => ({
     useVuiDataContext: () => ({
         sendVuiAction: sendVuiAction,
     }),
