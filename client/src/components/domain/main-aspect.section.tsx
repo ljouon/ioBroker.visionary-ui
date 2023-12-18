@@ -44,7 +44,7 @@ export function MainAspectSection({ id, type }: MainAspectSectionProps) {
         return;
     }
 
-    const devices =
+    const supplementalAspects =
         element.supplementalAspects?.filter((subElement) => subElement.members && subElement.members.length > 0) || [];
 
     return (
@@ -62,14 +62,14 @@ export function MainAspectSection({ id, type }: MainAspectSectionProps) {
                 </h1>
             </div>
             <div className="gap-6 rounded-lg p-8 lg:columns-2 xl:columns-3 space-y-6">
-                {devices?.map((element) => {
+                {supplementalAspects?.map((supplementalAspect) => {
                     return (
                         <SupplementalAspectCard
-                            title={element.name}
-                            key={element.id}
-                            id={element.id}
+                            title={supplementalAspect.name}
+                            key={supplementalAspect.id}
+                            id={supplementalAspect.id}
                             sectionId={id}
-                            functionObjectIds={element.members ?? []}
+                            functionObjectIds={supplementalAspect.members ?? []}
                         />
                     );
                 })}
