@@ -1,10 +1,17 @@
-import { CardDescription, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Select, SelectContent, SelectGroup, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { StateObject } from '@/domain/aspect';
 import { DynamicIcon } from '@/components/icons/dynamic-icon';
 import { useVuiDataContext } from '@/vui-data.context';
 import { useEffect, useState } from 'react';
+import { Label } from '@/__generated__/components/label';
+import { CardDescription, CardTitle } from '@/__generated__/components/card';
+import {
+    Select,
+    SelectContent,
+    SelectGroup,
+    SelectItem,
+    SelectTrigger,
+    SelectValue,
+} from '@/__generated__/components/select';
 
 export type ObjectEnumProps = {
     sectionId: string;

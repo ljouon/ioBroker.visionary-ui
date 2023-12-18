@@ -1,9 +1,9 @@
-import { Label } from '@/components/ui/label';
-import { CardDescription, CardTitle } from '@/components/ui/card';
-import { Button } from '@/components/ui/button';
 import { StateObject } from '@/domain/aspect';
 import { DynamicIcon } from '@/components/icons/dynamic-icon';
 import { useVuiDataContext } from '@/vui-data.context';
+import { CardDescription, CardTitle } from '@/__generated__/components/card';
+import { Button } from '@/__generated__/components/button';
+import { Label } from '@/__generated__/components/label';
 
 export type StateObjectButtonProps = {
     sectionId: string;
