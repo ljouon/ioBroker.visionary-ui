@@ -46,5 +46,3 @@ export function ToggleSwitch<T>({ initialValue, left, right, onSwitch }: ToggleS
         </div>
     );
 }
-
-export default ToggleSwitch;

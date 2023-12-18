@@ -14,7 +14,7 @@ vi.mock('@/vui-data.context', () => ({
 
 const mockInput = vi.fn();
 
-vi.mock('@/components/ui/slider', () => ({
+vi.mock('@/__generated__/components/slider', () => ({
     Slider: vi.fn().mockImplementation(({ onValueChange, onValueCommit, value, props }) => {
         mockInput(props);
         return (

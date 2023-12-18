@@ -61,8 +61,6 @@ export function VuiDataProvider({ children }: VuiDataProviderProps) {
     const handleNewMessage = useCallback(
         (messageEvent: MessageEvent) => {
             const data = messageEvent.data;
-            // setMessages((prev) => [...prev, data]);
-            console.log(data);
             const envelope: VuiDataEnvelope = JSON.parse(data);
             switch (envelope.type) {
                 case 'allRooms':
@@ -117,7 +115,6 @@ export function VuiDataProvider({ children }: VuiDataProviderProps) {
     const { sendMessage, connectionState } = useWebSocket(handleNewMessage);
 
     const sendVuiAction = (vuiActionEnvelope: VuiActionEnvelope) => {
-        console.log(vuiActionEnvelope);
         sendMessage(JSON.stringify(vuiActionEnvelope));
     };
 

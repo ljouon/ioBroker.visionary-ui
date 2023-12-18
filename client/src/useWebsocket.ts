@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useRef, useState} from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
 type MessageHandler = (message: MessageEvent) => void;
 
@@ -74,7 +74,7 @@ function useWebSocket(onMessage: MessageHandler) {
         [socket],
     );
 
-    return {sendMessage, connectionState};
+    return { sendMessage, connectionState };
 }
 
 export default useWebSocket;

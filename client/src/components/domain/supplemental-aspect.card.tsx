@@ -1,11 +1,11 @@
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
-import { Label } from '@/components/ui/label';
-import { Switch } from '@/components/ui/switch';
-import { Separator } from '@/components/ui/separator';
 import { useVuiDataContext } from '@/vui-data.context';
 import { useEffect, useState } from 'react';
 import { StateObject } from '@/domain/aspect';
 import { mapToStateObjectComponent } from '../devices/map-state-object';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/__generated__/components/card';
+import { Label } from '@/__generated__/components/label';
+import { Switch } from '@/__generated__/components/switch';
+import { Separator } from '@/__generated__/components/separator';
 
 type SupplementalAspectCardProps = {
     id: string;
