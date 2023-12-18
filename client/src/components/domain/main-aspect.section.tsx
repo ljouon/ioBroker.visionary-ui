@@ -40,19 +40,25 @@ export function MainAspectSection({ id, type }: MainAspectSectionProps) {
         element = findNodeById(functionAspectNodes, id);
     }
 
+    if (!element || !element?.mainAspect) {
+        return;
+    }
+
     const devices =
-        element?.supplementalAspects?.filter((subElement) => subElement.members && subElement.members.length > 0) || [];
+        element.supplementalAspects?.filter((subElement) => subElement.members && subElement.members.length > 0) || [];
 
     return (
         <>
             <div className="pt-8 pl-8">
                 <h1 className="m- flex items-center text-lg font-extrabold leading-none tracking-tight text-gray-900 md:text-xl lg:text-2xl dark:text-white">
-                    <img
-                        className="dark:invert h-8 w-8 lg:w-10 lg:h-10 opacity-50"
-                        src={element?.mainAspect?.icon ?? undefined}
-                        alt={'icon'}
-                    />
-                    <span className="ml-2">{element?.mainAspect?.name}</span>
+                    {element.mainAspect.icon ? (
+                        <img
+                            className="dark:invert h-8 w-8 lg:w-10 lg:h-10 opacity-50"
+                            src={element.mainAspect.icon ?? undefined}
+                            alt={'icon'}
+                        />
+                    ) : undefined}
+                    <span className="ml-2">{element.mainAspect.name}</span>
                 </h1>
             </div>
             <div className="gap-6 rounded-lg p-8 lg:columns-2 xl:columns-3 space-y-6">
