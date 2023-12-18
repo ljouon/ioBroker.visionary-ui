@@ -7,7 +7,7 @@ import { cn } from '@/lib/utils';
 const Slider = React.forwardRef<
     React.ElementRef<typeof SliderPrimitive.Root>,
     React.ComponentPropsWithoutRef<typeof SliderPrimitive.Root> & { hideThumb?: boolean }
->(({ className, hideThumb, ...props }, ref): JSX.Element => {
+>(({ className, hideThumb, ...props }, ref) => {
     return (
         <SliderPrimitive.Root
             ref={ref}

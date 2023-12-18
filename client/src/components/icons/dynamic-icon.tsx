@@ -13,5 +13,5 @@ export function DynamicIcon({ iconKey, className }: DynamicIconProps): ReactNode
 
     const iconPath = mdiIcons[sanitizedIconKey];
 
-    return <Icon className={className} path={iconPath} />;
+    return <Icon className={className} path={iconPath} title={sanitizedIconKey} />;
 }

@@ -1,4 +1,4 @@
-import { Card, CardContent, CardDescription, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/components/ui/card';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
 import { Separator } from '@/components/ui/separator';
@@ -47,7 +47,6 @@ export function SupplementalAspectCard({ id, title, sectionId, functionObjectIds
                     <div className="flex items-center justify-between space-x-2">
                         <div>
                             <CardTitle>{title}</CardTitle>
-                            <CardDescription>Beschreibung</CardDescription>
                         </div>
                         <div className="flex items-center hidden">
                             <Label htmlFor={`${sectionId}_all_${id}`} className="mr-2">

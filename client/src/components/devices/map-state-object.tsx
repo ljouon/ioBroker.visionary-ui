@@ -234,7 +234,6 @@ export function mapToStateObjectComponent(sectionId: string, cardId: string, uiS
         console.log(uiStateObject.id + ' => button');
         return (
             <div key={sectionId + '-' + cardId + '-' + uiStateObject.id}>
-                Button
                 <StateObjectButton
                     key={sectionId + '-' + cardId + '-' + uiStateObject.id}
                     uiStateObject={uiStateObject}
@@ -247,14 +246,6 @@ export function mapToStateObjectComponent(sectionId: string, cardId: string, uiS
 
     if (shouldBeSlider(uiStateObject)) {
         console.log(uiStateObject.id + ' => slider');
-        console.log(uiStateObject.id, uiStateObject.role, uiStateObject.datatype);
-
-        const ids = ['hm-rpc.0.000C98A98C4C95.1.SET_POINT_TEMPERATURE', 'hm-rpc.0.000C98A98C4C95.1.CONTROL_MODE'];
-
-        if (ids.includes(uiStateObject.id)) {
-            console.log(uiStateObject);
-        }
-
         return (
             <StateObjectSlider
                 key={sectionId + '-' + cardId + '-' + uiStateObject.id}
