@@ -1,6 +1,5 @@
-import {render, RenderOptions} from '@testing-library/react';
-import {ThemeProvider} from "@/theme-provider";
-
+import { ThemeProvider } from '@/components/theme-provider';
+import { render, RenderOptions } from '@testing-library/react';
 
 // i18n.use(initReactI18next).init({
 //   fallbackLng: FALLBACK_LANGUAGE_KEY,
@@ -16,17 +15,15 @@ import {ThemeProvider} from "@/theme-provider";
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AllTheProviders = ({ children }: { children: React.ReactNode }) => {
-  return (
-      <ThemeProvider defaultTheme="system" storageKey="theme-mode">
-        {children}
-      </ThemeProvider>
-  );
+    return (
+        <ThemeProvider defaultTheme="system" storageKey="theme-mode">
+            {children}
+        </ThemeProvider>
+    );
 };
 
-const customRender = (
-  ui: React.ReactElement,
-  options?: Omit<RenderOptions, 'wrapper'>,
-) => render(ui, { wrapper: AllTheProviders, ...options });
+const customRender = (ui: React.ReactElement, options?: Omit<RenderOptions, 'wrapper'>) =>
+    render(ui, { wrapper: AllTheProviders, ...options });
 
 // re-export everything
 // eslint-disable-next-line react-refresh/only-export-components

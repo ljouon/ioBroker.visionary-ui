@@ -1,7 +1,7 @@
-import { useVuiDataContext } from '@/vui-data.context';
 import { AspectNode } from '@/domain/aspect';
 import { VuiEnum } from '../../../../src/domain';
 import { SupplementalAspectCard } from './supplemental-aspect.card';
+import { useVuiDataContext } from '@/components/data/vui-data.context';
 
 type MainAspectSectionProps = {
     id: string;

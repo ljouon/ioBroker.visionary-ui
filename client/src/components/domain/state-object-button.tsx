@@ -1,9 +1,9 @@
 import { StateObject } from '@/domain/aspect';
-import { DynamicIcon } from '@/components/icons/dynamic-icon';
-import { useVuiDataContext } from '@/vui-data.context';
+import { DynamicIcon } from '@/components/dynamic-icon';
 import { CardDescription, CardTitle } from '@/__generated__/components/card';
 import { Button } from '@/__generated__/components/button';
 import { Label } from '@/__generated__/components/label';
+import { useVuiDataContext } from '@/components/data/vui-data.context';
 
 export type StateObjectButtonProps = {
     sectionId: string;

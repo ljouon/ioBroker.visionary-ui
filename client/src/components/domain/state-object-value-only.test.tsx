@@ -1,5 +1,5 @@
 import { describe, it } from 'vitest';
-import { StateObjectValueOnly } from '@/components/devices/state-object-value-only';
+import { StateObjectValueOnly } from '@/components/domain/state-object-value-only';
 import { render } from '@/test/testing-library-setup';
 import { screen } from '@testing-library/react';
 
