@@ -1,4 +1,3 @@
-import Icon from '@mui/material/Icon';
 import { useContext } from 'react';
 import {
     Menubar,
@@ -13,6 +12,7 @@ import {
     MenubarTrigger,
 } from '@/__generated__/components/menubar';
 import { ThemeContext } from '@/app/theme/theme-provider';
+import { DynamicIcon } from '@/app/dynamic-icon';
 
 export function TopMenu() {
     const { setTheme, theme } = useContext(ThemeContext);
@@ -23,16 +23,17 @@ export function TopMenu() {
                 <MenubarTrigger className="font-bold">Home</MenubarTrigger>
                 <MenubarContent>
                     <MenubarSub>
-                        <MenubarSubTrigger className="items-center">Light/Dark Mode</MenubarSubTrigger>
-                        <MenubarSubContent className="w-[230px]">
+                        <MenubarSubTrigger className="items-center">
+                            <DynamicIcon className="mr-2 h-6 w-6" iconKey="theme-light-dark" />
+                            Light/Dark
+                        </MenubarSubTrigger>
+                        <MenubarSubContent>
                             <MenubarCheckboxItem
                                 checked={'light' === theme}
                                 disabled={'light' === theme}
                                 onClick={() => setTheme('light')}
                             >
-                                <Icon className="mr-2" sx={{ fontSize: 18 }}>
-                                    light_mode
-                                </Icon>
+                                <DynamicIcon className="mr-2 h-6 w-6" iconKey="white-balance-sunny" />
                                 Light
                             </MenubarCheckboxItem>
                             <MenubarCheckboxItem
@@ -40,9 +41,7 @@ export function TopMenu() {
                                 disabled={'dark' === theme}
                                 onClick={() => setTheme('dark')}
                             >
-                                <Icon className="mr-2" sx={{ fontSize: 18 }}>
-                                    dark_mode
-                                </Icon>
+                                <DynamicIcon className="mr-2 h-6 w-6" iconKey="weather-night" />
                                 Dark
                             </MenubarCheckboxItem>
                             <MenubarCheckboxItem
@@ -50,17 +49,20 @@ export function TopMenu() {
                                 disabled={'system' === theme}
                                 onClick={() => setTheme('system')}
                             >
-                                <Icon className="mr-2" sx={{ fontSize: 18 }}>
-                                    computer
-                                </Icon>
+                                <DynamicIcon className="mr-2 h-6 w-6" iconKey="laptop" />
                                 System
                             </MenubarCheckboxItem>
                         </MenubarSubContent>
                     </MenubarSub>
+                    <MenubarItem disabled>
+                        <DynamicIcon className="mr-2 h-6 w-6" iconKey="cog" />
+                        Preferences ...{' '}
+                    </MenubarItem>
                     <MenubarSeparator />
-                    <MenubarItem disabled>Preferences ... </MenubarItem>
-                    <MenubarSeparator />
-                    <MenubarItem disabled>About</MenubarItem>
+                    <MenubarItem disabled>
+                        <DynamicIcon className="mr-2 h-6 w-6" iconKey="info" />
+                        About
+                    </MenubarItem>
                 </MenubarContent>
             </MenubarMenu>
         </Menubar>
