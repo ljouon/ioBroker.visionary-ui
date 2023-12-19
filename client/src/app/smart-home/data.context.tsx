@@ -7,8 +7,8 @@ import {
     VuiStateObject,
     VuiStateValue,
 } from '../../../../src/domain';
-import useWebSocket, { ConnectionState } from './socket';
-import { AspectNode, createAspectStructure } from '@/components/aspects/aspect';
+import { AspectNode, createAspectStructure } from '@/app/smart-home/structure/aspect';
+import { ConnectionState, useWebSocket } from '@/app/smart-home/socket';
 
 export type VuiDataContextType = {
     roomAspectNodes: AspectNode<VuiRoom, VuiFunction>[];
@@ -21,7 +21,7 @@ export type VuiDataContextType = {
 
 const noop = () => {};
 
-const VuiDataContext = createContext<VuiDataContextType>({
+export const VuiDataContext = createContext<VuiDataContextType>({
     roomAspectNodes: [],
     functionAspectNodes: [],
     stateObjects: [],
@@ -29,6 +29,10 @@ const VuiDataContext = createContext<VuiDataContextType>({
     connectionState: 'UNKNOWN',
     sendVuiAction: noop, // Will be replaced by the correct implementation below
 });
+
+export function useVuiDataContext() {
+    return useContext(VuiDataContext);
+}
 
 export type VuiDataProviderProps = {
     children: ReactNode;
@@ -128,8 +132,4 @@ export function VuiDataProvider({ children }: VuiDataProviderProps) {
     };
 
     return <VuiDataContext.Provider value={contextValue}>{children}</VuiDataContext.Provider>;
-}
-
-export function useVuiDataContext() {
-    return useContext(VuiDataContext);
 }

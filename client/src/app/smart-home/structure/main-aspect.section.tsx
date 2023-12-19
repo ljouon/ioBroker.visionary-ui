@@ -1,7 +1,7 @@
-import { VuiEnum } from '../../../../src/domain';
 import { SupplementalAspectCard } from './supplemental-aspect.card';
-import { useVuiDataContext } from '@/components/aspects/vui-data.context';
-import { AspectNode } from '@/components/aspects/aspect';
+import { useVuiDataContext } from '@/app/smart-home/data.context';
+import { AspectNode } from '@/app/smart-home/structure/aspect';
+import { VuiEnum } from '../../../../../src/domain';
 
 type MainAspectSectionProps = {
     id: string;

@@ -1,6 +1,6 @@
-import { StateObject } from '@/components/aspects/aspect';
 import { CardDescription, CardTitle } from '@/__generated__/components/card';
-import { DynamicIcon } from '@/components/dynamic-icon';
+import { DynamicIcon } from '@/app/dynamic-icon';
+import { StateObject } from '@/app/smart-home/structure/aspect';
 
 export type StateObjectValueOnlyProps = {
     sectionId: string;
@@ -13,9 +13,9 @@ export function StateObjectValueOnly({ uiStateObject, sectionId, cardId }: State
     if ('boolean' === uiStateObject.datatype) {
         displayElement =
             uiStateObject.value === true ? (
-                <DynamicIcon iconKey="check-circle-outline" className="w-6 h-6" />
+                <DynamicIcon iconKey="check-circle-outline" className="w-6 h-6 text-green-600" />
             ) : (
-                <DynamicIcon iconKey="close-circle-outline" className="w-6 h-6" />
+                <DynamicIcon iconKey="close-circle-outline" className="w-6 h-6 text-red-600" />
             );
     } else if ('number' === uiStateObject.datatype && uiStateObject.states && uiStateObject.value !== null) {
         const stateLabel = uiStateObject.states[Number(uiStateObject.value)];
