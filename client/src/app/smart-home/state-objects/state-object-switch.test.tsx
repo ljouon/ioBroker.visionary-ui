@@ -1,10 +1,9 @@
 import { render } from '@/test/testing-library-setup';
 import { fireEvent, screen } from '@testing-library/react';
-import { StateObjectSwitch } from '@/components/stateObjects/state-object-switch';
+import { StateObject } from '@/app/smart-home/structure/aspect';
+import { StateObjectSwitch } from '@/app/smart-home/state-objects/state-object-switch';
 
-import { StateObject } from '@/components/aspects/aspect'; // Adjust the import path as necessary
-
-vi.mock('@/vui-data.context', () => ({
+vi.mock('@/data.context', () => ({
     useVuiDataContext: () => ({
         sendVuiAction: vi.fn(),
     }),
