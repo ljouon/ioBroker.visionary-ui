@@ -7,8 +7,8 @@ import {
     VuiStateObject,
     VuiStateValue,
 } from '../../../../src/domain';
-import useWebSocket, { ConnectionState } from './useWebsocket';
-import { AspectNode, createAspectStructure } from '@/domain/aspect';
+import useWebSocket, { ConnectionState } from './socket';
+import { AspectNode, createAspectStructure } from '@/components/aspects/aspect';
 
 export type VuiDataContextType = {
     roomAspectNodes: AspectNode<VuiRoom, VuiFunction>[];

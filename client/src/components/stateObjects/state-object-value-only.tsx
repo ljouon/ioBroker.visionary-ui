@@ -1,4 +1,4 @@
-import { StateObject } from '@/domain/aspect';
+import { StateObject } from '@/components/aspects/aspect';
 import { CardDescription, CardTitle } from '@/__generated__/components/card';
 import { DynamicIcon } from '@/components/dynamic-icon';
 

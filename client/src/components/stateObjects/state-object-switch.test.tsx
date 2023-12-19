@@ -1,8 +1,8 @@
 import { render } from '@/test/testing-library-setup';
 import { fireEvent, screen } from '@testing-library/react';
-import { StateObjectSwitch } from '@/components/domain/state-object-switch';
+import { StateObjectSwitch } from '@/components/stateObjects/state-object-switch';
 
-import { StateObject } from '@/domain/aspect'; // Adjust the import path as necessary
+import { StateObject } from '@/components/aspects/aspect'; // Adjust the import path as necessary
 
 vi.mock('@/vui-data.context', () => ({
     useVuiDataContext: () => ({
