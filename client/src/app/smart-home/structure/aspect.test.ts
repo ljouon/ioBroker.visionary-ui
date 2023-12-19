@@ -1,12 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { VuiEnum } from '../../../../src/domain';
 import {
     AspectNode,
     buildCanonicalPath,
     createAspectStructure,
     getPathSegments,
     hasChildren,
-} from '@/components/aspects/aspect';
+} from '@/app/smart-home/structure/aspect';
+import { VuiEnum } from '../../../../../src/domain';
 
 describe('hasChildren Function', () => {
     it('returns true if node has children', () => {
@@ -53,8 +53,6 @@ describe('createAspectStructure Function', () => {
         const mainAspects: VuiEnum[] = [{ id: 'prefix.segment1', members: ['object1'] }] as VuiEnum[];
         const supplementalAspects: VuiEnum[] = [{ id: 'supplemental1', members: ['object1'] }] as VuiEnum[];
         const structure = createAspectStructure(mainAspects, 'prefix.', supplementalAspects);
-
-        console.log(JSON.stringify(structure, null, 2));
 
         expect(structure.length).toBeGreaterThan(0);
         expect(structure[0].canonicalPath).toBe('segment1');

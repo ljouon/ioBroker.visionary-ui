@@ -1,8 +1,8 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { StateObjectSelect } from '@/components/stateObjects/state-object-select';
-import { StateObject } from '@/components/aspects/aspect';
 import { describe, expect, it, vi } from 'vitest';
 import { render } from '@/test/testing-library-setup';
+import { StateObject } from '@/app/smart-home/structure/aspect';
+import { StateObjectSelect } from '@/app/smart-home/state-objects/state-object-select';
 
 // Mock the custom Select component
 vi.mock('@/__generated__/components/select', () => ({
@@ -19,7 +19,7 @@ vi.mock('@/__generated__/components/select', () => ({
 }));
 
 const sendVuiAction = vi.fn();
-vi.mock('@/components/aspects/vui-data.context', () => ({
+vi.mock('@/app/smart-home/data.context', () => ({
     useVuiDataContext: () => ({
         sendVuiAction: sendVuiAction,
     }),

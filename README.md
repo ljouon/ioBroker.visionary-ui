@@ -37,21 +37,21 @@ This section is intended for the developer. It can be deleted later
 - [x] handle object to enum association changes, add/remove
 - [x] adapter tests
 - [x] WIP: API Definition: how to tell client the type of the message (wrap in object: envelop)
+- [x] implement basic client UI
 - [ ] how to define the port between client and server? maybe add info via express endpoint or data on
   serving: https://stackoverflow.com/questions/44354763/how-do-i-get-http-headers-in-react-js
-- [ ] implement client UI
-- [ ] Switch external state update (like slider)
-- [ ] Select external state update (like slider)
 - [ ] handle/flatten level depth for rooms and functions
 - [ ] Sorting of rooms and functions?
+- [ ] Routing!?
 - [ ] Switch between rooms und functions via click on headlines/card headers
 - [ ] Popover info on icon click
-- [ ] show only if the value of a specific other object is true (rules engine support)
+- [ ] show only if the value of a specific other object is true (rules engine support), setting in object list
 - [ ] invalid config message!?
-- [ ] business logics for UI: rooms, categories, devices, states
+- [ ] map multiple objects to a specific card and let unused objects remain for other cards.
 - [ ] multi language in client? Server language file via api?
 - [ ] upgrade admin to react 18?
 - [ ] refactor client serving to iobroker.web adapter?
+- [ ] check iobroker best practises and release (beta first)
 
 ### Getting started
 

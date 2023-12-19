@@ -1,10 +1,9 @@
-import { StateObject } from '@/components/aspects/aspect';
-import { DynamicIcon } from '@/components/dynamic-icon';
-import { useVuiDataContext } from '@/components/aspects/vui-data.context';
+import { DynamicIcon } from '@/app/dynamic-icon';
+import { useVuiDataContext } from '@/app/smart-home/data.context';
 import { useEffect, useState } from 'react';
-import { Label } from '@/__generated__/components/label';
 import { CardDescription, CardTitle } from '@/__generated__/components/card';
 import { Slider } from '@/__generated__/components/slider';
+import { StateObject } from '@/app/smart-home/structure/aspect';
 
 export type StateObjectSliderProps = {
     sectionId: string;
@@ -47,21 +46,19 @@ export function StateObjectSlider({ uiStateObject, sectionId, cardId }: StateObj
                         />
                     ) : undefined}
                 </div>
-                <div className="flex-grow truncate pl-2">
-                    <Label htmlFor={`${sectionId}_${cardId}_${uiStateObject.id}`}>
-                        <CardTitle>
-                            <span className="whitespace-nowrap overflow-hidden">
-                                {uiStateObject.displayName ? uiStateObject.displayName : uiStateObject.name}
-                            </span>
-                        </CardTitle>
-                        {uiStateObject.description ? (
-                            <CardDescription>
-                                <span className="whitespace-nowrap overflow-hidden">{uiStateObject.description}</span>
-                            </CardDescription>
-                        ) : undefined}
-                    </Label>
+                <div className="flex-grow truncate pl-2 mr-2">
+                    <CardTitle>
+                        <span className="ml-0 whitespace-nowrap overflow-hidden text-sm font-semibold leading-none tracking-tight">
+                            {uiStateObject.displayName ? uiStateObject.displayName : uiStateObject.name}
+                        </span>
+                    </CardTitle>
+                    {uiStateObject.description ? (
+                        <CardDescription>
+                            <span className="whitespace-nowrap overflow-hidden">{uiStateObject.description}</span>
+                        </CardDescription>
+                    ) : undefined}
                 </div>
-                {valueString}
+                <div className="flex-none">{valueString}</div>
             </div>
             {uiStateObject.isWriteable ? (
                 <Slider
