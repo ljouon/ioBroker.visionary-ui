@@ -1,4 +1,4 @@
-import { StateObject } from '@/domain/aspect';
+import { StateObject } from '@/components/aspects/aspect';
 import { DynamicIcon } from '@/components/dynamic-icon';
 import { useEffect, useState } from 'react';
 import { Label } from '@/__generated__/components/label';
@@ -11,7 +11,7 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/__generated__/components/select';
-import { useVuiDataContext } from '@/components/data/vui-data.context';
+import { useVuiDataContext } from '@/components/aspects/vui-data.context';
 
 export type ObjectEnumProps = {
     sectionId: string;

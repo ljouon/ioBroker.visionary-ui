@@ -1,14 +1,14 @@
 import './App.css';
 import { hasStateObjects, isRoom, VuiEnum } from '../../src/domain';
 import { useCallback, useState } from 'react';
-import { AspectKey, AspectNode } from '@/domain/aspect';
-import { MainAspectSection } from '@/components/domain/main-aspect.section';
-import { MainAspectsSidebar } from '@/components/domain/main-aspects.sidebar';
-import { TopMenu } from '@/components/top-menu';
+import { AspectKey, AspectNode } from '@/components/aspects/aspect';
 import { DynamicIcon } from '@/components/dynamic-icon';
 import { ToggleSwitch } from './components/toggle-switch';
 import { Sheet, SheetContent, SheetTrigger } from './__generated__/components/sheet';
-import { useVuiDataContext } from '@/components/data/vui-data.context';
+import { useVuiDataContext } from '@/components/aspects/vui-data.context';
+import { MainAspectSection } from '@/components/aspects/main-aspect.section';
+import { MainAspectsSidebar } from '@/components/aspects/main-aspects.sidebar';
+import { TopMenu } from '@/components/menu/top-menu';
 
 export function App() {
     const [mainAspect, setMainAspect] = useState<AspectKey>('rooms');

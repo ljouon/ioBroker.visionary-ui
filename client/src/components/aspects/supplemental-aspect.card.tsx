@@ -1,11 +1,11 @@
 import { useEffect, useState } from 'react';
-import { StateObject } from '@/domain/aspect';
 import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/__generated__/components/card';
 import { Label } from '@/__generated__/components/label';
 import { Switch } from '@/__generated__/components/switch';
 import { Separator } from '@/__generated__/components/separator';
-import { mapToStateObjectComponent } from '@/components/domain/map-state-object';
-import { useVuiDataContext } from '@/components/data/vui-data.context';
+import { mapToStateObjectComponent } from '@/components/stateObjects/map-state-object';
+import { useVuiDataContext } from '@/components/aspects/vui-data.context';
+import { StateObject } from '@/components/aspects/aspect';
 
 type SupplementalAspectCardProps = {
     id: string;

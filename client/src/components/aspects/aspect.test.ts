@@ -1,6 +1,12 @@
 import { describe, expect, it } from 'vitest';
-import { AspectNode, buildCanonicalPath, createAspectStructure, getPathSegments, hasChildren } from '@/domain/aspect';
-import { VuiEnum } from '../../../src/domain';
+import { VuiEnum } from '../../../../src/domain';
+import {
+    AspectNode,
+    buildCanonicalPath,
+    createAspectStructure,
+    getPathSegments,
+    hasChildren,
+} from '@/components/aspects/aspect';
 
 describe('hasChildren Function', () => {
     it('returns true if node has children', () => {
