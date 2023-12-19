@@ -1,10 +1,10 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-type MessageHandler = (message: MessageEvent) => void;
+export type MessageHandler = (message: MessageEvent) => void;
 
 export type ConnectionState = 'CONNECTING' | 'OPEN' | 'CLOSING' | 'CLOSED' | 'UNKNOWN';
 
-function useWebSocket(onMessage: MessageHandler) {
+export function useWebSocket(onMessage: MessageHandler) {
     const [socket, setSocket] = useState<WebSocket | null>(null);
     const [connectionState, setConnectionState] = useState<ConnectionState>('UNKNOWN');
     const messageHandlerRef = useRef<MessageHandler>(onMessage);
@@ -64,7 +64,6 @@ function useWebSocket(onMessage: MessageHandler) {
         }
     }, [socket?.readyState]);
 
-    // Function to send messages
     const sendMessage = useCallback(
         (message: string) => {
             if (socket) {
@@ -76,5 +75,3 @@ function useWebSocket(onMessage: MessageHandler) {
 
     return { sendMessage, connectionState };
 }
-
-export default useWebSocket;

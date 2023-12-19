@@ -1,14 +1,14 @@
 import './App.css';
 import { hasStateObjects, isRoom, VuiEnum } from '../../src/domain';
 import { useCallback, useState } from 'react';
-import { AspectKey, AspectNode } from '@/components/aspects/aspect';
-import { DynamicIcon } from '@/components/dynamic-icon';
-import { ToggleSwitch } from './components/toggle-switch';
+import { DynamicIcon } from '@/app/dynamic-icon';
+import { ToggleSwitch } from '@/app/toggle-switch';
 import { Sheet, SheetContent, SheetTrigger } from './__generated__/components/sheet';
-import { useVuiDataContext } from '@/components/aspects/vui-data.context';
-import { MainAspectSection } from '@/components/aspects/main-aspect.section';
-import { MainAspectsSidebar } from '@/components/aspects/main-aspects.sidebar';
-import { TopMenu } from '@/components/menu/top-menu';
+import { useVuiDataContext } from '@/app/smart-home/data.context';
+import { TopMenu } from '@/app/menu/top-menu';
+import { AspectKey, AspectNode } from '@/app/smart-home/structure/aspect';
+import { MainAspectSection } from '@/app/smart-home/structure/main-aspect.section';
+import { MainAspectSidebar } from '@/app/smart-home/structure/main-aspect.sidebar';
 
 export function App() {
     const [mainAspect, setMainAspect] = useState<AspectKey>('rooms');
@@ -65,7 +65,7 @@ export function App() {
                                     right={{ value: 'functions', label: 'Funktionen' }}
                                     onSwitch={handleToggle}
                                 />
-                                <MainAspectsSidebar
+                                <MainAspectSidebar
                                     aspectNodes={mainAspect === 'rooms' ? roomAspectNodes : functionAspectNodes}
                                     onAspectNodeClicked={onAspectNodeClicked}
                                 />
@@ -91,7 +91,7 @@ export function App() {
                                         right={{ value: 'functions', label: 'Funktionen' }}
                                         onSwitch={handleToggle}
                                     />
-                                    <MainAspectsSidebar
+                                    <MainAspectSidebar
                                         aspectNodes={mainAspect === 'rooms' ? roomAspectNodes : functionAspectNodes}
                                         onAspectNodeClicked={onAspectNodeClicked}
                                     />

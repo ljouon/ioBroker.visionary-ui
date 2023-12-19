@@ -3,7 +3,7 @@ import { render } from '@/test/testing-library-setup';
 
 import { describe, expect, it } from 'vitest';
 import { mapToStateObjectComponent } from './map-state-object';
-import { StateObject } from '@/components/aspects/aspect';
+import { StateObject } from '@/app/smart-home/structure/aspect';
 
 describe('mapToStateObjectComponent Function', () => {
     it('renders StateObjectSwitch for boolean type', () => {

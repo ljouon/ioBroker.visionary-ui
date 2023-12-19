@@ -1,14 +1,14 @@
 import { cn } from '@/lib/utils';
-import { hasStateObjects, VuiEnum } from '../../../../src/domain';
 import { Button } from '@/__generated__/components/button';
-import { AspectNode, hasChildren } from '@/components/aspects/aspect';
+import { AspectNode, hasChildren } from '@/app/smart-home/structure/aspect';
+import { hasStateObjects, VuiEnum } from '../../../../../src/domain';
 
 interface MainAspectsSidebarProps<T extends VuiEnum, S extends VuiEnum> extends React.HTMLAttributes<HTMLDivElement> {
     aspectNodes: AspectNode<T, S>[];
     onAspectNodeClicked: (treeNode: AspectNode<T, S>) => void;
 }
 
-export function MainAspectsSidebar<T extends VuiEnum, S extends VuiEnum>({
+export function MainAspectSidebar<T extends VuiEnum, S extends VuiEnum>({
     className,
     aspectNodes,
     onAspectNodeClicked,
@@ -31,7 +31,7 @@ export function MainAspectsSidebar<T extends VuiEnum, S extends VuiEnum>({
                                         {node.mainAspect?.icon ? (
                                             <img
                                                 className="dark:invert opacity-50"
-                                                src={node.mainAspect?.icon ?? undefined}
+                                                src={node.mainAspect.icon}
                                                 alt={'icon'}
                                             />
                                         ) : (
@@ -55,7 +55,7 @@ export function MainAspectsSidebar<T extends VuiEnum, S extends VuiEnum>({
                                                             {child.mainAspect?.icon ? (
                                                                 <img
                                                                     className="dark:invert opacity-50"
-                                                                    src={child.mainAspect?.icon ?? undefined}
+                                                                    src={child.mainAspect.icon}
                                                                     alt={'icon'}
                                                                 />
                                                             ) : (

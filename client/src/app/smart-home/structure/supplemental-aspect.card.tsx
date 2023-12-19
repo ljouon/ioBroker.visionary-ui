@@ -3,9 +3,9 @@ import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/__genera
 import { Label } from '@/__generated__/components/label';
 import { Switch } from '@/__generated__/components/switch';
 import { Separator } from '@/__generated__/components/separator';
-import { mapToStateObjectComponent } from '@/components/stateObjects/map-state-object';
-import { useVuiDataContext } from '@/components/aspects/vui-data.context';
-import { StateObject } from '@/components/aspects/aspect';
+import { useVuiDataContext } from '@/app/smart-home/data.context';
+import { mapToStateObjectComponent } from '@/app/smart-home/state-objects/map-state-object';
+import { StateObject } from '@/app/smart-home/structure/aspect';
 
 type SupplementalAspectCardProps = {
     id: string;
@@ -29,11 +29,10 @@ export function SupplementalAspectCard({ id, title, sectionId, functionObjectIds
             })
             .map((object) => {
                 const stateValue = stateValues.find((stateValue) => stateValue.id === object.id);
-
                 return {
                     ...object,
-                    value: stateValue ? stateValue.value : null,
-                    lastChange: stateValue ? stateValue.lastChange : null,
+                    value: stateValue?.value || null,
+                    lastChange: stateValue?.lastChange || null,
                 };
             })
             .filter((object) => object.value !== null);
@@ -48,7 +47,7 @@ export function SupplementalAspectCard({ id, title, sectionId, functionObjectIds
                         <div>
                             <CardTitle>{title}</CardTitle>
                         </div>
-                        <div className="flex items-center hidden">
+                        <div className="hidden items-center">
                             <Label htmlFor={`${sectionId}_all_${id}`} className="mr-2">
                                 <span className="font-bold leading-snug text-muted-foreground">Alle</span>
                             </Label>
@@ -59,7 +58,6 @@ export function SupplementalAspectCard({ id, title, sectionId, functionObjectIds
                 <CardContent className="space-y-6">
                     <Separator />
                     {vuiStateObjects.map((object) => {
-                        // TODO: map multiple objects to a specific card and let unused objects remain for other cards.
                         return mapToStateObjectComponent(sectionId, id, object);
                     })}
                 </CardContent>

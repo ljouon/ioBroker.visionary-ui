@@ -1,12 +1,12 @@
-import { StateObjectSwitch } from '@/components/stateObjects/state-object-switch';
-import { StateObjectSlider } from '@/components/stateObjects/state-object-slider';
-import { StateObjectSelect } from '@/components/stateObjects/state-object-select';
-import { StateObjectButton } from '@/components/stateObjects/state-object-button';
-import { StateObjectValueOnly } from '@/components/stateObjects/state-object-value-only';
-import { StateObject } from '@/components/aspects/aspect';
-
 // const switchable = ['boolean'];
 // const possibleDataTypes = ['array', 'boolean', 'file', 'json', 'mixed', 'number', 'object', 'string'];
+
+import { StateObject } from '../structure/aspect';
+import { StateObjectValueOnly } from '@/app/smart-home/state-objects/state-object-value-only';
+import { StateObjectSwitch } from '@/app/smart-home/state-objects/state-object-switch';
+import { StateObjectButton } from '@/app/smart-home/state-objects/state-object-button';
+import { StateObjectSlider } from '@/app/smart-home/state-objects/state-object-slider';
+import { StateObjectSelect } from '@/app/smart-home/state-objects/state-object-select';
 
 /*
 brightness:
