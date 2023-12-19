@@ -1,9 +1,9 @@
-import { DynamicIcon } from '@/app/dynamic-icon';
-import { CardDescription, CardTitle } from '@/__generated__/components/card';
-import { Button } from '@/__generated__/components/button';
-import { Label } from '@/__generated__/components/label';
-import { useVuiDataContext } from '@/app/smart-home/data.context';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import {CardDescription, CardTitle} from '@/__generated__/components/card';
+import {Button} from '@/__generated__/components/button';
+import {Label} from '@/__generated__/components/label';
+import {useVuiDataContext} from '@/app/smart-home/data.context';
+import {StateObject} from '@/app/smart-home/structure/aspect';
+import {DynamicIcon} from "@/app/components/dynamic-icon";
 
 export type StateObjectButtonProps = {
     sectionId: string;
@@ -11,11 +11,11 @@ export type StateObjectButtonProps = {
     uiStateObject: StateObject;
 };
 
-export function StateObjectButton({ uiStateObject, sectionId, cardId }: StateObjectButtonProps) {
-    const { sendVuiAction } = useVuiDataContext();
+export function StateObjectButton({uiStateObject, sectionId, cardId}: StateObjectButtonProps) {
+    const {sendVuiAction} = useVuiDataContext();
 
     const handleValueChange = () => {
-        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value: true }] });
+        sendVuiAction({type: 'setValues', data: [{id: uiStateObject.id, value: true}]});
     };
 
     return (
@@ -46,7 +46,7 @@ export function StateObjectButton({ uiStateObject, sectionId, cardId }: StateObj
             </div>
             <div className="flex-none">
                 <Button id={`${sectionId}_${cardId}_${uiStateObject.id}`} onClick={handleValueChange}>
-                    <DynamicIcon iconKey="check-bold" className="w-6 h-6" />
+                    <DynamicIcon iconKey="check-bold" className="w-6 h-6"/>
                 </Button>
             </div>
         </div>
