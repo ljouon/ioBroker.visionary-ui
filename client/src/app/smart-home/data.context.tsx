@@ -1,4 +1,4 @@
-import { createContext, ReactNode, useCallback, useContext, useEffect, useState } from 'react';
+import {createContext, ReactNode, useCallback, useContext, useEffect, useState} from 'react';
 import {
     VuiActionEnvelope,
     VuiDataEnvelope,
@@ -7,19 +7,20 @@ import {
     VuiStateObject,
     VuiStateValue,
 } from '../../../../src/domain';
-import { AspectNode, createAspectStructure } from '@/app/smart-home/structure/aspect';
-import { ConnectionState, useWebSocket } from '@/app/smart-home/socket';
+import {AspectNode, createAspectStructure} from '@/app/smart-home/structure/aspect';
+import {ConnectionState, useWebSocket} from '@/app/smart-home/socket';
 
 export type VuiDataContextType = {
-    roomAspectNodes: AspectNode<VuiRoom, VuiFunction>[];
-    functionAspectNodes: AspectNode<VuiFunction, VuiRoom>[];
+    roomAspectNodes: AspectNode[];
+    functionAspectNodes: AspectNode[];
     stateObjects: VuiStateObject[];
     stateValues: VuiStateValue[];
     connectionState: ConnectionState;
     sendVuiAction: (message: VuiActionEnvelope) => void;
 };
 
-const noop = () => {};
+const noop = () => {
+};
 
 export const VuiDataContext = createContext<VuiDataContextType>({
     roomAspectNodes: [],
@@ -38,13 +39,13 @@ export type VuiDataProviderProps = {
     children: ReactNode;
 };
 
-export function VuiDataProvider({ children }: VuiDataProviderProps) {
+export function VuiDataProvider({children}: VuiDataProviderProps) {
     const [rooms, setRooms] = useState<VuiRoom[]>([]);
     const [functions, setFunctions] = useState<VuiFunction[]>([]);
     const [stateObjects, setStateObjects] = useState<VuiStateObject[]>([]);
     const [stateValues, setStateValues] = useState<VuiStateValue[]>([]);
-    const [roomAspectNodes, setRoomAspectNodes] = useState<AspectNode<VuiRoom, VuiFunction>[]>([]);
-    const [functionAspectNodes, setFunctionAspectNodes] = useState<AspectNode<VuiFunction, VuiRoom>[]>([]);
+    const [roomAspectNodes, setRoomAspectNodes] = useState<AspectNode[]>([]);
+    const [functionAspectNodes, setFunctionAspectNodes] = useState<AspectNode[]>([]);
 
     function replaceElementInArray<
         T extends {
@@ -79,25 +80,21 @@ export function VuiDataProvider({ children }: VuiDataProviderProps) {
                 case 'allValues':
                     setStateValues(envelope.data);
                     break;
-                case 'room':
-                    {
-                        setRooms(replaceElementInArray(rooms, envelope.data));
-                    }
+                case 'room': {
+                    setRooms(replaceElementInArray(rooms, envelope.data));
+                }
                     break;
-                case 'function':
-                    {
-                        setFunctions(replaceElementInArray(functions, envelope.data));
-                    }
+                case 'function': {
+                    setFunctions(replaceElementInArray(functions, envelope.data));
+                }
                     break;
-                case 'state':
-                    {
-                        setStateObjects(replaceElementInArray(stateObjects, envelope.data));
-                    }
+                case 'state': {
+                    setStateObjects(replaceElementInArray(stateObjects, envelope.data));
+                }
                     break;
-                case 'value':
-                    {
-                        setStateValues(replaceElementInArray(stateValues, envelope.data));
-                    }
+                case 'value': {
+                    setStateValues(replaceElementInArray(stateValues, envelope.data));
+                }
                     break;
                 default:
                     console.error(`unknown element type: ${JSON.stringify(envelope)}`);
@@ -107,16 +104,16 @@ export function VuiDataProvider({ children }: VuiDataProviderProps) {
     );
 
     useEffect(() => {
-        const roomStructure = createAspectStructure<VuiRoom, VuiFunction>(rooms, 'enum.rooms', functions);
+        const roomStructure = createAspectStructure(rooms, 'enum.rooms', functions);
         setRoomAspectNodes(roomStructure);
     }, [rooms, functions]);
 
     useEffect(() => {
-        const functionStructure = createAspectStructure<VuiFunction, VuiRoom>(functions, 'enum.functions', rooms);
+        const functionStructure = createAspectStructure(functions, 'enum.functions', rooms);
         setFunctionAspectNodes(functionStructure);
     }, [functions, rooms]);
 
-    const { sendMessage, connectionState } = useWebSocket(handleNewMessage);
+    const {sendMessage, connectionState} = useWebSocket(handleNewMessage);
 
     const sendVuiAction = (vuiActionEnvelope: VuiActionEnvelope) => {
         sendMessage(JSON.stringify(vuiActionEnvelope));

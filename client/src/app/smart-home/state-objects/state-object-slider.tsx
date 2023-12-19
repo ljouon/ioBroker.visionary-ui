@@ -1,9 +1,9 @@
-import { DynamicIcon } from '@/app/dynamic-icon';
-import { useVuiDataContext } from '@/app/smart-home/data.context';
-import { useEffect, useState } from 'react';
-import { CardDescription, CardTitle } from '@/__generated__/components/card';
-import { Slider } from '@/__generated__/components/slider';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import {DynamicIcon} from '@/app/components/dynamic-icon';
+import {useVuiDataContext} from '@/app/smart-home/data.context';
+import {useEffect, useState} from 'react';
+import {CardDescription, CardTitle} from '@/__generated__/components/card';
+import {Slider} from '@/__generated__/components/slider';
+import {StateObject} from '@/app/smart-home/structure/aspect';
 
 export type StateObjectSliderProps = {
     sectionId: string;
@@ -11,9 +11,9 @@ export type StateObjectSliderProps = {
     uiStateObject: StateObject;
 };
 
-export function StateObjectSlider({ uiStateObject, sectionId, cardId }: StateObjectSliderProps) {
+export function StateObjectSlider({uiStateObject, sectionId, cardId}: StateObjectSliderProps) {
     const [internalValue, setInternalValue] = useState(uiStateObject.value);
-    const { sendVuiAction } = useVuiDataContext();
+    const {sendVuiAction} = useVuiDataContext();
 
     let valueString = '';
 
@@ -28,7 +28,7 @@ export function StateObjectSlider({ uiStateObject, sectionId, cardId }: StateObj
     };
 
     const handleValueCommit = (newValue: number[]) => {
-        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value: newValue[0] }] });
+        sendVuiAction({type: 'setValues', data: [{id: uiStateObject.id, value: newValue[0]}]});
     };
 
     useEffect(() => {
@@ -48,7 +48,8 @@ export function StateObjectSlider({ uiStateObject, sectionId, cardId }: StateObj
                 </div>
                 <div className="flex-grow truncate pl-2 mr-2">
                     <CardTitle>
-                        <span className="ml-0 whitespace-nowrap overflow-hidden text-sm font-semibold leading-none tracking-tight">
+                        <span
+                            className="ml-0 whitespace-nowrap overflow-hidden text-sm font-semibold leading-none tracking-tight">
                             {uiStateObject.displayName ? uiStateObject.displayName : uiStateObject.name}
                         </span>
                     </CardTitle>

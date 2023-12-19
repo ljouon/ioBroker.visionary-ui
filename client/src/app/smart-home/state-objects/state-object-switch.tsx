@@ -1,10 +1,10 @@
-import { DynamicIcon } from '@/app/dynamic-icon';
-import { useVuiDataContext } from '@/app/smart-home/data.context';
-import { useEffect, useState } from 'react';
-import { Label } from '@/__generated__/components/label';
-import { CardDescription, CardTitle } from '@/__generated__/components/card';
-import { Switch } from '@/__generated__/components/switch';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import {DynamicIcon} from '@/app/components/dynamic-icon';
+import {useVuiDataContext} from '@/app/smart-home/data.context';
+import {useEffect, useState} from 'react';
+import {Label} from '@/__generated__/components/label';
+import {CardDescription, CardTitle} from '@/__generated__/components/card';
+import {Switch} from '@/__generated__/components/switch';
+import {StateObject} from '@/app/smart-home/structure/aspect';
 
 export type StateObjectSwitchProps = {
     sectionId: string;
@@ -12,14 +12,14 @@ export type StateObjectSwitchProps = {
     uiStateObject: StateObject;
 };
 
-export function StateObjectSwitch({ uiStateObject, sectionId, cardId }: StateObjectSwitchProps) {
+export function StateObjectSwitch({uiStateObject, sectionId, cardId}: StateObjectSwitchProps) {
     const defaultChecked = uiStateObject.value === true;
     const [internalValue, setInternalValue] = useState(defaultChecked);
-    const { sendVuiAction } = useVuiDataContext();
+    const {sendVuiAction} = useVuiDataContext();
 
     const handleValueChange = (newValue: boolean) => {
         setInternalValue(newValue);
-        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value: newValue }] });
+        sendVuiAction({type: 'setValues', data: [{id: uiStateObject.id, value: newValue}]});
     };
 
     useEffect(() => {
