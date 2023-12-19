@@ -12,7 +12,7 @@ import {
     MenubarSubTrigger,
     MenubarTrigger,
 } from '@/__generated__/components/menubar';
-import { ThemeContext } from '@/components/theme-provider';
+import { ThemeContext } from '@/components/theme/theme-provider';
 
 export function TopMenu() {
     const { setTheme, theme } = useContext(ThemeContext);

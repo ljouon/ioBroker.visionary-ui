@@ -1,8 +1,8 @@
 import ReactDOM from 'react-dom/client';
 import './index.css';
 import { App } from '@/App';
-import { ThemeProvider } from '@/components/theme-provider';
-import { VuiDataProvider } from '@/components/data/vui-data.context';
+import { VuiDataProvider } from '@/components/aspects/vui-data.context';
+import { ThemeProvider } from '@/components/theme/theme-provider';
 
 ReactDOM.createRoot(document.getElementById('root')!).render(
     <ThemeProvider defaultTheme="system" storageKey="theme-mode">

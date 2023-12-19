@@ -1,6 +1,6 @@
 import { fireEvent, screen } from '@testing-library/react';
-import { StateObjectSelect } from '@/components/domain/state-object-select';
-import { StateObject } from '@/domain/aspect';
+import { StateObjectSelect } from '@/components/stateObjects/state-object-select';
+import { StateObject } from '@/components/aspects/aspect';
 import { describe, expect, it, vi } from 'vitest';
 import { render } from '@/test/testing-library-setup';
 
@@ -19,7 +19,7 @@ vi.mock('@/__generated__/components/select', () => ({
 }));
 
 const sendVuiAction = vi.fn();
-vi.mock('@/components/data/vui-data.context', () => ({
+vi.mock('@/components/aspects/vui-data.context', () => ({
     useVuiDataContext: () => ({
         sendVuiAction: sendVuiAction,
     }),

@@ -1,6 +1,6 @@
-import { StateObject } from '@/domain/aspect';
+import { StateObject } from '@/components/aspects/aspect';
 import { DynamicIcon } from '@/components/dynamic-icon';
-import { useVuiDataContext } from '@/components/data/vui-data.context';
+import { useVuiDataContext } from '@/components/aspects/vui-data.context';
 import { useEffect, useState } from 'react';
 import { Label } from '@/__generated__/components/label';
 import { CardDescription, CardTitle } from '@/__generated__/components/card';

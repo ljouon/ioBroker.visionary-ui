@@ -1,7 +1,7 @@
 import { cn } from '@/lib/utils';
-import { AspectNode, hasChildren } from '@/domain/aspect';
 import { hasStateObjects, VuiEnum } from '../../../../src/domain';
 import { Button } from '@/__generated__/components/button';
+import { AspectNode, hasChildren } from '@/components/aspects/aspect';
 
 interface MainAspectsSidebarProps<T extends VuiEnum, S extends VuiEnum> extends React.HTMLAttributes<HTMLDivElement> {
     aspectNodes: AspectNode<T, S>[];

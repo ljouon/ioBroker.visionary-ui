@@ -1,9 +1,9 @@
 import { screen } from '@testing-library/react';
 import { render } from '@/test/testing-library-setup';
 
-import { StateObject } from '@/domain/aspect';
 import { describe, expect, it } from 'vitest';
 import { mapToStateObjectComponent } from './map-state-object';
+import { StateObject } from '@/components/aspects/aspect';
 
 describe('mapToStateObjectComponent Function', () => {
     it('renders StateObjectSwitch for boolean type', () => {

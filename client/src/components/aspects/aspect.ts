@@ -1,4 +1,4 @@
-import { VuiEnum, VuiStateObject } from '../../../src/domain';
+import { VuiEnum, VuiStateObject } from '../../../../src/domain';
 
 export type AspectKey = 'rooms' | 'functions';
 
