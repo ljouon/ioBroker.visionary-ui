@@ -1,22 +1,30 @@
-import { StateObject } from '@/domain/aspect';
+import { StateObject } from '@/components/aspects/aspect';
 import { DynamicIcon } from '@/components/dynamic-icon';
-import { CardDescription, CardTitle } from '@/__generated__/components/card';
-import { Button } from '@/__generated__/components/button';
+import { useVuiDataContext } from '@/components/aspects/vui-data.context';
+import { useEffect, useState } from 'react';
 import { Label } from '@/__generated__/components/label';
-import { useVuiDataContext } from '@/components/data/vui-data.context';
+import { CardDescription, CardTitle } from '@/__generated__/components/card';
+import { Switch } from '@/__generated__/components/switch';
 
-export type StateObjectButtonProps = {
+export type StateObjectSwitchProps = {
     sectionId: string;
     cardId: string;
     uiStateObject: StateObject;
 };
 
-export function StateObjectButton({ uiStateObject, sectionId, cardId }: StateObjectButtonProps) {
+export function StateObjectSwitch({ uiStateObject, sectionId, cardId }: StateObjectSwitchProps) {
+    const defaultChecked = uiStateObject.value === true;
+    const [internalValue, setInternalValue] = useState(defaultChecked);
     const { sendVuiAction } = useVuiDataContext();
 
-    const handleValueChange = () => {
-        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value: true }] });
+    const handleValueChange = (newValue: boolean) => {
+        setInternalValue(newValue);
+        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value: newValue }] });
     };
+
+    useEffect(() => {
+        setInternalValue(defaultChecked);
+    }, [defaultChecked]);
 
     return (
         <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${uiStateObject.id}`}>
@@ -45,9 +53,12 @@ export function StateObjectButton({ uiStateObject, sectionId, cardId }: StateObj
                 </Label>
             </div>
             <div className="flex-none">
-                <Button id={`${sectionId}_${cardId}_${uiStateObject.id}`} onClick={handleValueChange}>
-                    <DynamicIcon iconKey="check-bold" className="w-6 h-6" />
-                </Button>
+                <Switch
+                    id={`${sectionId}_${cardId}_${uiStateObject.id}`}
+                    defaultChecked={defaultChecked}
+                    checked={internalValue}
+                    onCheckedChange={handleValueChange}
+                />
             </div>
         </div>
     );

@@ -1,9 +1,9 @@
-import { StateObject } from '@/domain/aspect';
-import { StateObjectSwitch } from '@/components/domain/state-object-switch';
-import { StateObjectSlider } from '@/components/domain/state-object-slider';
-import { StateObjectSelect } from '@/components/domain/state-object-select';
-import { StateObjectButton } from '@/components/domain/state-object-button';
-import { StateObjectValueOnly } from '@/components/domain/state-object-value-only';
+import { StateObjectSwitch } from '@/components/stateObjects/state-object-switch';
+import { StateObjectSlider } from '@/components/stateObjects/state-object-slider';
+import { StateObjectSelect } from '@/components/stateObjects/state-object-select';
+import { StateObjectButton } from '@/components/stateObjects/state-object-button';
+import { StateObjectValueOnly } from '@/components/stateObjects/state-object-value-only';
+import { StateObject } from '@/components/aspects/aspect';
 
 // const switchable = ['boolean'];
 // const possibleDataTypes = ['array', 'boolean', 'file', 'json', 'mixed', 'number', 'object', 'string'];
