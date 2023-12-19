@@ -1,4 +1,4 @@
-import { describe, expect, it } from 'vitest';
+import {describe, expect, it} from 'vitest';
 import {
     AspectNode,
     buildCanonicalPath,
@@ -6,22 +6,22 @@ import {
     getPathSegments,
     hasChildren,
 } from '@/app/smart-home/structure/aspect';
-import { VuiEnum } from '../../../../../src/domain';
+import {VuiEnum} from '../../../../../src/domain';
 
 describe('hasChildren Function', () => {
     it('returns true if node has children', () => {
-        const node: AspectNode<VuiEnum, VuiEnum> = {
+        const node: AspectNode = {
             level: 0,
             canonicalPath: 'path',
             mainAspect: null,
             supplementalAspects: null,
-            children: [{} as AspectNode<VuiEnum, VuiEnum>],
+            children: [{} as AspectNode],
         };
         expect(hasChildren(node)).toBe(true);
     });
 
     it('returns false if node has no children', () => {
-        const node: AspectNode<VuiEnum, VuiEnum> = {
+        const node: AspectNode = {
             level: 0,
             canonicalPath: 'path',
             mainAspect: null,
@@ -50,8 +50,8 @@ describe('buildCanonicalPath Function', () => {
 
 describe('createAspectStructure Function', () => {
     it('creates aspect structure from main and supplemental aspects', () => {
-        const mainAspects: VuiEnum[] = [{ id: 'prefix.segment1', members: ['object1'] }] as VuiEnum[];
-        const supplementalAspects: VuiEnum[] = [{ id: 'supplemental1', members: ['object1'] }] as VuiEnum[];
+        const mainAspects: VuiEnum[] = [{id: 'prefix.segment1', members: ['object1']}] as VuiEnum[];
+        const supplementalAspects: VuiEnum[] = [{id: 'supplemental1', members: ['object1']}] as VuiEnum[];
         const structure = createAspectStructure(mainAspects, 'prefix.', supplementalAspects);
 
         expect(structure.length).toBeGreaterThan(0);

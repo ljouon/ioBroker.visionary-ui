@@ -1,17 +1,17 @@
-import { VuiEnum, VuiStateObject } from '../../../../../src/domain';
+import {VuiEnum, VuiStateObject} from '../../../../../src/domain';
 
 export type AspectKey = 'rooms' | 'functions';
 
-export function hasChildren<T extends VuiEnum, S extends VuiEnum>(node: AspectNode<T, S>) {
+export function hasChildren(node: AspectNode) {
     return node.children.length > 0;
 }
 
-export type AspectNode<T, S> = {
+export type AspectNode = {
     level: number;
     canonicalPath: string;
-    mainAspect: T | null;
-    supplementalAspects: S[] | null;
-    children: AspectNode<T, S>[];
+    mainAspect: VuiEnum | null;
+    supplementalAspects: VuiEnum[] | null;
+    children: AspectNode[];
 };
 
 export type StateObject = VuiStateObject & {
@@ -27,6 +27,25 @@ export function buildCanonicalPath(segments: string[], index: number): string {
     return segments.slice(0, index + 1).join('.');
 }
 
+export function findAspectNodeById(nodes: AspectNode[], id: string): AspectNode | null {
+    let result = null;
+    for (const node of nodes) {
+        if (node.mainAspect && node.mainAspect.id === id) {
+            result = node;
+            break;
+        }
+
+        if (node.children.length > 0) {
+            const subNode = findAspectNodeById(node.children, id);
+            if (subNode) {
+                result = subNode;
+                break;
+            }
+        }
+    }
+    return result;
+}
+
 function attachSupplementalElements<T extends VuiEnum, S extends VuiEnum>(mainAspect: T, sortedMElements: S[]) {
     const result: S[] = [];
 
@@ -35,7 +54,7 @@ function attachSupplementalElements<T extends VuiEnum, S extends VuiEnum>(mainAs
             if (m.members) {
                 const ids = mainAspect.members?.filter((element) => m.members!.includes(element));
                 if (ids && ids.length > 0) {
-                    result.push({ ...m, members: ids });
+                    result.push({...m, members: ids});
                 }
             }
         });
@@ -43,14 +62,14 @@ function attachSupplementalElements<T extends VuiEnum, S extends VuiEnum>(mainAs
     return result;
 }
 
-export function createAspectStructure<T extends VuiEnum, S extends VuiEnum>(
-    mainAspectElements: T[],
+export function createAspectStructure(
+    mainAspectElements: VuiEnum[],
     prefix: string,
-    supplementalAspectElements: S[],
-): AspectNode<T, S>[] {
+    supplementalAspectElements: VuiEnum[],
+): AspectNode[] {
     const sortedMainElements = mainAspectElements.sort((a, b) => a.id.localeCompare(b.id));
     const sortedMSupplementalElements = supplementalAspectElements.sort((a, b) => a.id.localeCompare(b.id));
-    const firstLevelNodes: AspectNode<T, S>[] = [];
+    const firstLevelNodes: AspectNode[] = [];
 
     sortedMainElements.forEach((element) => {
         const pathSegments = getPathSegments(element.id, prefix);

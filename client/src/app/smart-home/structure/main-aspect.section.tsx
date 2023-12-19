@@ -1,7 +1,6 @@
-import { SupplementalAspectCard } from './supplemental-aspect.card';
-import { useVuiDataContext } from '@/app/smart-home/data.context';
-import { AspectNode } from '@/app/smart-home/structure/aspect';
-import { VuiEnum } from '../../../../../src/domain';
+import {SupplementalAspectCard} from './supplemental-aspect.card';
+import {useVuiDataContext} from '@/app/smart-home/data.context';
+import {findAspectNodeById} from "@/app/smart-home/structure/aspect";
 
 type MainAspectSectionProps = {
     id: string;
@@ -11,33 +10,14 @@ type MainAspectSectionProps = {
 // TODO: Collect objects from children and merge them
 // TODO: Section Order
 
-function findNodeById(nodes: AspectNode<VuiEnum, VuiEnum>[], id: string): AspectNode<VuiEnum, VuiEnum> | null {
-    let result = null;
-    for (const node of nodes) {
-        if (node.mainAspect && node.mainAspect.id === id) {
-            result = node;
-            break;
-        }
-
-        if (node.children.length > 0) {
-            const subNode = findNodeById(node.children, id);
-            if (subNode) {
-                result = subNode;
-                break;
-            }
-        }
-    }
-    return result;
-}
-
-export function MainAspectSection({ id, type }: MainAspectSectionProps) {
-    const { roomAspectNodes, functionAspectNodes } = useVuiDataContext();
+export function MainAspectSection({id, type}: MainAspectSectionProps) {
+    const {roomAspectNodes, functionAspectNodes} = useVuiDataContext();
 
     let element = undefined;
     if (type === 'room') {
-        element = findNodeById(roomAspectNodes, id);
+        element = findAspectNodeById(roomAspectNodes, id);
     } else if (type === 'function') {
-        element = findNodeById(functionAspectNodes, id);
+        element = findAspectNodeById(functionAspectNodes, id);
     }
 
     if (!element || !element?.mainAspect) {
@@ -49,7 +29,7 @@ export function MainAspectSection({ id, type }: MainAspectSectionProps) {
 
     return (
         <>
-            <div className="pt-8 pl-8">
+            <div className="pt-6 pl-8">
                 <h1 className="m- flex items-center text-lg font-extrabold leading-none tracking-tight text-gray-900 md:text-xl lg:text-2xl dark:text-white">
                     {element.mainAspect.icon ? (
                         <img
