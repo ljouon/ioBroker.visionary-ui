@@ -36,15 +36,19 @@ export function mapToVuiStateObject(
     };
 }
 
-export function mapToIobEnum(id: string, ioBrokerRoom: ioBroker.Object, language: ioBroker.Languages): VuiEnum {
+export function mapToIobEnum(id: string, ioBrokerObject: ioBroker.Object, language: ioBroker.Languages): VuiEnum {
+    const customProperties = findVisionaryCustomProperties(ioBrokerObject);
+
     return {
         id: id,
         type: 'unknown',
-        name: mapTranslation(ioBrokerRoom.common.name, language),
-        color: ioBrokerRoom.common.color ?? null,
-        icon: ioBrokerRoom.common.icon ?? null,
-        members: ioBrokerRoom.common.members ?? null,
+        name: mapTranslation(ioBrokerObject.common.name, language),
+        color: ioBrokerObject.common.color ?? null,
+        icon: ioBrokerObject.common.icon ?? null,
+        members: ioBrokerObject.common.members ?? null,
         children: null,
+        customIcon: customProperties?.customIcon || null,
+        rank: customProperties?.rank || null,
     };
 }
 

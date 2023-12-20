@@ -1,4 +1,4 @@
-import {VuiEnum, VuiStateObject} from '../../../../../src/domain';
+import { VuiEnum, VuiStateObject } from '../../../../../src/domain';
 
 export type AspectKey = 'rooms' | 'functions';
 
@@ -54,7 +54,7 @@ function attachSupplementalElements(mainAspect: VuiEnum, sortedMElements: VuiEnu
             if (m.members) {
                 const ids = mainAspect.members?.filter((element) => m.members!.includes(element));
                 if (ids && ids.length > 0) {
-                    result.push({...m, members: ids});
+                    result.push({ ...m, members: ids });
                 }
             }
         });
@@ -97,6 +97,17 @@ export function createAspectStructure(
             currentLevelNodes = childNode.children;
         });
     });
-
     return firstLevelNodes;
+}
+
+export function sortAspectNodesByRank() {
+    return (objectA: AspectNode, objectB: AspectNode) => {
+        return sortObjectsByRank(objectA.mainAspect, objectB.mainAspect);
+    };
+}
+
+export function sortObjectsByRank(objectA: { rank: number | null } | null, objectB: { rank: number | null } | null) {
+    const rankA = objectA?.rank || 0;
+    const rankB = objectB?.rank || 0;
+    return rankA > rankB ? 1 : rankA === rankB ? 0 : -1;
 }
