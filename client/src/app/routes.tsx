@@ -20,7 +20,7 @@ export const routes: RouteObject[] = [
                 element: <div>START</div>,
             },
             {
-                path: '/:mainAspect/:aspectId',
+                path: '/:mainAspect/:canonicalPath',
                 element: <MainAspectPage/>,
             }
         ],

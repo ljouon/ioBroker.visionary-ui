@@ -27,16 +27,16 @@ export function buildCanonicalPath(segments: string[], index: number): string {
     return segments.slice(0, index + 1).join('.');
 }
 
-export function findAspectNodeById(nodes: AspectNode[], id: string): AspectNode | null {
+export function findAspectNode(nodes: AspectNode[], matcher: (node: AspectNode) => boolean): AspectNode | null {
     let result = null;
     for (const node of nodes) {
-        if (node.mainAspect && node.mainAspect.id === id) {
+        if (node.mainAspect && matcher(node)) {
             result = node;
             break;
         }
 
         if (node.children.length > 0) {
-            const subNode = findAspectNodeById(node.children, id);
+            const subNode = findAspectNode(node.children, matcher);
             if (subNode) {
                 result = subNode;
                 break;
@@ -46,8 +46,8 @@ export function findAspectNodeById(nodes: AspectNode[], id: string): AspectNode 
     return result;
 }
 
-function attachSupplementalElements<T extends VuiEnum, S extends VuiEnum>(mainAspect: T, sortedMElements: S[]) {
-    const result: S[] = [];
+function attachSupplementalElements(mainAspect: VuiEnum, sortedMElements: VuiEnum[]) {
+    const result: VuiEnum[] = [];
 
     if (mainAspect.members) {
         sortedMElements.forEach((m) => {
