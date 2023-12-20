@@ -1,21 +1,22 @@
 import {useParams} from "react-router-dom";
-import {AspectNode, findAspectNodeById} from "@/app/smart-home/structure/aspect";
+import {AspectNode, findAspectNode} from "@/app/smart-home/structure/aspect";
 import {useVuiDataContext} from "@/app/smart-home/data.context";
 import {MainAspectSection} from "@/app/smart-home/structure/main-aspect.section";
 import {hasStateObjects, isRoom} from "../../../../../src/domain";
+import {matchPath} from "@/app/route-utils";
 
 export function MainAspectPage() {
-    const {mainAspect, aspectId} = useParams();
+    const {mainAspect, canonicalPath} = useParams();
     const {roomAspectNodes, functionAspectNodes} = useVuiDataContext();
 
     // TODO: Error handling / redirect
-    if (!aspectId) {
-        return <div>aspectId missing!</div>
+    if (!canonicalPath) {
+        return <div>canonicalPath missing!</div>
     }
 
     const nodes = mainAspect === 'rooms' ? roomAspectNodes : functionAspectNodes;
 
-    const selectedAspectNode = findAspectNodeById(nodes, aspectId)
+    const selectedAspectNode = findAspectNode(nodes, (node: AspectNode) => matchPath(canonicalPath, node.canonicalPath))
 
     const mainAspects: AspectNode[] = [];
 
