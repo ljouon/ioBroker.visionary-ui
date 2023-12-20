@@ -60,6 +60,10 @@ describe('Visionary UI Mapper', () => {
                 unit: '°C',
                 customIcon: 'icon1',
                 rank: 1,
+                minValue: 0,
+                maxValue: 3,
+                states: null,
+                step: 1,
             };
 
             const result = mapToVuiStateObject('object1', mockIoBrokerObject, 'en');
@@ -88,6 +92,8 @@ describe('Visionary UI Mapper', () => {
                 icon: 'icon-living-room',
                 members: ['light1', 'light2'],
                 children: null,
+                customIcon: 'icon1',
+                rank: 1,
             };
 
             const result = mapToIobEnum('room1', mockIoBrokerRoom, 'en');
@@ -109,6 +115,8 @@ describe('Visionary UI Mapper', () => {
                 icon: null,
                 members: null,
                 children: null,
+                customIcon: 'icon1',
+                rank: 1,
             };
 
             const result = mapToIobEnum('room1', mockIoBrokerRoom, 'en');
