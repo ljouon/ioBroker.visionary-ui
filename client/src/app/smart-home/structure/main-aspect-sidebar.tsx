@@ -1,10 +1,11 @@
 import {useCallback, useState} from "react";
 import {AspectKey, AspectNode, hasChildren} from "@/app/smart-home/structure/aspect";
-import {generatePath, useNavigate, useParams} from "react-router-dom";
+import {useNavigate, useParams} from "react-router-dom";
 import {useVuiDataContext} from "@/app/smart-home/data.context";
 import {Button} from "@/__generated__/components/button";
 import {hasStateObjects} from "../../../../../src/domain";
 import {ToggleSwitch} from "@/app/components/toggle-switch";
+import {createAspectPath} from "@/app/route-utils";
 
 export function MainAspectSidebar({closeSheet}: {
     closeSheet: () => void
@@ -18,12 +19,9 @@ export function MainAspectSidebar({closeSheet}: {
     const aspectNodes = aspectKey === 'rooms' ? roomAspectNodes : functionAspectNodes;
 
     const onAspectClicked = useCallback(
-        (aspectId: string) => {
+        (canonicalPath: string) => {
             navigate(
-                generatePath('/:mainAspect/:aspectId', {
-                    mainAspect: aspectKey,
-                    aspectId,
-                }),
+                createAspectPath(aspectKey, canonicalPath),
             )
             closeSheet();
         },
@@ -36,7 +34,7 @@ export function MainAspectSidebar({closeSheet}: {
                 <div key={node.canonicalPath} className="py-1">
                     <h2
                         className="flex w-full items-baseline px-2 text-lg font-semibold tracking-tight cursor-pointer"
-                        onClick={() => onAspectClicked(node.mainAspect!.id)}
+                        onClick={() => onAspectClicked(node.canonicalPath)}
                     >
                         <span className="uppercase font-bold text-sm opacity-40 flex-grow truncate">
                             {node.mainAspect?.name}
@@ -65,7 +63,7 @@ export function MainAspectSidebar({closeSheet}: {
                     key={`${child}-${i}`}
                     variant="ghost"
                     className="flex font-normal px-2 w-full"
-                    onClick={() => onAspectClicked(child.mainAspect!.id)}
+                    onClick={() => onAspectClicked(child.canonicalPath)}
                 >
                     <div className={'w-8 h-8 mr-2 flex-none'}>
                         {createIconImage(child)}
