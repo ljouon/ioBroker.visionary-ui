@@ -52,7 +52,7 @@ export function MainAspectSidebar({ closeSheet }: { closeSheet: () => void }) {
     }
 
     function createSubMenuItem(child: AspectNode, i: number) {
-        if (hasStateObjects(child.mainAspect)) {
+        if (child.mainAspect && hasStateObjects(child.mainAspect)) {
             return (
                 <Button
                     key={`${child}-${i}`}

@@ -1,14 +1,14 @@
-import {useNavigate, useParams} from "react-router-dom";
-import {AspectNode, findAspectNode} from "@/app/smart-home/structure/aspect";
-import {useVuiDataContext} from "@/app/smart-home/data.context";
-import {MainAspectSection} from "@/app/smart-home/structure/main-aspect.section";
-import {hasStateObjects, isRoom} from "../../../../../src/domain";
-import {matchPath} from "@/app/route-utils";
+import {useNavigate, useParams} from 'react-router-dom';
+import {AspectNode, findAspectNode} from '@/app/smart-home/structure/aspect';
+import {useVuiDataContext} from '@/app/smart-home/data.context';
+import {MainAspectSection} from '@/app/smart-home/structure/main-aspect.section';
+import {hasStateObjects, isRoom} from '../../../../../src/domain';
+import {matchPath} from '@/app/route-utils';
 
 export function MainAspectPage() {
     const {mainAspect, canonicalPath} = useParams();
     const {roomAspectNodes, functionAspectNodes} = useVuiDataContext();
-    const navigate = useNavigate()
+    const navigate = useNavigate();
 
     // TODO: Error handling / redirect
     if (!canonicalPath) {
@@ -18,7 +18,9 @@ export function MainAspectPage() {
 
     const nodes = mainAspect === 'rooms' ? roomAspectNodes : functionAspectNodes;
 
-    const selectedAspectNode = findAspectNode(nodes, (node: AspectNode) => matchPath(canonicalPath, node.canonicalPath))
+    const selectedAspectNode = findAspectNode(nodes, (node: AspectNode) =>
+        matchPath(canonicalPath, node.canonicalPath),
+    );
 
     if (!selectedAspectNode) {
         navigate('/home');
@@ -40,8 +42,8 @@ export function MainAspectPage() {
 
     const pageContent = mainAspects.map((node) => {
         const element = node.mainAspect!;
-        return <MainAspectSection key={element.id} id={element.id} type={isRoom(element) ? 'room' : 'function'}/>;
+        return <MainAspectSection key={element.id} id={element.id} type={isRoom(element) ? 'rooms' : 'functions'}/>;
     });
 
-    return <>{pageContent}</>
+    return <>{pageContent}</>;
 }

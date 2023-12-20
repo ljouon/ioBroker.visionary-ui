@@ -1,22 +1,28 @@
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/__generated__/components/card';
-import { Label } from '@/__generated__/components/label';
-import { Switch } from '@/__generated__/components/switch';
-import { Separator } from '@/__generated__/components/separator';
-import { useVuiDataContext } from '@/app/smart-home/data.context';
-import { mapToStateObjectComponent } from '@/app/smart-home/state-objects/map-state-object';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import {useEffect, useState} from 'react';
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from '@/__generated__/components/card';
+import {Label} from '@/__generated__/components/label';
+import {Switch} from '@/__generated__/components/switch';
+import {Separator} from '@/__generated__/components/separator';
+import {useVuiDataContext} from '@/app/smart-home/data.context';
+import {mapToStateObjectComponent} from '@/app/smart-home/state-objects/map-state-object';
+import {StateObject} from '@/app/smart-home/structure/aspect';
 
 type SupplementalAspectCardProps = {
     id: string;
-    sectionId: string;
+    parentId: string;
     title: string;
     functionObjectIds: string[];
+    onAspectCardTitleClicked: (aspectId: string) => void;
 };
 
-export function SupplementalAspectCard({ id, title, sectionId, functionObjectIds }: SupplementalAspectCardProps) {
-    const { stateObjects, stateValues } = useVuiDataContext();
-
+export function SupplementalAspectCard({
+                                           id,
+                                           title,
+                                           functionObjectIds,
+                                           parentId,
+                                           onAspectCardTitleClicked,
+                                       }: SupplementalAspectCardProps) {
+    const {stateObjects, stateValues} = useVuiDataContext();
     const [vuiStateObjects, setVuiStateObjects] = useState<StateObject[]>([]);
 
     useEffect(() => {
@@ -45,20 +51,20 @@ export function SupplementalAspectCard({ id, title, sectionId, functionObjectIds
                 <CardHeader>
                     <div className="flex items-center justify-between space-x-2">
                         <div>
-                            <CardTitle>{title}</CardTitle>
+                            <CardTitle onClick={() => onAspectCardTitleClicked(id)}>{title}</CardTitle>
                         </div>
                         <div className="hidden items-center">
-                            <Label htmlFor={`${sectionId}_all_${id}`} className="mr-2">
+                            <Label htmlFor={`${id}_all_${id}`} className="mr-2">
                                 <span className="font-bold leading-snug text-muted-foreground">Alle</span>
                             </Label>
-                            <Switch id={`${sectionId}_all_${id}`} defaultChecked />
+                            <Switch id={`${parentId}_all_${id}`} defaultChecked/>
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                    <Separator />
+                    <Separator/>
                     {vuiStateObjects.map((object) => {
-                        return mapToStateObjectComponent(sectionId, id, object);
+                        return mapToStateObjectComponent(parentId, id, object);
                     })}
                 </CardContent>
                 <CardFooter></CardFooter>
