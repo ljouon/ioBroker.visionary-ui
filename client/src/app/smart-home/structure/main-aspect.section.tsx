@@ -1,6 +1,6 @@
 import {SupplementalAspectCard} from './supplemental-aspect.card';
 import {useVuiDataContext} from '@/app/smart-home/data.context';
-import {findAspectNodeById} from "@/app/smart-home/structure/aspect";
+import {AspectNode, findAspectNode} from "@/app/smart-home/structure/aspect";
 
 type MainAspectSectionProps = {
     id: string;
@@ -15,9 +15,9 @@ export function MainAspectSection({id, type}: MainAspectSectionProps) {
 
     let element = undefined;
     if (type === 'room') {
-        element = findAspectNodeById(roomAspectNodes, id);
+        element = findAspectNode(roomAspectNodes, (node: AspectNode) => id === node.mainAspect?.id)
     } else if (type === 'function') {
-        element = findAspectNodeById(functionAspectNodes, id);
+        element = findAspectNode(functionAspectNodes, (node: AspectNode) => id === node.mainAspect?.id)
     }
 
     if (!element || !element?.mainAspect) {
