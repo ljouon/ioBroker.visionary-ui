@@ -62,6 +62,8 @@ export type VuiEnum = WithId & {
     name: string;
     color: string | null;
     icon: string | null;
+    customIcon: string | null;
+    rank: number | null;
     members: string[] | null;
     children: string[] | null;
 };
