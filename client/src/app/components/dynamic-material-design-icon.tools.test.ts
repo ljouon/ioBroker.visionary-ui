@@ -1,4 +1,4 @@
-import { convertIconKeyToMdiFormat, isValidIconKey } from './dynamic-icon-tools';
+import {convertIconKeyToMdiFormat, isValidIconKey} from './dynamic-material-design-icon.tools';
 
 describe('icon tools', () => {
     describe('isValidIconKey', () => {

@@ -1,11 +1,11 @@
-import { render, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
-import { DynamicIcon } from './dynamic-icon';
+import {render, screen} from '@testing-library/react';
+import {describe, expect, it, vi} from 'vitest';
+import {DynamicMaterialDesignIcon} from './dynamic-material-design-icon';
 
 // Mocking the @mdi/react Icon component
 vi.mock('@mdi/react', () => ({
     __esModule: true,
-    default: vi.fn().mockImplementation(({ className, path, title }) => (
+    default: vi.fn().mockImplementation(({className, path, title}) => (
         // eslint-disable-next-line @typescript-eslint/ban-ts-comment
         // @ts-expect-error
         <svg className={className} data-testid="mdi-icon" title={title}>
@@ -21,7 +21,7 @@ vi.mock('@mdi/js', () => ({
 
 describe('DynamicIcon Component', () => {
     it('renders an icon for a valid icon key', () => {
-        render(<DynamicIcon iconKey="mdiCheck" className="test-class" />);
+        render(<DynamicMaterialDesignIcon iconKey="mdiCheck" className="test-class"/>);
         const icon = screen.getByTestId('mdi-icon');
         expect(icon).toBeInTheDocument();
         expect(icon).toHaveClass('test-class');
@@ -29,7 +29,7 @@ describe('DynamicIcon Component', () => {
     });
 
     it('returns undefined for an invalid icon key', () => {
-        const { container } = render(<DynamicIcon iconKey="invalidIcon" className="test-class" />);
+        const {container} = render(<DynamicMaterialDesignIcon iconKey="invalidIcon" className="test-class"/>);
         expect(container.firstChild).toBeNull();
     });
 });
