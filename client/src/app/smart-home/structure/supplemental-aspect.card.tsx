@@ -1,33 +1,30 @@
-import {useEffect, useState} from 'react';
-import {Card, CardContent, CardFooter, CardHeader, CardTitle} from '@/__generated__/components/card';
-import {Label} from '@/__generated__/components/label';
-import {Switch} from '@/__generated__/components/switch';
-import {Separator} from '@/__generated__/components/separator';
-import {useVuiDataContext} from '@/app/smart-home/data.context';
-import {mapToStateObjectComponent} from '@/app/smart-home/state-objects/map-state-object';
-import {StateObject} from '@/app/smart-home/structure/aspect';
+import { useEffect, useState } from 'react';
+import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/__generated__/components/card';
+import { Label } from '@/__generated__/components/label';
+import { Switch } from '@/__generated__/components/switch';
+import { Separator } from '@/__generated__/components/separator';
+import { useVuiDataContext } from '@/app/smart-home/data.context';
+import { mapToStateObjectComponent } from '@/app/smart-home/state-objects/map-state-object';
+import { StateObject } from '@/app/smart-home/structure/aspect';
+import { VuiEnumIcon } from '@/app/components/vui-enum-icon';
+import { VuiEnum } from '../../../../../src/domain';
+import { DynamicMaterialDesignIcon } from '@/app/components/dynamic-material-design-icon';
 
 type SupplementalAspectCardProps = {
-    id: string;
+    element: VuiEnum;
     parentId: string;
-    title: string;
-    functionObjectIds: string[];
     onAspectCardTitleClicked: (aspectId: string) => void;
 };
 
-export function SupplementalAspectCard({
-                                           id,
-                                           title,
-                                           functionObjectIds,
-                                           parentId,
-                                           onAspectCardTitleClicked,
-                                       }: SupplementalAspectCardProps) {
-    const {stateObjects, stateValues} = useVuiDataContext();
+export function SupplementalAspectCard({ element, parentId, onAspectCardTitleClicked }: SupplementalAspectCardProps) {
+    const { stateObjects, stateValues } = useVuiDataContext();
     const [vuiStateObjects, setVuiStateObjects] = useState<StateObject[]>([]);
 
     useEffect(() => {
+        const members = element.members || [];
+
         const vuiObjects = stateObjects
-            .filter((object) => functionObjectIds.includes(object.id))
+            .filter((object) => members.includes(object.id))
             .sort((objectA, objectB) => {
                 const rankA = objectA.rank ?? 0;
                 const rankB = objectB.rank ?? 0;
@@ -40,31 +37,39 @@ export function SupplementalAspectCard({
                     value: stateValue?.value || null,
                     lastChange: stateValue?.lastChange || null,
                 };
-            })
-            .filter((object) => object.value !== null);
+            });
+        // TODO: do i need to check the value?
+        // .filter((object) => object.value !== null);
         setVuiStateObjects(vuiObjects);
-    }, [functionObjectIds, stateObjects, stateValues]);
+    }, [element.members, stateObjects, stateValues]);
 
     if (vuiStateObjects.length > 0) {
         return (
             <Card className="overflow-y-auto">
                 <CardHeader>
                     <div className="flex items-center justify-between space-x-2">
-                        <div>
-                            <CardTitle onClick={() => onAspectCardTitleClicked(id)}>{title}</CardTitle>
+                        <div className="flex items-center justify-between space-x-2">
+                            <VuiEnumIcon element={element} />
+                            <CardTitle>{element.name}</CardTitle>
+                        </div>
+                        <div onClick={() => onAspectCardTitleClicked(element.id)}>
+                            <DynamicMaterialDesignIcon
+                                iconKey="arrow-top-right-thin-circle-outline"
+                                className="w-6 h-6 opacity-50 m-2 cursor-pointer"
+                            />
                         </div>
                         <div className="hidden items-center">
-                            <Label htmlFor={`${id}_all_${id}`} className="mr-2">
+                            <Label htmlFor={`${parentId}_all_${element.id}`} className="mr-2">
                                 <span className="font-bold leading-snug text-muted-foreground">Alle</span>
                             </Label>
-                            <Switch id={`${parentId}_all_${id}`} defaultChecked/>
+                            <Switch id={`${parentId}_all_${element.id}`} defaultChecked />
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                    <Separator/>
+                    <Separator />
                     {vuiStateObjects.map((object) => {
-                        return mapToStateObjectComponent(parentId, id, object);
+                        return mapToStateObjectComponent(parentId, element.id, object);
                     })}
                 </CardContent>
                 <CardFooter></CardFooter>

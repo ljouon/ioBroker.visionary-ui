@@ -1,9 +1,9 @@
-import {CardDescription, CardTitle} from '@/__generated__/components/card';
-import {Button} from '@/__generated__/components/button';
-import {Label} from '@/__generated__/components/label';
-import {useVuiDataContext} from '@/app/smart-home/data.context';
-import {StateObject} from '@/app/smart-home/structure/aspect';
-import {DynamicIcon} from "@/app/components/dynamic-icon";
+import { CardDescription, CardTitle } from '@/__generated__/components/card';
+import { Button } from '@/__generated__/components/button';
+import { Label } from '@/__generated__/components/label';
+import { useVuiDataContext } from '@/app/smart-home/data.context';
+import { StateObject } from '@/app/smart-home/structure/aspect';
+import { DynamicMaterialDesignIcon } from '@/app/components/dynamic-material-design-icon';
 
 export type StateObjectButtonProps = {
     sectionId: string;
@@ -11,18 +11,18 @@ export type StateObjectButtonProps = {
     uiStateObject: StateObject;
 };
 
-export function StateObjectButton({uiStateObject, sectionId, cardId}: StateObjectButtonProps) {
-    const {sendVuiAction} = useVuiDataContext();
+export function StateObjectButton({ uiStateObject, sectionId, cardId }: StateObjectButtonProps) {
+    const { sendVuiAction } = useVuiDataContext();
 
     const handleValueChange = () => {
-        sendVuiAction({type: 'setValues', data: [{id: uiStateObject.id, value: true}]});
+        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value: true }] });
     };
 
     return (
         <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${uiStateObject.id}`}>
             <div className="flex-none flex items-center ">
                 {uiStateObject.customIcon ? (
-                    <DynamicIcon
+                    <DynamicMaterialDesignIcon
                         className="dark:prose-invert h-8 w-8 lg:w-10 lg:h-10 mr-2 opacity-50"
                         iconKey={uiStateObject.customIcon}
                     />
@@ -46,7 +46,7 @@ export function StateObjectButton({uiStateObject, sectionId, cardId}: StateObjec
             </div>
             <div className="flex-none">
                 <Button id={`${sectionId}_${cardId}_${uiStateObject.id}`} onClick={handleValueChange}>
-                    <DynamicIcon iconKey="check-bold" className="w-6 h-6"/>
+                    <DynamicMaterialDesignIcon iconKey="check-bold" className="w-6 h-6" />
                 </Button>
             </div>
         </div>
