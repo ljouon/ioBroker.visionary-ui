@@ -28,6 +28,7 @@ export function useWebSocket(onMessage: MessageHandler) {
 
         webSocket.onclose = () => {
             console.log('WebSocket disconnected');
+            setConnectionState('CLOSED');
         };
 
         setSocket(webSocket);
