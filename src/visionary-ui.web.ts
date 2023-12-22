@@ -5,14 +5,16 @@ import { VisionaryUiServer } from './visionary-ui.server';
 
 export class VisionaryUiWebServer extends VisionaryUiServer {
     private webServer: Server | null = null;
+    private socketPort: number | null = null;
 
-    async start(port: number): Promise<void> {
+    async start(port: number, socketPort: number): Promise<void> {
         return new Promise((resolve) => {
             this.webServer = this.createWebServer();
             this.webServer.listen(port, () => {
                 console.log(`Web server started on port: ${port}`);
                 resolve();
             });
+            this.socketPort = socketPort;
         });
     }
 
@@ -29,9 +31,12 @@ export class VisionaryUiWebServer extends VisionaryUiServer {
 
     private createWebServer(): Server {
         const app = express();
+        app.use('/port', (_, res) => {
+            res.send(`${this.socketPort}`);
+        });
         app.use('/', express.static(path.join(__dirname, '../build/client/')));
-        app.get('/hello', (req, res) => {
-            res.send('Hello!');
+        app.get('*', (req, res) => {
+            res.sendFile(path.join(__dirname, '../build/client/', 'index.html'));
         });
         return createServer(app);
     }

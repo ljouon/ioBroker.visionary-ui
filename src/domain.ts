@@ -1,4 +1,5 @@
 export type VuiDataEnvelope =
+    | Configuration
     | AllRooms
     | AllFunctions
     | AllStateObjects
@@ -7,6 +8,16 @@ export type VuiDataEnvelope =
     | OneFunction
     | OneStateObject
     | OneStateValue;
+
+export type ConfigurationData = {
+    language: string;
+    theme: string;
+};
+
+export type Configuration = {
+    type: 'configuration';
+    data: ConfigurationData;
+};
 
 export type AllRooms = {
     type: 'allRooms';

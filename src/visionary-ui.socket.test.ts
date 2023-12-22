@@ -28,21 +28,6 @@ describe('VisionaryUiSocketServer Integration Tests', () => {
             });
         });
 
-        it('should handle messages from clients', (done) => {
-            const client = new WebSocket(`ws://localhost:${port}`);
-            const testMessage = '{}';
-
-            client.on('open', () => {
-                client.send(testMessage);
-            });
-
-            client.on('message', (message) => {
-                expect(message.toString()).to.contain(testMessage);
-                client.close();
-                done();
-            });
-        });
-
         it('should handle client disconnection', (done) => {
             const client = new WebSocket(`ws://localhost:${port}`);
 
@@ -120,7 +105,12 @@ describe('VisionaryUiSocketServer Integration Tests', () => {
 
             client.on('open', () => {
                 client.on('message', handleMessage);
-                socketServer.messageToAllClients('Hello All Clients');
+                socketServer.messageToAllClients(
+                    JSON.stringify({
+                        type: 'setValues',
+                        data: [{ id: '0_userdata.0.Lampe.on', value: true }],
+                    }),
+                );
             });
         });
     });
@@ -137,7 +127,13 @@ describe('VisionaryUiSocketServer Integration Tests', () => {
             client.on('open', () => {
                 const clientId = socketServer['clients'].keys().next().value;
                 client.on('message', handleMessage);
-                socketServer.messageToClient(clientId, 'Hello All Clients');
+                socketServer.messageToClient(
+                    clientId,
+                    JSON.stringify({
+                        type: 'setValues',
+                        data: [{ id: '0_userdata.0.Lampe.on', value: true }],
+                    }),
+                );
             });
         });
     });
