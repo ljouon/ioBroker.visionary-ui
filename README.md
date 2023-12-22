@@ -43,16 +43,15 @@ This section is intended for the developer. It can be deleted later
 - [x] Sorting of rooms and functions? => as custom settings?
 - [x] Allow Icons for enums as custom settings?
 - [x] Image handling for page title, section title, objects in the same way as in sidebar
-
-- [ ] how to define the port between client and server? maybe add info via express endpoint or data on
-  serving: https://stackoverflow.com/questions/44354763/how-do-i-get-http-headers-in-react-js
-- [ ] multi language in client? Server language file via api?
+- [x] use web port + 1 as socket port (for now)
+-
+- [x] multi language in client => client gets language key already
+- [ ] add i18n to client
 - [ ] color picker for color lights
-- [ ] check iobroker best practises and release (beta first)
+- [ ] check ioBroker best practises and release (beta first)
 
 - [ ] handle/flatten level depth for rooms and functions
 - [ ] Popover info on icon click
-
 - [ ] show only if the value of a specific other object is true (rules engine support), setting in object list
 - [ ] invalid config message!?
 - [ ] map multiple objects to a specific card and let unused objects remain for other cards

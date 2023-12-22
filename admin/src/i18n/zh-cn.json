@@ -6,5 +6,5 @@
     "descriptionTitle": "富有远见的用户界面",
     "descriptionContent": "Visionary UI 提供了复杂且响应迅速的用户界面，专为智能家居设备的高效管理而设计。该界面结合了时尚美观与实用功能，为现代智能家居环境提供了先进的解决方案。",
     "webPortDescription": "Visionary UI Web 前端将由在此处定义的端口上运行的 Web 服务器提供。",
-    "socketPortDescription": "Visionary UI 使用直接 Web 套接字连接到 iobroker。您可以在此处定义应使用哪个端口。"
+    "socketPortDescription": "Visionary UI 使用直接 Web 套接字连接到 ioBroker。请注意，当前套接字端口的值是您在此处设置的端口 + 1 (!)。"
 }

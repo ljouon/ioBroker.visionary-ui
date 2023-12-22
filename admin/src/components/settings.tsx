@@ -70,16 +70,17 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
         this.state = {};
     }
 
-    renderInput(title: AdminWord, attr: string, type: string) {
+    renderInput(title: AdminWord, attr: string, type: string, disabled: boolean, value?: string) {
         return (
             <TextField
                 label={I18n.t(title)}
                 className={`${this.props.classes.input} ${this.props.classes.controlElement}`}
-                value={this.props.native[attr]}
+                value={value ? value : this.props.native[attr]}
                 type={type || 'text'}
                 onChange={(e) => this.props.onChange(attr, e.target.value)}
                 margin="normal"
                 variant={'outlined'}
+                disabled={disabled}
             />
         );
     }
@@ -149,11 +150,11 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
                     <Box component="form" noValidate sx={{ mt: 3 }}>
                         <Grid container spacing={4}>
                             <Grid item xs={12}>
-                                {this.renderInput('webPort', 'webPort', 'number')}
+                                {this.renderInput('webPort', 'webPort', 'number', false)}
                                 <Typography variant={'body1'}>{I18n.t('webPortDescription')}</Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                {this.renderInput('socketPort', 'socketPort', 'number')}
+                                {/*{this.renderInput('socketPort', 'socketPort', 'number', true, )}*/}
                                 <Typography variant={'body1'}>{I18n.t('socketPortDescription')}</Typography>
                             </Grid>
                             <Grid item xs={12}>
