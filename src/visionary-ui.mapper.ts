@@ -29,7 +29,7 @@ export function mapToVuiStateObject(
         unit: ioBrokerObject.common.unit,
         customIcon: customProperties?.customIcon || null,
         rank: customProperties?.rank || null,
-        states: ioBrokerObject.common.states,
+        states: ioBrokerObject.common.states || null,
         minValue: ioBrokerObject.common.min,
         maxValue: ioBrokerObject.common.max,
         step: ioBrokerObject.common.step,

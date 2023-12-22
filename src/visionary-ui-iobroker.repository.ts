@@ -20,7 +20,6 @@ export class VisionaryUiIoBrokerRepository {
         try {
             const languageObject = await this.adapter.getForeignObjectAsync('system.config');
             if (languageObject && languageObject.common) {
-                console.log('System language: ' + languageObject.common.language);
                 return languageObject.common.language;
             }
         } catch (err) {}

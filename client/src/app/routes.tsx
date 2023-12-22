@@ -1,6 +1,7 @@
-import {RootLayout} from "@/app/layout/root-layout";
-import {Navigate, Outlet, RouteObject} from "react-router-dom";
-import {MainAspectPage} from "./smart-home/structure/main-aspect.page";
+import {RootLayout} from '@/app/layout/root-layout';
+import {Navigate, Outlet, RouteObject} from 'react-router-dom';
+import {MainAspectPage} from './smart-home/structure/main-aspect.page';
+import {HomePage} from '@/app/smart-home/structure/home.page';
 
 export const routes: RouteObject[] = [
     {
@@ -17,12 +18,12 @@ export const routes: RouteObject[] = [
             },
             {
                 path: '/home',
-                element: <div>START</div>,
+                element: <HomePage/>,
             },
             {
                 path: '/:mainAspect/:canonicalPath',
                 element: <MainAspectPage/>,
-            }
+            },
         ],
     },
 ];

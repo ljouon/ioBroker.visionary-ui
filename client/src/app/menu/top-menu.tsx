@@ -12,7 +12,7 @@ import {
     MenubarTrigger,
 } from '@/__generated__/components/menubar';
 import {ThemeContext} from '@/app/theme/theme-provider';
-import {DynamicIcon} from "@/app/components/dynamic-icon";
+import {DynamicMaterialDesignIcon} from "@/app/components/dynamic-material-design-icon";
 
 export function TopMenu() {
     const {setTheme, theme} = useContext(ThemeContext);
@@ -24,7 +24,7 @@ export function TopMenu() {
                 <MenubarContent>
                     <MenubarSub>
                         <MenubarSubTrigger className="items-center">
-                            <DynamicIcon className="mr-2 h-6 w-6" iconKey="theme-light-dark"/>
+                            <DynamicMaterialDesignIcon className="mr-2 h-6 w-6" iconKey="theme-light-dark"/>
                             Light/Dark
                         </MenubarSubTrigger>
                         <MenubarSubContent>
@@ -33,7 +33,7 @@ export function TopMenu() {
                                 disabled={'light' === theme}
                                 onClick={() => setTheme('light')}
                             >
-                                <DynamicIcon className="mr-2 h-6 w-6" iconKey="white-balance-sunny"/>
+                                <DynamicMaterialDesignIcon className="mr-2 h-6 w-6" iconKey="white-balance-sunny"/>
                                 Light
                             </MenubarCheckboxItem>
                             <MenubarCheckboxItem
@@ -41,7 +41,7 @@ export function TopMenu() {
                                 disabled={'dark' === theme}
                                 onClick={() => setTheme('dark')}
                             >
-                                <DynamicIcon className="mr-2 h-6 w-6" iconKey="weather-night"/>
+                                <DynamicMaterialDesignIcon className="mr-2 h-6 w-6" iconKey="weather-night"/>
                                 Dark
                             </MenubarCheckboxItem>
                             <MenubarCheckboxItem
@@ -49,18 +49,18 @@ export function TopMenu() {
                                 disabled={'system' === theme}
                                 onClick={() => setTheme('system')}
                             >
-                                <DynamicIcon className="mr-2 h-6 w-6" iconKey="laptop"/>
+                                <DynamicMaterialDesignIcon className="mr-2 h-6 w-6" iconKey="laptop"/>
                                 System
                             </MenubarCheckboxItem>
                         </MenubarSubContent>
                     </MenubarSub>
                     <MenubarItem disabled>
-                        <DynamicIcon className="mr-2 h-6 w-6" iconKey="cog"/>
+                        <DynamicMaterialDesignIcon className="mr-2 h-6 w-6" iconKey="cog"/>
                         Preferences ...{' '}
                     </MenubarItem>
                     <MenubarSeparator/>
                     <MenubarItem disabled>
-                        <DynamicIcon className="mr-2 h-6 w-6" iconKey="info"/>
+                        <DynamicMaterialDesignIcon className="mr-2 h-6 w-6" iconKey="info"/>
                         About
                     </MenubarItem>
                 </MenubarContent>

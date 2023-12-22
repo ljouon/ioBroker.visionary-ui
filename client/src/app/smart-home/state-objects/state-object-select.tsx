@@ -1,4 +1,4 @@
-import {DynamicIcon} from '@/app/components/dynamic-icon';
+import {DynamicMaterialDesignIcon} from '@/app/components/dynamic-material-design-icon';
 import {useEffect, useState} from 'react';
 import {CardDescription, CardTitle} from '@/__generated__/components/card';
 import {
@@ -51,7 +51,7 @@ export function StateObjectSelect({uiStateObject, sectionId, cardId}: ObjectEnum
         <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${uiStateObject.id}`}>
             <div className="flex-none flex items-center ">
                 {uiStateObject.customIcon ? (
-                    <DynamicIcon
+                    <DynamicMaterialDesignIcon
                         className="dark:prose-invert h-8 w-8 lg:w-10 lg:h-10 mr-2 opacity-50"
                         iconKey={uiStateObject.customIcon}
                     />

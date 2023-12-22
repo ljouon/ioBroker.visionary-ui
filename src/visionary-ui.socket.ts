@@ -21,7 +21,7 @@ export class VisionaryUiSocketServer extends ClientCommunication {
     private clientInboundHandler: ClientInboundHandler | null = null;
     private clients = new Map<string, WebSocket>();
 
-    async start(port: number): Promise<void> {
+    async start(_: number, port: number): Promise<void> {
         return new Promise((resolve) => {
             this.socketServer = new WebSocket.Server({ port }, () => {
                 console.log(`Socket server started on port: ${port}`);
@@ -35,12 +35,7 @@ export class VisionaryUiSocketServer extends ClientCommunication {
                 this.clientInboundHandler?.onConnect(clientId);
 
                 ws.on('message', (message: string) => {
-                    console.log(`Received message: ${message}`);
                     this.clientInboundHandler?.onMessageFromClient(clientId, message);
-
-                    // this.socketServer?.clients.forEach((client) => {
-                    //     client.send(`Server received your message: ${message}`);
-                    // });
                 });
 
                 ws.on('close', (_) => {

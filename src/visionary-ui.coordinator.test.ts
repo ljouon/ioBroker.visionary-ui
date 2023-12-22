@@ -3,7 +3,7 @@ import { VisionaryUiCoordinator } from './visionary-ui.coordinator';
 import { VisionaryUiWebServer } from './visionary-ui.web';
 import { VisionaryUiSocketServer } from './visionary-ui.socket';
 import { VisionaryUiDomainRepository } from './visionary-ui.domain.repository';
-import { VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from './domain';
+import { VuiActionEnvelope, VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from './domain';
 import { VuiCache } from './visionary-ui.cache';
 
 describe('VisionaryUiCoordinator', () => {
@@ -297,22 +297,27 @@ describe('VisionaryUiCoordinator', () => {
             sinon.assert.calledWithExactly(
                 socketServer.messageToClient.getCall(0),
                 'client1',
-                '{"type":"rooms","data":[{"id":"roomId","members":["objectId"]}]}',
+                '{"type":"configuration","data":{"language":"en"}}',
             );
             sinon.assert.calledWithExactly(
                 socketServer.messageToClient.getCall(1),
                 'client1',
-                '{"type":"functions","data":[{"id":"functionId"}]}',
+                '{"type":"allRooms","data":[{"id":"roomId","members":["objectId"]}]}',
             );
             sinon.assert.calledWithExactly(
                 socketServer.messageToClient.getCall(2),
                 'client1',
-                '{"type":"objects","data":[{"id":"objectId"}]}',
+                '{"type":"allFunctions","data":[{"id":"functionId"}]}',
             );
             sinon.assert.calledWithExactly(
                 socketServer.messageToClient.getCall(3),
                 'client1',
-                '{"type":"states","data":[{"id":"objectId","value":"value"}]}',
+                '{"type":"allStates","data":[{"id":"objectId"}]}',
+            );
+            sinon.assert.calledWithExactly(
+                socketServer.messageToClient.getCall(4),
+                'client1',
+                '{"type":"allValues","data":[{"id":"objectId","value":"value"}]}',
             );
         });
 
@@ -330,10 +335,13 @@ describe('VisionaryUiCoordinator', () => {
             await coordinator.start(adapterHandleStub);
 
             const clientId = 'client1';
-            const content = 'test message';
-            coordinator['onMessageFromClient'](clientId, content);
+            const content: VuiActionEnvelope = {
+                type: 'setValues',
+                data: [{ id: '0_userdata.0.Lampe.on', value: true }],
+            };
+            coordinator['onMessageFromClient'](clientId, JSON.stringify(content));
 
-            sinon.assert.calledWith(adapterHandleStub.setState, 'clientId', '0_userdata.0.Lampe.on', true);
+            sinon.assert.calledWith(adapterHandleStub.setState, 'client1', '0_userdata.0.Lampe.on', true);
         });
     });
 });
