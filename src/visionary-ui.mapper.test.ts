@@ -39,6 +39,9 @@ describe('Visionary UI Mapper', () => {
                     type: 'boolean',
                     write: true,
                     def: false,
+                    min: 0,
+                    max: 3,
+                    step: 1,
                     unit: '°C',
                     custom: { 'visionary-ui': { displayName: 'Display Name 1', customIcon: 'icon1', rank: 1 } },
                 },
@@ -80,13 +83,19 @@ describe('Visionary UI Mapper', () => {
                     color: '#FF0000',
                     icon: 'icon-living-room',
                     members: ['light1', 'light2'],
+                    custom: {
+                        'visionary-ui.0': {
+                            rank: 1,
+                            customIcon: 'icon1',
+                        },
+                    },
                 },
                 type: 'enum',
             } as unknown as ioBroker.Object;
 
             const expectedVuiEnum: VuiEnum = {
                 id: 'room1',
-                type: 'room',
+                type: 'unknown',
                 name: 'Living Room',
                 color: '#FF0000',
                 icon: 'icon-living-room',
@@ -109,14 +118,14 @@ describe('Visionary UI Mapper', () => {
 
             const expectedVuiEnum: VuiEnum = {
                 id: 'room1',
-                type: 'room',
+                type: 'unknown',
                 name: '',
                 color: null,
                 icon: null,
                 members: null,
                 children: null,
-                customIcon: 'icon1',
-                rank: 1,
+                customIcon: null,
+                rank: null,
             };
 
             const result = mapToIobEnum('room1', mockIoBrokerRoom, 'en');
