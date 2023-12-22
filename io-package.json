@@ -14,7 +14,8 @@
         "it": "Versione iniziale",
         "es": "Versión inicial",
         "pl": "Pierwsze wydanie",
-        "zh-cn": "首次出版"
+        "zh-cn": "首次出版",
+        "uk": "початковий випуск"
       }
     },
     "title": "VisionaryUI",
@@ -28,7 +29,8 @@
       "it": "VisionarioUI",
       "es": "UI visionaria",
       "pl": "WizjonerskiUI",
-      "zh-cn": "有远见的用户界面"
+      "zh-cn": "有远见的用户界面",
+      "uk": "VisionaryUI"
     },
     "desc": {
       "en": "Introducing VisionaryUI, your gateway to a seamlessly responsive user interface for managing your smart home devices. Experience the future with a sleek design that not only enhances the aesthetic appeal but also ensures optimal functionality.",
@@ -40,7 +42,8 @@
       "it": "Ti presentiamo VisionaryUI, il tuo gateway per un'interfaccia utente perfettamente reattiva per la gestione dei tuoi dispositivi domestici intelligenti. ",
       "es": "Presentamos VisionaryUI, su puerta de entrada a una interfaz de usuario con capacidad de respuesta perfecta para administrar sus dispositivos domésticos inteligentes. ",
       "pl": "Przedstawiamy VisionaryUI, bramę do płynnie responsywnego interfejsu użytkownika do zarządzania inteligentnymi urządzeniami domowymi. ",
-      "zh-cn": "VisionaryUI 隆重登场，它是通往无缝响应式用户界面的门户，用于管理您的智能家居设备。"
+      "zh-cn": "VisionaryUI 隆重登场，它是通往无缝响应式用户界面的门户，用于管理您的智能家居设备。",
+      "uk": "Представляємо VisionaryUI, ваш шлюз до швидко реагуючого інтерфейсу користувача для керування пристроями розумного дому. Відчуйте майбутнє з елегантним дизайном, який не тільки підвищує естетичну привабливість, але й забезпечує оптимальну функціональність."
     },
     "authors": [
       "ljouon <lars.jouon@codecentric.de>"

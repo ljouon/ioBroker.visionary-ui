@@ -1,5 +1,10 @@
 {
-  "visionary-ui adapter settings": "Paramètres d'adaptateur pour visionary-ui",
-  "webPort": "Web server port",
-  "socketPort": "Socket server port"
+    "visionary-ui adapter settings": "Paramètres d'adaptateur pour visionary-ui",
+    "webPort": "Web server port",
+    "socketPort": "Socket server port",
+    "visionaryUiSettings": "Interface utilisateur visionnaire : paramètres de l'adaptateur",
+    "descriptionTitle": "Interface utilisateur visionnaire",
+    "descriptionContent": "Visionary UI offre une interface utilisateur sophistiquée et réactive conçue pour une gestion efficace des appareils domestiques intelligents. Cette interface combine une esthétique élégante avec des fonctionnalités pratiques, offrant une solution avancée pour l'environnement de maison intelligente moderne.",
+    "webPortDescription": "L'interface Web de Visionary UI sera fournie par un serveur Web exécuté sur le port défini ici.",
+    "socketPortDescription": "Visionary UI utilise une connexion directe par socket Web à iobroker. Ici, vous pouvez définir quel port doit être utilisé."
 }
