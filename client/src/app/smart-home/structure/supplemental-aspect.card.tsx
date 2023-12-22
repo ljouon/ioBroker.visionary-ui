@@ -1,14 +1,15 @@
-import { useEffect, useState } from 'react';
-import { Card, CardContent, CardFooter, CardHeader, CardTitle } from '@/__generated__/components/card';
-import { Label } from '@/__generated__/components/label';
-import { Switch } from '@/__generated__/components/switch';
-import { Separator } from '@/__generated__/components/separator';
-import { useVuiDataContext } from '@/app/smart-home/data.context';
-import { mapToStateObjectComponent } from '@/app/smart-home/state-objects/map-state-object';
-import { StateObject } from '@/app/smart-home/structure/aspect';
-import { VuiEnumIcon } from '@/app/components/vui-enum-icon';
-import { VuiEnum } from '../../../../../src/domain';
-import { DynamicMaterialDesignIcon } from '@/app/components/dynamic-material-design-icon';
+import {useContext, useEffect, useState} from 'react';
+import {Card, CardContent, CardFooter, CardHeader, CardTitle} from '@/__generated__/components/card';
+import {Label} from '@/__generated__/components/label';
+import {Switch} from '@/__generated__/components/switch';
+import {Separator} from '@/__generated__/components/separator';
+import {useVuiDataContext} from '@/app/smart-home/data.context';
+import {mapToStateObjectComponent} from '@/app/smart-home/state-objects/map-state-object';
+import {StateObject} from '@/app/smart-home/structure/aspect';
+import {VuiEnumIcon} from '@/app/components/vui-enum-icon';
+import {VuiEnum} from '../../../../../src/domain';
+import {DynamicMaterialDesignIcon} from '@/app/components/dynamic-material-design-icon';
+import {ThemeContext} from '@/app/theme/theme-provider';
 
 type SupplementalAspectCardProps = {
     element: VuiEnum;
@@ -16,8 +17,9 @@ type SupplementalAspectCardProps = {
     onAspectCardTitleClicked: (aspectId: string) => void;
 };
 
-export function SupplementalAspectCard({ element, parentId, onAspectCardTitleClicked }: SupplementalAspectCardProps) {
-    const { stateObjects, stateValues } = useVuiDataContext();
+export function SupplementalAspectCard({element, parentId, onAspectCardTitleClicked}: SupplementalAspectCardProps) {
+    const {stateObjects, stateValues} = useVuiDataContext();
+    const {theme} = useContext(ThemeContext);
     const [vuiStateObjects, setVuiStateObjects] = useState<StateObject[]>([]);
 
     useEffect(() => {
@@ -38,8 +40,6 @@ export function SupplementalAspectCard({ element, parentId, onAspectCardTitleCli
                     lastChange: stateValue?.lastChange || null,
                 };
             });
-        // TODO: do i need to check the value?
-        // .filter((object) => object.value !== null);
         setVuiStateObjects(vuiObjects);
     }, [element.members, stateObjects, stateValues]);
 
@@ -49,7 +49,7 @@ export function SupplementalAspectCard({ element, parentId, onAspectCardTitleCli
                 <CardHeader>
                     <div className="flex items-center justify-between space-x-2">
                         <div className="flex items-center justify-between space-x-2">
-                            <VuiEnumIcon element={element} />
+                            <VuiEnumIcon element={element}/>
                             <CardTitle>{element.name}</CardTitle>
                         </div>
                         <div onClick={() => onAspectCardTitleClicked(element.id)}>
@@ -62,12 +62,15 @@ export function SupplementalAspectCard({ element, parentId, onAspectCardTitleCli
                             <Label htmlFor={`${parentId}_all_${element.id}`} className="mr-2">
                                 <span className="font-bold leading-snug text-muted-foreground">Alle</span>
                             </Label>
-                            <Switch id={`${parentId}_all_${element.id}`} defaultChecked />
+                            <Switch id={`${parentId}_all_${element.id}`} defaultChecked/>
                         </div>
                     </div>
                 </CardHeader>
                 <CardContent className="space-y-6">
-                    <Separator />
+                    <Separator
+                        className="h-1"
+                        style={theme !== 'dark' ? {backgroundColor: element.color || ''} : {}}
+                    />
                     {vuiStateObjects.map((object) => {
                         return mapToStateObjectComponent(parentId, element.id, object);
                     })}

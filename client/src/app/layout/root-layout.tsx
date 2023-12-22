@@ -1,14 +1,15 @@
-import { Sheet, SheetContent, SheetTrigger } from '@/__generated__/components/sheet';
-import { PropsWithChildren, useCallback, useState } from 'react';
-import { TopMenu } from '@/app/menu/top-menu';
-import { MainAspectSidebar } from '@/app/smart-home/structure/main-aspect-sidebar';
-import { DynamicMaterialDesignIcon } from '@/app/components/dynamic-material-design-icon';
+import {Sheet, SheetContent, SheetTrigger} from '@/__generated__/components/sheet';
+import {PropsWithChildren, useCallback, useState} from 'react';
+import {TopMenu} from '@/app/menu/top-menu';
+import {MainAspectSidebar} from '@/app/smart-home/structure/main-aspect-sidebar';
+import {DynamicMaterialDesignIcon} from '@/app/components/dynamic-material-design-icon';
+import {ConnectionIndicator} from '@/app/smart-home/connection.indicator';
 
-export function RootLayout({ children }: PropsWithChildren) {
+export function RootLayout({children}: PropsWithChildren) {
     const [sheetOpen, setSheetOpen] = useState(false);
     const closeSheet = useCallback(() => setSheetOpen(false), []);
 
-    const sideBar = <MainAspectSidebar closeSheet={closeSheet} />;
+    const sideBar = <MainAspectSidebar closeSheet={closeSheet}/>;
 
     return (
         <div className="overflow-hidden rounded-[0.5rem] border bg-background shadow">
@@ -17,7 +18,7 @@ export function RootLayout({ children }: PropsWithChildren) {
                     <Sheet open={sheetOpen} onOpenChange={setSheetOpen}>
                         <SheetTrigger className="block md:hidden">
                             <div className="ml-2 mt-0">
-                                <DynamicMaterialDesignIcon className={'w-8 h-8 accent-gray-600'} iconKey="menu" />
+                                <DynamicMaterialDesignIcon className={'w-8 h-8 accent-gray-600'} iconKey="menu"/>
                             </div>
                         </SheetTrigger>
                         <SheetContent side="left" className="w-[300px] sm:w-[300px] overflow-y-auto	">
@@ -25,9 +26,11 @@ export function RootLayout({ children }: PropsWithChildren) {
                         </SheetContent>
                     </Sheet>
                     <div className={'px-2'}>
-                        <TopMenu />
+                        <TopMenu/>
                     </div>
-                    <div className="ml-auto pr-2">TOP-MENU-RIGHT</div>
+                    <div className="ml-auto pr-2">
+                        <ConnectionIndicator/>
+                    </div>
                 </div>
                 <div className="border-t">
                     <div className="bg-background">
