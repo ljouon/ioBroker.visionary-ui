@@ -102,7 +102,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
 
     private async startCoordinator(language: ioBroker.Languages): Promise<void> {
         const webPort = parseInt(this.config.webPort, 10) || 8088;
-        const socketPort = parseInt(this.config.socketPort, 10) || 8888;
+        const socketPort = webPort + 1; //parseInt(this.config.socketPort, 10) || 8888;
 
         const adapterHandle = {
             setState: (clientId: string, stateId: string, value: string | number | boolean | null): void =>

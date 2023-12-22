@@ -46,6 +46,9 @@ export function VuiDataProvider({children}: VuiDataProviderProps) {
     const [stateValues, setStateValues] = useState<VuiStateValue[]>([]);
     const [roomAspectNodes, setRoomAspectNodes] = useState<AspectNode[]>([]);
     const [functionAspectNodes, setFunctionAspectNodes] = useState<AspectNode[]>([]);
+    const [language, setLanguage] = useState<string>('en')
+
+    console.log(language);
 
     function replaceElementInArray<
         T extends {
@@ -68,6 +71,9 @@ export function VuiDataProvider({children}: VuiDataProviderProps) {
             const data = messageEvent.data;
             const envelope: VuiDataEnvelope = JSON.parse(data);
             switch (envelope.type) {
+                case 'configuration':
+                    setLanguage(envelope.data.language);
+                    break;
                 case 'allRooms':
                     setRooms(envelope.data);
                     break;

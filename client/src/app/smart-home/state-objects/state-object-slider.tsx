@@ -1,4 +1,4 @@
-import {DynamicIcon} from '@/app/components/dynamic-icon';
+import {DynamicMaterialDesignIcon} from '@/app/components/dynamic-material-design-icon';
 import {useVuiDataContext} from '@/app/smart-home/data.context';
 import {useEffect, useState} from 'react';
 import {CardDescription, CardTitle} from '@/__generated__/components/card';
@@ -40,7 +40,7 @@ export function StateObjectSlider({uiStateObject, sectionId, cardId}: StateObjec
             <div className="flex items-center w-full" key={`div_${sectionId}_${cardId}_${uiStateObject.id}`}>
                 <div className="flex-none flex items-center ">
                     {uiStateObject.customIcon ? (
-                        <DynamicIcon
+                        <DynamicMaterialDesignIcon
                             className="dark:prose-invert h-8 w-8 lg:w-10 lg:h-10 mr-2 opacity-50"
                             iconKey={uiStateObject.customIcon}
                         />
@@ -65,7 +65,7 @@ export function StateObjectSlider({uiStateObject, sectionId, cardId}: StateObjec
                 <Slider
                     hideThumb={!uiStateObject.isWriteable}
                     disabled={!uiStateObject.isWriteable}
-                    className={'ml-1 pr-2 my-4'}
+                    className={'ml-1 pr-2 my-4 cursor-pointer'}
                     id={`${sectionId}_${cardId}_${uiStateObject.id}`}
                     min={uiStateObject.minValue || undefined}
                     max={uiStateObject.maxValue || undefined}

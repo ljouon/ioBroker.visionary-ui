@@ -5,6 +5,6 @@
   "descriptionContent": "Visionary UI offers a sophisticated and responsive user interface designed for efficient management of smart home devices. This interface combines sleek aesthetics with practical functionality, providing an advanced solution for the modern smart home environment.",
   "webPortDescription": "The Visionary UI web frontend will be provided by a webserver running at the port defined here.",
   "webPort": "Web server port",
-  "socketPortDescription": "Visionary UI uses a direct web socket connection to iobroker. Here you can define which port should be used.",
+  "socketPortDescription": "Visionary UI uses a direct web socket connection to ioBroker. Please be aware that currently the value of the socket port is the port you set up here + 1 (!).",
   "socketPort": "Socket server port"
 }

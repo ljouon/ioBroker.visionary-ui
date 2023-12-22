@@ -9,10 +9,12 @@ export function useWebSocket(onMessage: MessageHandler) {
     const [connectionState, setConnectionState] = useState<ConnectionState>('UNKNOWN');
     const messageHandlerRef = useRef<MessageHandler>(onMessage);
 
+    const socketPort = Number(window.location.port) + 1;
+
     // Connect
     useEffect(() => {
-        // const webSocket = new WebSocket('ws://localhost:8888');
-        const webSocket = new WebSocket('ws://192.168.0.212:8888');
+        const webSocket = new WebSocket(`ws://localhost:${socketPort}`);
+        // const webSocket = new WebSocket(`ws://192.168.0.212:${socketPort}`);
 
         webSocket.onopen = () => {
             console.log('WebSocket connected');
@@ -28,6 +30,7 @@ export function useWebSocket(onMessage: MessageHandler) {
 
         webSocket.onclose = () => {
             console.log('WebSocket disconnected');
+            setConnectionState('CLOSED');
         };
 
         setSocket(webSocket);
@@ -38,7 +41,7 @@ export function useWebSocket(onMessage: MessageHandler) {
                 webSocket.close();
             }
         };
-    }, []);
+    }, [socketPort]);
 
     // Update the message handler if it changes
     useEffect(() => {

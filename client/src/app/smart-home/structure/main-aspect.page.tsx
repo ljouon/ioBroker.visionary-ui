@@ -1,49 +1,65 @@
-import {useNavigate, useParams} from 'react-router-dom';
+import {useParams} from 'react-router-dom';
 import {AspectNode, findAspectNode} from '@/app/smart-home/structure/aspect';
 import {useVuiDataContext} from '@/app/smart-home/data.context';
 import {MainAspectSection} from '@/app/smart-home/structure/main-aspect.section';
-import {hasStateObjects, isRoom} from '../../../../../src/domain';
+import {hasStateObjects, isRoom, VuiEnum} from '../../../../../src/domain';
 import {matchPath} from '@/app/route-utils';
+import {useEffect, useState} from 'react';
+import {ErrorDisplay} from '@/app/components/error';
 
 export function MainAspectPage() {
     const {mainAspect, canonicalPath} = useParams();
-    const {roomAspectNodes, functionAspectNodes} = useVuiDataContext();
-    const navigate = useNavigate();
+    const {roomAspectNodes, functionAspectNodes, connectionState} = useVuiDataContext();
+    const [selectedAspectNode, setSelectedAspectNode] = useState<AspectNode | null>(null);
 
-    // TODO: Error handling / redirect
-    if (!canonicalPath) {
-        navigate('/home');
-        return;
+    useEffect(() => {
+        if (mainAspect && roomAspectNodes && functionAspectNodes) {
+            const nodes = mainAspect === 'rooms' ? roomAspectNodes : functionAspectNodes;
+            const result =
+                nodes.length > 0
+                    ? findAspectNode(nodes, (node) => matchPath(canonicalPath || '', node.canonicalPath))
+                    : null;
+            setSelectedAspectNode(result);
+        }
+    }, [roomAspectNodes, functionAspectNodes, mainAspect, canonicalPath, connectionState]);
+
+    if (connectionState !== 'OPEN') {
+        return (
+            <ErrorDisplay
+                icon="connection"
+                iconInRed={true}
+                message="No connection to server"
+                showRefreshButton={true}
+            />
+        );
     }
-
-    const nodes = mainAspect === 'rooms' ? roomAspectNodes : functionAspectNodes;
-
-    const selectedAspectNode = findAspectNode(nodes, (node: AspectNode) =>
-        matchPath(canonicalPath, node.canonicalPath),
-    );
 
     if (!selectedAspectNode) {
-        navigate('/home');
-        return;
+        return (
+            <ErrorDisplay
+                icon="alert-circle-outline"
+                message="Element not found, please navigate back..."
+                linkToHome={true}
+            />
+        );
     }
 
-    const mainAspects: AspectNode[] = [];
+    const mainAspects = getMainAspects(selectedAspectNode);
+    return mainAspects.map((element, index) => (
+        <MainAspectSection
+            key={`${index}_${element.id}`}
+            id={element.id}
+            type={isRoom(element) ? 'rooms' : 'functions'}
+        />
+    ));
+}
 
-    if (selectedAspectNode && selectedAspectNode.mainAspect && selectedAspectNode.level < 2) {
-        mainAspects.push(selectedAspectNode);
-        if (selectedAspectNode.children.length > 0) {
-            selectedAspectNode.children.forEach((node: AspectNode) => {
-                if (node && node.mainAspect && hasStateObjects(node.mainAspect)) {
-                    mainAspects.push(node);
-                }
-            });
-        }
+function getMainAspects(node: AspectNode): VuiEnum[] {
+    if (!node || !node.mainAspect || node.level >= 2) {
+        return [];
     }
-
-    const pageContent = mainAspects.map((node) => {
-        const element = node.mainAspect!;
-        return <MainAspectSection key={element.id} id={element.id} type={isRoom(element) ? 'rooms' : 'functions'}/>;
-    });
-
-    return <>{pageContent}</>;
+    const children = node.children
+        .filter((child) => child && child.mainAspect && hasStateObjects(child.mainAspect))
+        .map((child) => child.mainAspect!);
+    return [node.mainAspect, ...children];
 }

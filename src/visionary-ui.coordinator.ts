@@ -41,8 +41,8 @@ export class VisionaryUiCoordinator {
 
     async start(adapterHandle: AdapterHandle): Promise<void> {
         this.adapter = adapterHandle;
-        await this.webServer.start(adapterHandle.config.webPort);
-        await this.socketServer.start(adapterHandle.config.socketPort);
+        await this.webServer.start(adapterHandle.config.webPort, adapterHandle.config.socketPort);
+        await this.socketServer.start(adapterHandle.config.webPort, adapterHandle.config.socketPort);
 
         const clientInboundHandler: ClientInboundHandler = {
             onMessageFromClient: (clientId: string, content: string) => this.onMessageFromClient(clientId, content),
@@ -141,6 +141,12 @@ export class VisionaryUiCoordinator {
 
     private onClientConnect(clientId: string): void {
         console.log(`Client connected: ${clientId}`);
+
+        const configurationData = {
+            language: this.adapter?.config.language || 'en',
+        };
+        this.socketServer.messageToClient(clientId, JSON.stringify({ type: 'configuration', data: configurationData }));
+
         const rooms = this.repository.getRooms().values();
         const envelopeRooms: VuiDataEnvelope = { type: 'allRooms', data: rooms };
         this.socketServer.messageToClient(clientId, JSON.stringify(envelopeRooms));
