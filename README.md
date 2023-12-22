@@ -47,6 +47,7 @@ This section is intended for the developer. It can be deleted later
 - [ ] how to define the port between client and server? maybe add info via express endpoint or data on
   serving: https://stackoverflow.com/questions/44354763/how-do-i-get-http-headers-in-react-js
 - [ ] multi language in client? Server language file via api?
+- [ ] color picker for color lights
 - [ ] check iobroker best practises and release (beta first)
 
 - [ ] handle/flatten level depth for rooms and functions
