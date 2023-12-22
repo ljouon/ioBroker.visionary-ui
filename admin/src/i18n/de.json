@@ -1,10 +1,10 @@
 {
-  "visionary-ui adapter settings": "Adapter-Einstellungen für visionary-ui",
-  "visionaryUiSettings": "Visionary UI Settings",
-  "webPort": "Web server port",
-  "socketPort": "Socket server port",
-  "descriptionTitle": "Visionäre Benutzeroberfläche",
-  "descriptionContent": "Visionary UI bietet eine ausgefeilte und reaktionsfähige Benutzeroberfläche, die für die effiziente Verwaltung von Smart-Home-Geräten entwickelt wurde. Diese Schnittstelle kombiniert elegante Ästhetik mit praktischer Funktionalität und bietet eine fortschrittliche Lösung für die moderne Smart-Home-Umgebung.",
-  "webPortDescription": "Das Visionary UI-Web-Frontend wird von einem Webserver bereitgestellt, der auf dem hier definierten Port läuft.",
-  "socketPortDescription": "Visionary UI verwendet eine direkte Web-Socket-Verbindung zu ioBroker. Hier können Sie festlegen, welcher Port verwendet werden soll."
+    "visionary-ui adapter settings": "Adapter-Einstellungen für visionary-ui",
+    "visionaryUiSettings": "Visionary UI Settings",
+    "webPort": "Web server port",
+    "socketPort": "Socket server port",
+    "descriptionTitle": "Visionäre Benutzeroberfläche",
+    "descriptionContent": "Visionary UI bietet eine ausgefeilte und reaktionsfähige Benutzeroberfläche, die für die effiziente Verwaltung von Smart-Home-Geräten entwickelt wurde. Diese Schnittstelle kombiniert elegante Ästhetik mit praktischer Funktionalität und bietet eine fortschrittliche Lösung für die moderne Smart-Home-Umgebung.",
+    "webPortDescription": "Das Visionary UI-Web-Frontend wird von einem Webserver bereitgestellt, der auf dem hier definierten Port läuft.",
+    "socketPortDescription": "Visionary UI verwendet eine direkte Web-Socket-Verbindung zu ioBroker. Bitte beachten Sie, dass der Wert des Socket-Ports derzeit der von Ihnen hier eingerichtete Port + 1 (!) ist."
 }
