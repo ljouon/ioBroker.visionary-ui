@@ -1,7 +1,5 @@
 import {DynamicMaterialDesignIcon} from '@/app/components/dynamic-material-design-icon';
 import {VuiEnum} from '../../../../src/domain';
-import {useContext} from 'react';
-import {ThemeContext} from '@/app/theme/theme-provider';
 
 export type VuiEnumIconProps = {
     size?: number;
@@ -9,17 +7,12 @@ export type VuiEnumIconProps = {
 };
 
 export function VuiEnumIcon({element, size = 10}: VuiEnumIconProps) {
-    const {theme} = useContext(ThemeContext);
-
     // Material Design Icon
     if (element?.customIcon) {
-        // If color is set on VuiEnum use it for light theme. In case of the dark theme always use opacity 60
-        const lightThemeOpacity = !element.color ? `opacity-60` : '';
         return (
             <DynamicMaterialDesignIcon
                 iconKey={element?.customIcon}
-                className={`${lightThemeOpacity} dark:opacity-60 h-${size} w-${size}`}
-                style={theme === 'light' ? {color: `${element.color}`} : {}}
+                className={`opacity-60 dark:opacity-60 h-${size} w-${size}`}
             />
         );
     } else if (element?.icon) {
