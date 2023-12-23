@@ -46,7 +46,8 @@ This section is intended for the developer. It can be deleted later
 - [x] use web port + 1 as socket port (for now)
 -
 - [x] multi language in client => client gets language key already
-- [ ] add i18n to client
+- [x] add i18n to client
+- [ ] update language if config changes in backend
 - [ ] color picker for color lights
 - [ ] check ioBroker best practises and release (beta first)
 

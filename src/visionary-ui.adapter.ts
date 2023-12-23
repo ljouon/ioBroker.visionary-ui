@@ -147,6 +147,7 @@ you will notice that each setState will cause the stateChange event to fire (bec
         this.coordinator.setState(vuiStateValue);
     }
 
+    // TODO: Language change in system.config should update repository language
     private async onObjectChange(id: string, object: ioBroker.Object | null | undefined): Promise<void> {
         const language: ioBroker.Languages = await this.repository.getLanguage();
 

@@ -142,6 +142,7 @@ export class VisionaryUiCoordinator {
     private onClientConnect(clientId: string): void {
         console.log(`Client connected: ${clientId}`);
 
+        // TODO: Read language from repository instead of adapter config
         const configurationData = {
             language: this.adapter?.config.language || 'en',
         };
