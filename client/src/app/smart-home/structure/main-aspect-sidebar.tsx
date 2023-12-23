@@ -1,19 +1,21 @@
-import { useCallback, useState } from 'react';
-import { AspectKey, AspectNode, hasChildren, sortAspectNodesByRank } from '@/app/smart-home/structure/aspect';
-import { useNavigate, useParams } from 'react-router-dom';
-import { useVuiDataContext } from '@/app/smart-home/data.context';
-import { Button } from '@/__generated__/components/button';
-import { hasStateObjects } from '../../../../../src/domain';
-import { ToggleSwitch } from '@/app/components/toggle-switch';
-import { createAspectPath } from '@/app/route-utils';
-import { VuiEnumIcon } from '@/app/components/vui-enum-icon';
+import {useCallback, useState} from 'react';
+import {AspectKey, AspectNode, hasChildren, sortAspectNodesByRank} from '@/app/smart-home/structure/aspect';
+import {useNavigate, useParams} from 'react-router-dom';
+import {useVuiDataContext} from '@/app/smart-home/data.context';
+import {Button} from '@/__generated__/components/button';
+import {hasStateObjects} from '../../../../../src/domain';
+import {ToggleSwitch} from '@/app/components/toggle-switch';
+import {createAspectPath} from '@/app/route-utils';
+import {VuiEnumIcon} from '@/app/components/vui-enum-icon';
+import {useTranslation} from "react-i18next";
 
-export function MainAspectSidebar({ closeSheet }: { closeSheet: () => void }) {
-    const { mainAspect: defaultAspectKey } = useParams();
+export function MainAspectSidebar({closeSheet}: { closeSheet: () => void }) {
+    const {mainAspect: defaultAspectKey} = useParams();
     const initialState = defaultAspectKey === 'functions' ? 'functions' : 'rooms';
     const [aspectKey, setAspectKey] = useState<AspectKey>(initialState);
     const navigate = useNavigate();
-    const { roomAspectNodes, functionAspectNodes } = useVuiDataContext();
+    const {t} = useTranslation();
+    const {roomAspectNodes, functionAspectNodes} = useVuiDataContext();
 
     const aspectNodes = aspectKey === 'rooms' ? roomAspectNodes : functionAspectNodes;
 
@@ -37,7 +39,7 @@ export function MainAspectSidebar({ closeSheet }: { closeSheet: () => void }) {
                             {node.mainAspect?.name}
                         </span>
                         <div className={'flex-none'}>
-                            <VuiEnumIcon element={node.mainAspect} />
+                            <VuiEnumIcon element={node.mainAspect}/>
                         </div>
                     </h2>
                     {/*<Separator/>*/}
@@ -63,7 +65,7 @@ export function MainAspectSidebar({ closeSheet }: { closeSheet: () => void }) {
                     onClick={() => onAspectClicked(child.canonicalPath)}
                 >
                     <div className={'flex-none mr-2'}>
-                        <VuiEnumIcon element={child.mainAspect} />
+                        <VuiEnumIcon element={child.mainAspect}/>
                     </div>
                     <span className="flex-grow text-left">{child.mainAspect?.name}</span>
                 </Button>
@@ -75,8 +77,8 @@ export function MainAspectSidebar({ closeSheet }: { closeSheet: () => void }) {
         <>
             <ToggleSwitch
                 initialValue={aspectKey}
-                left={{ value: 'rooms', label: 'Räume' }}
-                right={{ value: 'functions', label: 'Funktionen' }}
+                left={{value: 'rooms', label: t('rooms')}}
+                right={{value: 'functions', label: t('functions')}}
                 onSwitch={(value: AspectKey) => {
                     setAspectKey(value);
                 }}
