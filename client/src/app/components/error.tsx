@@ -1,6 +1,7 @@
 import { DynamicMaterialDesignIcon } from '@/app/components/dynamic-material-design-icon';
 import { useNavigate } from 'react-router-dom';
 import { Button } from '@/__generated__/components/button';
+import { useTranslation } from 'react-i18next';
 
 export function ErrorDisplay({
     icon,
@@ -16,6 +17,7 @@ export function ErrorDisplay({
     showRefreshButton?: boolean;
 }) {
     const navigate = useNavigate();
+    const { t } = useTranslation();
     return (
         <div
             className={`pt-4 pl-4 ${linkToHome ? 'cursor-pointer' : ''}`}
@@ -33,7 +35,7 @@ export function ErrorDisplay({
                 <span className="ml-4">{message}</span>
                 {showRefreshButton ? (
                     <Button variant={'outline'} className="ml-4" onClick={() => window.location.reload()}>
-                        Refresh page
+                        {t('refresh_page')}
                     </Button>
                 ) : (
                     ''

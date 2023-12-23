@@ -10,6 +10,7 @@ import {VuiEnumIcon} from '@/app/components/vui-enum-icon';
 import {VuiEnum} from '../../../../../src/domain';
 import {DynamicMaterialDesignIcon} from '@/app/components/dynamic-material-design-icon';
 import {ThemeContext} from '@/app/theme/theme-provider';
+import {useTranslation} from "react-i18next";
 
 type SupplementalAspectCardProps = {
     element: VuiEnum;
@@ -20,6 +21,7 @@ type SupplementalAspectCardProps = {
 export function SupplementalAspectCard({element, parentId, onAspectCardTitleClicked}: SupplementalAspectCardProps) {
     const {stateObjects, stateValues} = useVuiDataContext();
     const {theme} = useContext(ThemeContext);
+    const {t} = useTranslation();
     const [vuiStateObjects, setVuiStateObjects] = useState<StateObject[]>([]);
 
     useEffect(() => {
@@ -60,7 +62,7 @@ export function SupplementalAspectCard({element, parentId, onAspectCardTitleClic
                         </div>
                         <div className="hidden items-center">
                             <Label htmlFor={`${parentId}_all_${element.id}`} className="mr-2">
-                                <span className="font-bold leading-snug text-muted-foreground">Alle</span>
+                                <span className="font-bold leading-snug text-muted-foreground">{t('all')}</span>
                             </Label>
                             <Switch id={`${parentId}_all_${element.id}`} defaultChecked/>
                         </div>

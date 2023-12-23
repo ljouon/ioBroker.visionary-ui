@@ -1,4 +1,4 @@
-import { ReactNode } from 'react';
+import {ReactNode} from 'react';
 
 export type SwitchingValue<T> = {
     value: T;
@@ -12,7 +12,7 @@ interface ToggleSwitchProps<T> {
     onSwitch: (value: T) => void; // Callback function prop
 }
 
-export function ToggleSwitch<T>({ initialValue, left, right, onSwitch }: ToggleSwitchProps<T>): ReactNode {
+export function ToggleSwitch<T>({initialValue, left, right, onSwitch}: ToggleSwitchProps<T>): ReactNode {
     const active = initialValue === left.value;
 
     const toggle = () => {

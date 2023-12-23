@@ -6,11 +6,13 @@ import {hasStateObjects, isRoom, VuiEnum} from '../../../../../src/domain';
 import {matchPath} from '@/app/route-utils';
 import {useEffect, useState} from 'react';
 import {ErrorDisplay} from '@/app/components/error';
+import {useTranslation} from 'react-i18next';
 
 export function MainAspectPage() {
     const {mainAspect, canonicalPath} = useParams();
     const {roomAspectNodes, functionAspectNodes, connectionState} = useVuiDataContext();
     const [selectedAspectNode, setSelectedAspectNode] = useState<AspectNode | null>(null);
+    const {t} = useTranslation();
 
     useEffect(() => {
         if (mainAspect && roomAspectNodes && functionAspectNodes) {
@@ -28,7 +30,7 @@ export function MainAspectPage() {
             <ErrorDisplay
                 icon="connection"
                 iconInRed={true}
-                message="No connection to server"
+                message={t('no_connection_to_server')}
                 showRefreshButton={true}
             />
         );
@@ -38,7 +40,7 @@ export function MainAspectPage() {
         return (
             <ErrorDisplay
                 icon="alert-circle-outline"
-                message="Element not found, please navigate back..."
+                message={t('element_not_found_navigate_back')}
                 linkToHome={true}
             />
         );

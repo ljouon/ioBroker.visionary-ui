@@ -9,6 +9,7 @@ import {
 } from '../../../../src/domain';
 import {AspectNode, createAspectStructure} from '@/app/smart-home/structure/aspect';
 import {ConnectionState, useWebSocket} from '@/app/smart-home/socket';
+import {useTranslation} from "react-i18next";
 
 export type VuiDataContextType = {
     roomAspectNodes: AspectNode[];
@@ -46,9 +47,7 @@ export function VuiDataProvider({children}: VuiDataProviderProps) {
     const [stateValues, setStateValues] = useState<VuiStateValue[]>([]);
     const [roomAspectNodes, setRoomAspectNodes] = useState<AspectNode[]>([]);
     const [functionAspectNodes, setFunctionAspectNodes] = useState<AspectNode[]>([]);
-    const [language, setLanguage] = useState<string>('en')
-
-    console.log(language);
+    const {i18n} = useTranslation()
 
     function replaceElementInArray<
         T extends {
@@ -72,7 +71,7 @@ export function VuiDataProvider({children}: VuiDataProviderProps) {
             const envelope: VuiDataEnvelope = JSON.parse(data);
             switch (envelope.type) {
                 case 'configuration':
-                    setLanguage(envelope.data.language);
+                    i18n.changeLanguage(envelope.data.language);
                     break;
                 case 'allRooms':
                     setRooms(envelope.data);
