@@ -1,4 +1,4 @@
-import { VuiEnum, VuiStateObject } from '../../../../../src/domain';
+import { VuiEnum } from '../../../../../src/domain';
 
 export type AspectKey = 'rooms' | 'functions';
 
@@ -12,11 +12,6 @@ export type AspectNode = {
     mainAspect: VuiEnum | null;
     supplementalAspects: VuiEnum[] | null;
     children: AspectNode[];
-};
-
-export type StateObject = VuiStateObject & {
-    value: string | number | boolean | null;
-    lastChange: number | null;
 };
 
 export function getPathSegments(id: string, prefix: string): string[] {

@@ -1,6 +1,6 @@
 import { render } from '@/test/testing-library-setup';
 import { fireEvent, screen } from '@testing-library/react';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import { StateObject } from '@/app/smart-home/state-objects/state-object';
 import { StateObjectSwitch } from '@/app/smart-home/state-objects/state-object-switch';
 
 vi.mock('@/data.context', () => ({

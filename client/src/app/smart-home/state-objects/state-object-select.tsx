@@ -1,6 +1,6 @@
-import {DynamicMaterialDesignIcon} from '@/app/components/dynamic-material-design-icon';
-import {useEffect, useState} from 'react';
-import {CardDescription, CardTitle} from '@/__generated__/components/card';
+import { DynamicMaterialDesignIcon } from '@/app/components/dynamic-material-design-icon';
+import { useEffect, useState } from 'react';
+import { CardDescription, CardTitle } from '@/__generated__/components/card';
 import {
     Select,
     SelectContent,
@@ -9,8 +9,8 @@ import {
     SelectTrigger,
     SelectValue,
 } from '@/__generated__/components/select';
-import {useVuiDataContext} from '@/app/smart-home/data.context';
-import {StateObject} from '@/app/smart-home/structure/aspect';
+import { useVuiDataContext } from '@/app/smart-home/data.context';
+import { StateObject } from '@/app/smart-home/state-objects/state-object';
 
 export type ObjectEnumProps = {
     sectionId: string;
@@ -18,14 +18,14 @@ export type ObjectEnumProps = {
     uiStateObject: StateObject;
 };
 
-export function StateObjectSelect({uiStateObject, sectionId, cardId}: ObjectEnumProps) {
+export function StateObjectSelect({ uiStateObject, sectionId, cardId }: ObjectEnumProps) {
     const defaultValue = `${uiStateObject.value}`;
     const [internalValue, setInternalValue] = useState(defaultValue);
-    const {sendVuiAction} = useVuiDataContext();
+    const { sendVuiAction } = useVuiDataContext();
 
     const handleValueChange = (newValue: string) => {
         setInternalValue(newValue);
-        sendVuiAction({type: 'setValues', data: [{id: uiStateObject.id, value: newValue}]});
+        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value: newValue }] });
     };
 
     useEffect(() => {
@@ -33,11 +33,11 @@ export function StateObjectSelect({uiStateObject, sectionId, cardId}: ObjectEnum
     }, [defaultValue]);
 
     /**
-     HmIP set point mode
-     0 Auto
-     1 Manual
-     2 ?
-     **/
+   HmIP set point mode
+   0 Auto
+   1 Manual
+   2 ?
+   **/
 
     let states = uiStateObject.states;
     if (!states && uiStateObject.minValue !== null && uiStateObject.maxValue !== null) {
@@ -59,8 +59,7 @@ export function StateObjectSelect({uiStateObject, sectionId, cardId}: ObjectEnum
             </div>
             <div className="flex-grow truncate pl-2 pr-[1px]">
                 <CardTitle>
-                    <span
-                        className="ml-0 whitespace-nowrap overflow-hidden text-sm font-semibold leading-none tracking-tight">
+                    <span className="ml-0 whitespace-nowrap overflow-hidden text-sm font-semibold leading-none tracking-tight">
                         {uiStateObject.displayName ? uiStateObject.displayName : uiStateObject.name}
                     </span>
                 </CardTitle>
@@ -71,7 +70,7 @@ export function StateObjectSelect({uiStateObject, sectionId, cardId}: ObjectEnum
                 ) : undefined}
                 <Select defaultValue={defaultValue} value={internalValue} onValueChange={handleValueChange}>
                     <SelectTrigger className="my-4 w-full">
-                        <SelectValue placeholder="No value"/>
+                        <SelectValue placeholder="No value" />
                     </SelectTrigger>
                     <SelectContent>
                         <SelectGroup>

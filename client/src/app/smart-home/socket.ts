@@ -14,10 +14,10 @@ export function useWebSocket(onMessage: MessageHandler) {
     // Connect
     useEffect(() => {
         const webSocket = new WebSocket(`ws://localhost:${socketPort}`);
-        // const webSocket = new WebSocket(`ws://192.168.0.212:${socketPort}`);
+        // const webSocket = new WebSocket(`ws://192.168.0.212:8091`);
 
         webSocket.onopen = () => {
-            console.log('WebSocket connected');
+            // NO OP
         };
 
         webSocket.onerror = (error) => {
@@ -29,7 +29,6 @@ export function useWebSocket(onMessage: MessageHandler) {
         };
 
         webSocket.onclose = () => {
-            console.log('WebSocket disconnected');
             setConnectionState('CLOSED');
         };
 

@@ -1,18 +1,10 @@
 import { ThemeProvider } from '@/app/theme/theme-provider';
 import { render, RenderOptions } from '@testing-library/react';
 import { ReactElement, ReactNode } from 'react';
+import '@/app/i18n/i18n';
+import i18n from '@/app/i18n/i18n';
 
-// i18n.use(initReactI18next).init({
-//   fallbackLng: FALLBACK_LANGUAGE_KEY,
-//   interpolation: {
-//     escapeValue: false,
-//   },
-//   resources: {
-//     en: {
-//       translation,
-//     },
-//   },
-// });
+i18n.changeLanguage('en');
 
 // eslint-disable-next-line react-refresh/only-export-components
 const AllTheProviders = ({ children }: { children: ReactNode }) => {

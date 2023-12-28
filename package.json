@@ -4,7 +4,7 @@
   "description": "Visionary UI offers a sophisticated and responsive user interface designed for efficient management of smart home devices. This interface combines sleek aesthetics with practical functionality, providing an advanced solution for the modern smart home environment.",
   "author": {
     "name": "ljouon",
-    "email": "lars.jouon@codecentric.de"
+    "email": "schm.lars+dev@googlemail.com"
   },
   "homepage": "https://github.com/ls2pw/ioBroker.visionary-ui",
   "license": "MIT",
@@ -29,9 +29,9 @@
     "ws": "^8.14.2"
   },
   "devDependencies": {
-    "@alcalzone/release-script": "^2.2.2",
+    "@alcalzone/release-script": "^3.7.0",
     "@iobroker/adapter-dev": "^1.2.0",
-    "@iobroker/adapter-react-v5": "4.7.4",
+    "@iobroker/adapter-react-v5": "4.9.1",
     "@iobroker/testing": "^4.1.0",
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",

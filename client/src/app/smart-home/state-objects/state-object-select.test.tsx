@@ -1,7 +1,7 @@
 import { fireEvent, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 import { render } from '@/test/testing-library-setup';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import { StateObject } from '@/app/smart-home/state-objects/state-object';
 import { StateObjectSelect } from '@/app/smart-home/state-objects/state-object-select';
 
 // Mock the custom Select component

@@ -8,7 +8,7 @@ describe('VisionaryUiSocketServer Integration Tests', () => {
 
     beforeEach(async () => {
         socketServer = new VisionaryUiSocketServer();
-        await socketServer.start(0);
+        await socketServer.start(0, 1);
         const address: AddressInfo = socketServer['socketServer']?.address() as AddressInfo;
         port = address.port;
     });

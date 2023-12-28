@@ -46,7 +46,7 @@
             "uk": "Представляємо VisionaryUI, ваш шлюз до швидко реагуючого інтерфейсу користувача для керування пристроями розумного дому. Відчуйте майбутнє з елегантним дизайном, який не тільки підвищує естетичну привабливість, але й забезпечує оптимальну функціональність."
         },
         "authors": [
-            "ljouon <lars.jouon@codecentric.de>"
+            "ljouon <schm.lars+dev@googlemail.com>"
         ],
         "keywords": [
             "Responsive User Interface",
@@ -91,7 +91,7 @@
     },
     "native": {
         "webPort": "8088",
-        "socketPort": "8888"
+        "socketPort": "8089"
     },
     "objects": [],
     "instanceObjects": []

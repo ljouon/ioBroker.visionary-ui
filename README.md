@@ -46,10 +46,11 @@ This section is intended for the developer. It can be deleted later
 - [x] use web port + 1 as socket port (for now)
 -
 - [x] multi language in client => client gets language key already
-- [ ] add i18n to client
-- [ ] color picker for color lights
+- [x] add i18n to client
+- [x] color picker for color lights
 - [ ] check ioBroker best practises and release (beta first)
 
+- [ ] update language if config changes in backend
 - [ ] handle/flatten level depth for rooms and functions
 - [ ] Popover info on icon click
 - [ ] show only if the value of a specific other object is true (rules engine support), setting in object list
@@ -179,7 +180,7 @@ Please refer to the [`dev-server` documentation](https://github.com/ioBroker/dev
 
 MIT License
 
-Copyright (c) 2023 ljouon <lars.jouon@codecentric.de>
+Copyright (c) 2023 Lars Jouon
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
