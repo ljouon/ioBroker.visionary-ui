@@ -47,10 +47,10 @@ This section is intended for the developer. It can be deleted later
 -
 - [x] multi language in client => client gets language key already
 - [x] add i18n to client
-- [ ] update language if config changes in backend
-- [ ] color picker for color lights
+- [x] color picker for color lights
 - [ ] check ioBroker best practises and release (beta first)
 
+- [ ] update language if config changes in backend
 - [ ] handle/flatten level depth for rooms and functions
 - [ ] Popover info on icon click
 - [ ] show only if the value of a specific other object is true (rules engine support), setting in object list

@@ -2,7 +2,7 @@ import { describe, it } from 'vitest';
 import { render } from '@/test/testing-library-setup';
 import { screen } from '@testing-library/react';
 import { StateObjectValueOnly } from '@/app/smart-home/state-objects/state-object-value-only';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import { StateObject } from '@/app/smart-home/state-objects/state-object';
 
 describe('StateObjectValueOnly Component', () => {
     describe('StateObjectValueOnly Component', () => {

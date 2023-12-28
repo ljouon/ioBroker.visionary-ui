@@ -1,7 +1,7 @@
 import { render } from '@/test/testing-library-setup';
 import { fireEvent, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import { StateObject } from '@/app/smart-home/state-objects/state-object';
 import { StateObjectButton } from '@/app/smart-home/state-objects/state-object-button';
 
 const sendVuiAction = vi.fn();

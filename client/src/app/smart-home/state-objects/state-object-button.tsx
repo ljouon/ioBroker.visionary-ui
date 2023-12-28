@@ -2,8 +2,8 @@ import { CardDescription, CardTitle } from '@/__generated__/components/card';
 import { Button } from '@/__generated__/components/button';
 import { Label } from '@/__generated__/components/label';
 import { useVuiDataContext } from '@/app/smart-home/data.context';
-import { StateObject } from '@/app/smart-home/structure/aspect';
 import { DynamicMaterialDesignIcon } from '@/app/components/dynamic-material-design-icon';
+import { StateObject } from '@/app/smart-home/state-objects/state-object';
 
 export type StateObjectButtonProps = {
     sectionId: string;

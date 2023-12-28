@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react';
 import { Label } from '@/__generated__/components/label';
 import { CardDescription, CardTitle } from '@/__generated__/components/card';
 import { Switch } from '@/__generated__/components/switch';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import { StateObject } from '@/app/smart-home/state-objects/state-object';
 
 export type StateObjectSwitchProps = {
     sectionId: string;

@@ -1,6 +1,6 @@
 import { CardDescription, CardTitle } from '@/__generated__/components/card';
 import { DynamicMaterialDesignIcon } from '@/app/components/dynamic-material-design-icon';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import { StateObject } from '@/app/smart-home/state-objects/state-object';
 
 export type StateObjectValueOnlyProps = {
     sectionId: string;

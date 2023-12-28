@@ -3,7 +3,7 @@ import { render } from '@/test/testing-library-setup';
 
 import { describe, expect, it } from 'vitest';
 import { mapToStateObjectComponent } from './map-state-object';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import { StateObject } from '@/app/smart-home/state-objects/state-object';
 
 describe('mapToStateObjectComponent Function', () => {
     it('renders StateObjectSwitch for boolean type', () => {
@@ -13,7 +13,14 @@ describe('mapToStateObjectComponent Function', () => {
             role: 'switch',
             isWriteable: true,
         } as StateObject;
-        render(mapToStateObjectComponent('section1', 'card1', uiStateObject));
+        const ui = mapToStateObjectComponent('section1', 'card1', {
+            id: uiStateObject.id,
+            role: uiStateObject.role,
+            stateObjects: [uiStateObject],
+        });
+        if (ui) {
+            render(ui);
+        }
         expect(screen.getByRole('switch')).toBeInTheDocument();
     });
 
@@ -24,7 +31,14 @@ describe('mapToStateObjectComponent Function', () => {
             role: 'button',
             isWriteable: true,
         } as StateObject;
-        render(mapToStateObjectComponent('section1', 'card1', uiStateObject));
+        const ui = mapToStateObjectComponent('section1', 'card1', {
+            id: uiStateObject.id,
+            role: uiStateObject.role,
+            stateObjects: [uiStateObject],
+        });
+        if (ui) {
+            render(ui);
+        }
         expect(screen.getByRole('button')).toBeInTheDocument();
     });
 
@@ -39,7 +53,14 @@ describe('mapToStateObjectComponent Function', () => {
             maxValue: 100,
             isWriteable: true,
         } as StateObject;
-        render(mapToStateObjectComponent('section1', 'card1', uiStateObject));
+        const ui = mapToStateObjectComponent('section1', 'card1', {
+            id: uiStateObject.id,
+            role: uiStateObject.role,
+            stateObjects: [uiStateObject],
+        });
+        if (ui) {
+            render(ui);
+        }
         expect(screen.getByRole('slider')).toBeInTheDocument();
     });
 
@@ -54,7 +75,14 @@ describe('mapToStateObjectComponent Function', () => {
             value: 1,
             isWriteable: true,
         } as unknown as StateObject;
-        render(mapToStateObjectComponent('section1', 'card1', uiStateObject));
+        const ui = mapToStateObjectComponent('section1', 'card1', {
+            id: uiStateObject.id,
+            role: uiStateObject.role,
+            stateObjects: [uiStateObject],
+        });
+        if (ui) {
+            render(ui);
+        }
         expect(screen.getByText('Option 1')).toBeInTheDocument();
     });
 
@@ -70,7 +98,14 @@ describe('mapToStateObjectComponent Function', () => {
             value: 1,
             isWriteable: true,
         } as unknown as StateObject;
-        render(mapToStateObjectComponent('section1', 'card1', uiStateObject));
+        const ui = mapToStateObjectComponent('section1', 'card1', {
+            id: uiStateObject.id,
+            role: uiStateObject.role,
+            stateObjects: [uiStateObject],
+        });
+        if (ui) {
+            render(ui);
+        }
         expect(screen.getByText('1')).toBeInTheDocument();
     });
 
@@ -81,7 +116,14 @@ describe('mapToStateObjectComponent Function', () => {
             datatype: 'string',
             isWriteable: false,
         } as StateObject;
-        render(mapToStateObjectComponent('section1', 'card1', uiStateObject));
+        const ui = mapToStateObjectComponent('section1', 'card1', {
+            id: uiStateObject.id,
+            role: uiStateObject.role,
+            stateObjects: [uiStateObject],
+        });
+        if (ui) {
+            render(ui);
+        }
         expect(screen.getByText('value only')).toBeInTheDocument();
     });
 
@@ -92,7 +134,14 @@ describe('mapToStateObjectComponent Function', () => {
             datatype: 'string',
             isWriteable: true,
         } as StateObject;
-        render(mapToStateObjectComponent('section1', 'card1', uiStateObject));
+        const ui = mapToStateObjectComponent('section1', 'card1', {
+            id: uiStateObject.id,
+            role: uiStateObject.role,
+            stateObjects: [uiStateObject],
+        });
+        if (ui) {
+            render(ui);
+        }
         expect(screen.getByText('unknown')).toBeInTheDocument();
     });
 });

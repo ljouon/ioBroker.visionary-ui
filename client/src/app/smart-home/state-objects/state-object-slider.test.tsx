@@ -3,7 +3,7 @@ import { render } from '@/test/testing-library-setup';
 
 import { describe, expect, it, vi } from 'vitest';
 import { StateObjectSlider } from '@/app/smart-home/state-objects/state-object-slider';
-import { StateObject } from '@/app/smart-home/structure/aspect';
+import { StateObject } from '@/app/smart-home/state-objects/state-object';
 
 const sendVuiAction = vi.fn();
 vi.mock('@/app/smart-home/data.context', () => ({
