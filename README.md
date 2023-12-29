@@ -104,7 +104,7 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     ### **WORK IN PROGRESS**
 -->
 
-### 1.0.0-alpha.1 (2023-12-29)
+### **WORK IN PROGRESS**
 
 * (ljouon) initial release
 
