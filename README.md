@@ -33,7 +33,12 @@
 * **Enum Levels**: Currently, enums can be organized into two levels (parent, child). Deeper nesting is not yet
   supported.
 
+**Rooms**
+
 ![enum rooms](images/enum_rooms.png)
+
+**Functions**
+
 ![enum functions](images/enum_functions.png)
 
 💡 Supported Devices and States
@@ -99,7 +104,7 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     ### **WORK IN PROGRESS**
 -->
 
-### **0.1.1 (2023-12-29)**
+### **WORK IN PROGRESS**
 
 * (ljouon) initial release
 
