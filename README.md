@@ -14,82 +14,61 @@
 
 ## visionary-ui adapter for ioBroker
 
-Introducing VisionaryUI, your gateway to a seamlessly responsive user interface for managing your smart home devices.
-Experience the future with a sleek design that not only enhances the aesthetic appeal but also ensures optimal
-functionality.
+![screenshot](images/screenshot.png)
 
-## Developer manual
+🌟 Getting Started
+---------------
 
-This section is intended for the developer. It can be deleted later
+### 📚 Prerequisites
 
-### TODO:
+* **ioBroker Installation**: Visionary-UI is an adapter for ioBroker. Ensure you have ioBroker installed and running.
 
-- [x] create iobroker.visionary-ui adapter using create-adapter tool
-- [x] refactor adapter to use react-adapter-v5
-- [x] prototype serving client using express server
-- [x] client build should work with adapter build
-- [x] add web socket to main.ts as backend API for client
-- [x] add useWebSocket: https://www.npmjs.com/package/react-use-websocket
-- [x] business logics for structure and states in backend: rooms, categories, devices, states
-- [x] connect client to web socket
-- [x] think about splitting web server and socket server implementations
-- [x] handle enum changes (might be an object change with id starting with 'enum.')
-- [x] handle object to enum association changes, add/remove
-- [x] adapter tests
-- [x] WIP: API Definition: how to tell client the type of the message (wrap in object: envelop)
-- [x] implement basic client UI
-- [x] Routing
-- [x] Switch between rooms und functions via click on headlines/card headers
-- [x] Sorting of rooms and functions? => as custom settings?
-- [x] Allow Icons for enums as custom settings?
-- [x] Image handling for page title, section title, objects in the same way as in sidebar
-- [x] use web port + 1 as socket port (for now)
--
-- [x] multi language in client => client gets language key already
-- [x] add i18n to client
-- [x] color picker for color lights
-- [ ] check ioBroker best practises and release (beta first)
+### ⚙️ Configuration
 
-- [ ] update language if config changes in backend
-- [ ] handle/flatten level depth for rooms and functions
-- [ ] Popover info on icon click
-- [ ] show only if the value of a specific other object is true (rules engine support), setting in object list
-- [ ] invalid config message!?
-- [ ] map multiple objects to a specific card and let unused objects remain for other cards
-- [ ] upgrade admin to react 18?
-- [ ] refactor client serving to iobroker.web adapter?
+* **Enum Definitions**: Use the ioBroker feature to define the enums "rooms" and "functions". These are crucial for the
+  automatic detection of states in the Visionary-UI.
+* **State Mapping**: Visionary-UI operates on the state level of the ioBroker hierarchy. Map the states you wish to
+  monitor or control to at least one "room" and one "function". For instance, map a lightbulb in the living room to the
+  enum "living room" and the function "light".
+* **Enum Levels**: Currently, enums can be organized into two levels (parent, child). Deeper nesting is not yet
+  supported.
 
-### Getting started
+![enum rooms](images/enum_rooms.png)
+![enum functions](images/enum_functions.png)
 
-You are almost done, only a few steps left:
+💡 Supported Devices and States
+----------------------------
 
-1. Create a new repository on GitHub with the name `ioBroker.visionary-ui`
-1. Initialize the current folder as a new git repository:
-    ```bash
-    git init -b main
-    git add .
-    git commit -m "Initial commit"
-    ```
-1. Link your local repository with the one on GitHub:
-    ```bash
-    git remote add origin https://github.com/ls2pw/ioBroker.visionary-ui
-    ```
+Visionary-UI currently supports various device types at the state level:
 
-1. Push all files to the GitHub repo:
-    ```bash
-    git push origin main
-    ```
+* **Read-Only Sensor Data**: Sensors or values that are not writable.
+* **Buttons**: Boolean value items with a role equal to "button".
+* **Switches**: Boolean value items with roles different from "button".
+* **Level/Meters**: Editable via a slider component. These are number datatype values with defined minimum and maximum,
+  and their role contains the string "level".
+* **Dedicated Values**: Selectable via select boxes. These are number datatype values with dedicated states or without
+  minimum and maximum definitions.
+* **RGB Light Control**: Utilize "level.color.red", "level.color.green", "level.color.blue", and group them for a color
+  selector component with the role "light.color".
 
-1. Head over to [src/main.ts](src/main.ts) and start programming!
+💻 WebSockets and Webinterface
+---------------------------
 
-### Best Practices
+Visionary-UI uses a direct websocket connection to ioBroker. For that it assumes, ioBroker is available on localhost.
+Other connection types different from that are not supported.
 
-We've collected
-some [best practices](https://github.com/ioBroker/ioBroker.repositories#development-and-coding-best-practices) regarding
-ioBroker development and coding in general. If you're new to ioBroker or Node.js, you should
-check them out. If you're already experienced, you should also take a look at them - you might learn something new :)
+The websocket port will automatically be chosen by adding +1 to the port definition of the webinterface providing the
+UI.
+The UI currently does not support SSL/TLS for provisioning. The most common use case is to run it behind a reverse proxy
+providing this feature. It's on my list of future tasks to support the SSL/TLS handling provided by ioBroker itself.
 
-### Scripts in `package.json`
+🤝 Feedback
+----------
+
+Your feedback and contributions is valuable to me. If you encounter any issues or have suggestions for improvements,
+please feel free to open an issue.
+
+### 📜 Scripts in `package.json`
 
 Several npm scripts are predefined for your convenience. You can run them using `npm run <scriptname>`
 | Script name | Description |
@@ -113,70 +92,18 @@ see [`@iobroker/adapter-dev`](https://github.com/ioBroker/adapter-dev#manage-tra
 | `release` | Creates a new release,
 see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#usage) for more details. |
 
-### Configuring the compilation
-
-The adapter template uses [esbuild](https://esbuild.github.io/) to compile TypeScript and/or React code. You can
-configure many compilation settings
-either in `tsconfig.json` or by changing options for the build tasks. These options are described in detail in the
-[`@iobroker/adapter-dev` documentation](https://github.com/ioBroker/adapter-dev#compile-adapter-files).
-
-### Writing tests
-
-When done right, testing code is invaluable, because it gives you the
-confidence to change your code while knowing exactly if and when
-something breaks. A good read on the topic of test-driven development
-is https://hackernoon.com/introduction-to-test-driven-development-tdd-61a13bc92d92.
-Although writing tests before the code might seem strange at first, but it has very
-clear upsides.
-
-The template provides you with basic tests for the adapter startup and package files.
-It is recommended that you add your own tests into the mix.
-
-### Publishing the adapter
-
-Using GitHub Actions, you can enable automatic releases on npm whenever you push a new git tag that matches the form
-`v<major>.<minor>.<patch>`. We **strongly recommend** that you do. The necessary steps are described
-in `.github/workflows/test-and-release.yml`.
-
-Since you installed the release script, you can create a new
-release simply by calling:
-
-```bash
-npm run release
-```
-
-Additional command line options for the release script are explained in the
-[release-script documentation](https://github.com/AlCalzone/release-script#command-line).
-
-To get your adapter released in ioBroker, please refer to the documentation
-of [ioBroker.repositories](https://github.com/ioBroker/ioBroker.repositories#requirements-for-adapter-to-get-added-to-the-latest-repository).
-
-### Test the adapter manually with dev-server
-
-Since you set up `dev-server`, you can use it to run, test and debug your adapter.
-
-You may start `dev-server` by calling from your dev directory:
-
-```bash
-dev-server watch
-```
-
-The ioBroker.admin interface will then be available at http://localhost:8081/
-
-Please refer to the [`dev-server` documentation](https://github.com/ioBroker/dev-server#command-line) for more details.
-
-## Changelog
+## 📅 Changelog
 
 <!--
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
 
-### **WORK IN PROGRESS**
+### **0.1.1 (2023-12-29)**
 
 * (ljouon) initial release
 
-## License
+## 📄 License
 
 MIT License
 
