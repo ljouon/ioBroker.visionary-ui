@@ -97,7 +97,7 @@ see [`@iobroker/adapter-dev`](https://github.com/ioBroker/adapter-dev#manage-tra
 | `release` | Creates a new release,
 see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#usage) for more details. |
 
-## 📅 Changelog
+## Changelog 📅
 
 <!--
     Placeholder for the next version (at the beginning of the line):
@@ -108,7 +108,7 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
 
 * (ljouon) initial release
 
-## 📄 License
+## License 📄
 
 MIT License
 
