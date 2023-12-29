@@ -10,7 +10,7 @@
 
 [![NPM](https://nodei.co/npm/iobroker.visionary-ui.png?downloads=true)](https://nodei.co/npm/iobroker.visionary-ui/)
 
-**Tests:** ![Test and Release](https://github.com/ls2pw/ioBroker.visionary-ui/workflows/Test%20and%20Release/badge.svg)
+**Tests:** ![Test and Release](https://github.com/ljouon/ioBroker.visionary-ui/workflows/Test%20and%20Release/badge.svg)
 
 ## visionary-ui adapter for ioBroker
 
@@ -103,6 +103,7 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**
 -->
+
 ### 1.0.0-alpha.1 (2023-12-29)
 
 * (ljouon) initial release
