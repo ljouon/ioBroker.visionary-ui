@@ -103,8 +103,7 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     
 -->
-
-### **WORK IN PROGRESS**
+### 1.0.0-alpha.3 (2023-12-30)
 
 * (ljouon) initial release
 
