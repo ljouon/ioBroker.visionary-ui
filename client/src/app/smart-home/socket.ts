@@ -11,8 +11,6 @@ export function useWebSocket(onMessage: MessageHandler) {
 
     const socketPort = Number(window.location.port) + 1;
 
-    console.log(window.location);
-
     // Connect
     useEffect(() => {
         const webSocket = new WebSocket(`ws://${window.location.hostname}:${socketPort}`);
