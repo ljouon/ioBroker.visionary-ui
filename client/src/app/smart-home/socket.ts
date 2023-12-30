@@ -14,6 +14,7 @@ export function useWebSocket(onMessage: MessageHandler) {
     // Connect
     useEffect(() => {
         const webSocket = new WebSocket(`ws://${window.location.hostname}:${socketPort}`);
+        // const webSocket = new WebSocket(`ws://192.168.0.122:8089`);
 
         webSocket.onopen = () => {
             // NO OP
