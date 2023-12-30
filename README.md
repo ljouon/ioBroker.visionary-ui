@@ -6,7 +6,7 @@
 [![Downloads](https://img.shields.io/npm/dm/iobroker.visionary-ui.svg)](https://www.npmjs.com/package/iobroker.visionary-ui)
 ![Number of Installations](https://iobroker.live/badges/visionary-ui-installed.svg)
 ![Current version in stable repository](https://iobroker.live/badges/visionary-ui-stable.svg)
-[![Dependency Status](https://img.shields.io/david/ls2pw/iobroker.visionary-ui.svg)](https://david-dm.org/ls2pw/iobroker.visionary-ui)
+[![Dependency Status](https://img.shields.io/david/ljouon/iobroker.visionary-ui.svg)](https://david-dm.org/ljouon/iobroker.visionary-ui)
 
 [![NPM](https://nodei.co/npm/iobroker.visionary-ui.png?downloads=true)](https://nodei.co/npm/iobroker.visionary-ui/)
 
@@ -101,9 +101,10 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
 
 <!--
     Placeholder for the next version (at the beginning of the line):
-    ### **WORK IN PROGRESS**
+    
 -->
-### 1.0.0-alpha.2 (2023-12-29)
+
+### **WORK IN PROGRESS**
 
 * (ljouon) initial release
 

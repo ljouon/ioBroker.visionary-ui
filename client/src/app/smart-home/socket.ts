@@ -11,10 +11,11 @@ export function useWebSocket(onMessage: MessageHandler) {
 
     const socketPort = Number(window.location.port) + 1;
 
+    console.log(window.location);
+
     // Connect
     useEffect(() => {
-        const webSocket = new WebSocket(`ws://localhost:${socketPort}`);
-        // const webSocket = new WebSocket(`ws://192.168.0.212:8091`);
+        const webSocket = new WebSocket(`ws://${window.location.hostname}:${socketPort}`);
 
         webSocket.onopen = () => {
             // NO OP

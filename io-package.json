@@ -2,7 +2,7 @@
   "common": {
     "tier": 3,
     "name": "visionary-ui",
-    "version": "1.0.0-alpha.2",
+    "version": "1.0.0-alpha.3",
     "news": {
       "0.0.1": {
         "en": "initial release",
@@ -67,7 +67,7 @@
       }
     },
     "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/ls2pw/ioBroker.visionary-ui/main/admin/visionary-ui.png",
+    "extIcon": "https://raw.githubusercontent.com/ljouon/ioBroker.visionary-ui/main/admin/visionary-ui.png",
     "readme": "https://github.com/ljouon/ioBroker.visionary-ui/blob/main/README.md",
     "loglevel": "info",
     "mode": "daemon",
