@@ -106,7 +106,8 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**    
 -->
-### 1.0.1 (2024-01-01)
+
+### **WORK IN PROGRESS**
 
 * (ljouon) first release with minimal feature set
 
