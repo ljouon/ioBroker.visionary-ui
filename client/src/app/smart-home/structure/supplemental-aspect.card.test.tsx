@@ -34,7 +34,6 @@ describe('SupplementalAspectCard', () => {
 
         render(<SupplementalAspectCard element={vuiEnum} parentId="section-1" onAspectCardTitleClicked={() => {}} />);
 
-        screen.debug();
         expect(screen.getByText('Test Card')).toBeInTheDocument();
     });
 
