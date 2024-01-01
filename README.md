@@ -21,17 +21,19 @@
 
 ### 📚 Prerequisites
 
-* **ioBroker Installation**: Visionary-UI is an adapter for ioBroker. Ensure you have ioBroker installed and running.
+* **ioBroker Installation**: Visionary-UI is an adapter for the ioBroker smart home system. Ensure you have ioBroker up
+  and running to be able to use this ui adapter.
 
 ### ⚙️ Configuration
 
-* **Enum Definitions**: Use the ioBroker feature to define the enums "rooms" and "functions". These are crucial for the
-  automatic detection of states in the Visionary-UI.
-* **State Mapping**: Visionary-UI operates on the state level of the ioBroker hierarchy. Map the states you wish to
-  monitor or control to at least one "room" and one "function". For instance, map a lightbulb in the living room to the
+* **Enum Definitions**: Use the enum definition feature of ioBroker to define enums for "rooms" and "functions". These
+  two aspects are crucial for
+  automatic detection of states in Visionary-UI.
+* **State Mapping**: Visionary-UI operates on the state level of the ioBroker hierarchy. Map the corresponding states of
+  a device to at least one "room" and one "function". For instance, map a light bulb in the living room to the
   enum "living room" and the function "light".
-* **Enum Levels**: Currently, enums can be organized into two levels (parent, child). Deeper nesting is not yet
-  supported.
+* **Enum Levels**: Currently, only two levels (parent, child) are supported for the organisation of device states in
+  these enums. Deeper nesting is not yet supported.
 
 **Rooms**
 
@@ -44,12 +46,13 @@
 💡 Supported Devices and States
 ----------------------------
 
-Visionary-UI currently supports various device types at the state level:
+Visionary-UI supports various device types at the state level:
 
 * **Read-Only Sensor Data**: Sensors or values that are not writable.
 * **Buttons**: Boolean value items with a role equal to "button".
 * **Switches**: Boolean value items with roles different from "button".
-* **Level/Meters**: Editable via a slider component. These are number datatype values with defined minimum and maximum,
+* **Level/Meters**: Editable level states are supported via a slider component. These are number datatype values with
+  defined minimum and maximum,
   and their role contains the string "level".
 * **Dedicated Values**: Selectable via select boxes. These are number datatype values with dedicated states or without
   minimum and maximum definitions.
@@ -103,6 +106,11 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**    
 -->
+
+### **WORK IN PROGRESS**
+
+* (ljouon) first release with minimal feature set
+
 ### 1.0.0 (2023-12-30)
 
 * (ljouon) first release with minimal feature set
