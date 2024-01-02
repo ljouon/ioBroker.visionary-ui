@@ -6,7 +6,7 @@
     "news": {
       "1.0.3": {
         "en": "fix value datatype for selection in select box",
-        "de": "fixwertdatentyp zur auswahl in auswahlfeld",
+        "de": "Fixwert-Datentyp zur Auswahl in Auswahlfeld",
         "ru": "исправить тип данных значения для выбора в выбранной коробке",
         "pt": "corrigir o tipo de dados do valor para a seleção na caixa selecionada",
         "nl": "_",
@@ -90,7 +90,7 @@
     "eraseOnUpload": true,
     "dependencies": [
       {
-        "js-controller": ">=3.3.22"
+        "js-controller": ">=2.0.0"
       }
     ],
     "supportCustoms": true,

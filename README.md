@@ -109,6 +109,11 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**    
 -->
+
+### **WORK IN PROGRESS**
+
+* (ljouon) client: prevent sending empty state changes in rgb component
+
 ### 1.0.3 (2024-01-02)
 
 * (ljouon) fix value datatype for selection in select box

@@ -66,10 +66,12 @@ export function StateObjectRgbLight({
                 actions.push({ id: blueState.id, value: rgb.b });
             }
 
-            sendVuiAction({
-                type: 'setValues',
-                data: actions,
-            });
+            if (actions.length > 0) {
+                sendVuiAction({
+                    type: 'setValues',
+                    data: actions,
+                });
+            }
         }
     }
 
