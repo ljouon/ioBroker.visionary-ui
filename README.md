@@ -103,9 +103,13 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
 ## Changelog 📅
 
 <!--
+
+    ! Attention: update version in io-package.json manually first with the desired version number
+
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**    
 -->
+
 ### 1.0.2 (2024-01-01)
 
 * (ljouon) first release with minimal feature set
@@ -122,7 +126,7 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
 
 MIT License
 
-Copyright (c) 2023 Lars Jouon
+Copyright (c) 2024 Lars Jouon
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal
