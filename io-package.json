@@ -1,108 +1,108 @@
 {
-  "common": {
-    "tier": 3,
-    "name": "visionary-ui",
-    "version": "1.0.3",
-    "news": {
-      "1.0.3": {
-        "en": "fix value datatype for selection in select box",
-        "de": "Fixwert-Datentyp zur Auswahl in Auswahlfeld",
-        "ru": "исправить тип данных значения для выбора в выбранной коробке",
-        "pt": "corrigir o tipo de dados do valor para a seleção na caixa selecionada",
-        "nl": "_",
-        "fr": "fix value datatype pour la sélection dans la boîte sélectionnée",
-        "it": "correzione del tipo di dati del valore per la selezione nella casella selezionata",
-        "es": "fijar el tipo de datos de valor para la selección en la caja selecta",
-        "pl": "naprawić dane w celu selekcji boksu",
-        "uk": "виправлено тип даних значень для вибору",
-        "zh-cn": "f 选择箱的数值数据类型"
-      },
-      "1.0.2": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "uk": "початковий випуск",
-        "zh-cn": "首次出版"
-      }
+    "common": {
+        "tier": 3,
+        "name": "visionary-ui",
+        "version": "1.0.3",
+        "news": {
+            "1.0.3": {
+                "en": "fix value datatype for selection in select box",
+                "de": "Fixwert-Datentyp zur Auswahl in Auswahlfeld",
+                "ru": "исправить тип данных значения для выбора в выбранной коробке",
+                "pt": "corrigir o tipo de dados do valor para a seleção na caixa selecionada",
+                "nl": "_",
+                "fr": "fix value datatype pour la sélection dans la boîte sélectionnée",
+                "it": "correzione del tipo di dati del valore per la selezione nella casella selezionata",
+                "es": "fijar el tipo de datos de valor para la selección en la caja selecta",
+                "pl": "naprawić dane w celu selekcji boksu",
+                "uk": "виправлено тип даних значень для вибору",
+                "zh-cn": "f 选择箱的数值数据类型"
+            },
+            "1.0.2": {
+                "en": "initial release",
+                "de": "Erstveröffentlichung",
+                "ru": "Начальная версия",
+                "pt": "lançamento inicial",
+                "nl": "Eerste uitgave",
+                "fr": "Première version",
+                "it": "Versione iniziale",
+                "es": "Versión inicial",
+                "pl": "Pierwsze wydanie",
+                "uk": "початковий випуск",
+                "zh-cn": "首次出版"
+            }
+        },
+        "titleLang": {
+            "en": "VisionaryUI",
+            "de": "VisionaryUI",
+            "ru": "VisionaryUI",
+            "pt": "Visionário UI",
+            "nl": "VisionaireUI",
+            "fr": "VisionnaireUI",
+            "it": "VisionarioUI",
+            "es": "UI visionaria",
+            "pl": "WizjonerskiUI",
+            "uk": "VisionaryUI",
+            "zh-cn": "有远见的用户界面"
+        },
+        "desc": {
+            "en": "Introducing VisionaryUI, your gateway to a seamlessly responsive user interface for managing your smart home devices. Experience the future with a sleek design that not only enhances the aesthetic appeal but also ensures optimal functionality.",
+            "de": "Wir stellen Ihnen VisionaryUI vor, Ihr Tor zu einer nahtlos reagierenden Benutzeroberfläche für die Verwaltung Ihrer Smart-Home-Geräte. ",
+            "ru": "Представляем VisionaryUI, ваш доступ к легко реагирующему пользовательскому интерфейсу для управления устройствами умного дома. ",
+            "pt": "Apresentando VisionaryUI, sua porta de entrada para uma interface de usuário perfeitamente responsiva para gerenciar seus dispositivos domésticos inteligentes. ",
+            "nl": "Maak kennis met VisionaryUI, uw toegangspoort tot een naadloos responsieve gebruikersinterface voor het beheren van uw smarthome-apparaten. ",
+            "fr": "Présentation de VisionaryUI, votre passerelle vers une interface utilisateur parfaitement réactive pour gérer vos appareils domestiques intelligents. ",
+            "it": "Ti presentiamo VisionaryUI, il tuo gateway per un'interfaccia utente perfettamente reattiva per la gestione dei tuoi dispositivi domestici intelligenti. ",
+            "es": "Presentamos VisionaryUI, su puerta de entrada a una interfaz de usuario con capacidad de respuesta perfecta para administrar sus dispositivos domésticos inteligentes. ",
+            "pl": "Przedstawiamy VisionaryUI, bramę do płynnie responsywnego interfejsu użytkownika do zarządzania inteligentnymi urządzeniami domowymi. ",
+            "uk": "Представляємо VisionaryUI, ваш шлюз до швидко реагуючого інтерфейсу користувача для керування пристроями розумного дому. Відчуйте майбутнє з елегантним дизайном, який не тільки підвищує естетичну привабливість, але й забезпечує оптимальну функціональність.",
+            "zh-cn": "VisionaryUI 隆重登场，它是通往无缝响应式用户界面的门户，用于管理您的智能家居设备。"
+        },
+        "authors": [
+            "ljouon <schm.lars+dev@googlemail.com>"
+        ],
+        "keywords": [
+            "Responsive User Interface",
+            "Aesthetics",
+            "Navigation",
+            "Modern Interface",
+            "Intuitive Controls",
+            "User-Friendly",
+            "Streamlined Experience"
+        ],
+        "license": "MIT",
+        "platform": "Javascript/Node.js",
+        "icon": "visionary-ui.png",
+        "localLinks": {
+            "_default": {
+                "link": "%protocol%://%ip%:%webPort%",
+                "pro": true
+            }
+        },
+        "enabled": true,
+        "extIcon": "https://raw.githubusercontent.com/ljouon/ioBroker.visionary-ui/main/admin/visionary-ui.png",
+        "readme": "https://github.com/ljouon/ioBroker.visionary-ui/blob/main/README.md",
+        "loglevel": "info",
+        "mode": "daemon",
+        "type": "visualization",
+        "compact": true,
+        "connectionType": "none",
+        "dataSource": "none",
+        "eraseOnUpload": true,
+        "dependencies": [
+            {
+                "js-controller": ">=2.0.0"
+            }
+        ],
+        "supportCustoms": true,
+        "adminUI": {
+            "config": "materialize",
+            "custom": "json"
+        }
     },
-    "titleLang": {
-      "en": "VisionaryUI",
-      "de": "VisionaryUI",
-      "ru": "VisionaryUI",
-      "pt": "Visionário UI",
-      "nl": "VisionaireUI",
-      "fr": "VisionnaireUI",
-      "it": "VisionarioUI",
-      "es": "UI visionaria",
-      "pl": "WizjonerskiUI",
-      "uk": "VisionaryUI",
-      "zh-cn": "有远见的用户界面"
+    "native": {
+        "webPort": "8088",
+        "socketPort": "8089"
     },
-    "desc": {
-      "en": "Introducing VisionaryUI, your gateway to a seamlessly responsive user interface for managing your smart home devices. Experience the future with a sleek design that not only enhances the aesthetic appeal but also ensures optimal functionality.",
-      "de": "Wir stellen Ihnen VisionaryUI vor, Ihr Tor zu einer nahtlos reagierenden Benutzeroberfläche für die Verwaltung Ihrer Smart-Home-Geräte. ",
-      "ru": "Представляем VisionaryUI, ваш доступ к легко реагирующему пользовательскому интерфейсу для управления устройствами умного дома. ",
-      "pt": "Apresentando VisionaryUI, sua porta de entrada para uma interface de usuário perfeitamente responsiva para gerenciar seus dispositivos domésticos inteligentes. ",
-      "nl": "Maak kennis met VisionaryUI, uw toegangspoort tot een naadloos responsieve gebruikersinterface voor het beheren van uw smarthome-apparaten. ",
-      "fr": "Présentation de VisionaryUI, votre passerelle vers une interface utilisateur parfaitement réactive pour gérer vos appareils domestiques intelligents. ",
-      "it": "Ti presentiamo VisionaryUI, il tuo gateway per un'interfaccia utente perfettamente reattiva per la gestione dei tuoi dispositivi domestici intelligenti. ",
-      "es": "Presentamos VisionaryUI, su puerta de entrada a una interfaz de usuario con capacidad de respuesta perfecta para administrar sus dispositivos domésticos inteligentes. ",
-      "pl": "Przedstawiamy VisionaryUI, bramę do płynnie responsywnego interfejsu użytkownika do zarządzania inteligentnymi urządzeniami domowymi. ",
-      "uk": "Представляємо VisionaryUI, ваш шлюз до швидко реагуючого інтерфейсу користувача для керування пристроями розумного дому. Відчуйте майбутнє з елегантним дизайном, який не тільки підвищує естетичну привабливість, але й забезпечує оптимальну функціональність.",
-      "zh-cn": "VisionaryUI 隆重登场，它是通往无缝响应式用户界面的门户，用于管理您的智能家居设备。"
-    },
-    "authors": [
-      "ljouon <schm.lars+dev@googlemail.com>"
-    ],
-    "keywords": [
-      "Responsive User Interface",
-      "Aesthetics",
-      "Navigation",
-      "Modern Interface",
-      "Intuitive Controls",
-      "User-Friendly",
-      "Streamlined Experience"
-    ],
-    "license": "MIT",
-    "platform": "Javascript/Node.js",
-    "icon": "visionary-ui.png",
-    "localLinks": {
-      "_default": {
-        "link": "%protocol%://%ip%:%webPort%",
-        "pro": true
-      }
-    },
-    "enabled": true,
-    "extIcon": "https://raw.githubusercontent.com/ljouon/ioBroker.visionary-ui/main/admin/visionary-ui.png",
-    "readme": "https://github.com/ljouon/ioBroker.visionary-ui/blob/main/README.md",
-    "loglevel": "info",
-    "mode": "daemon",
-    "type": "visualization",
-    "compact": true,
-    "connectionType": "none",
-    "dataSource": "none",
-    "eraseOnUpload": true,
-    "dependencies": [
-      {
-        "js-controller": ">=2.0.0"
-      }
-    ],
-    "supportCustoms": true,
-    "adminUI": {
-      "config": "materialize",
-      "custom": "json"
-    }
-  },
-  "native": {
-    "webPort": "8088",
-    "socketPort": "8089"
-  },
-  "objects": [],
-  "instanceObjects": []
+    "objects": [],
+    "instanceObjects": []
 }

@@ -6,5 +6,5 @@
     "descriptionTitle": "Interfaccia utente visionaria",
     "descriptionContent": "L'interfaccia utente visionaria offre un'interfaccia utente sofisticata e reattiva progettata per la gestione efficiente dei dispositivi domestici intelligenti. Questa interfaccia combina un'estetica elegante con funzionalità pratiche, fornendo una soluzione avanzata per il moderno ambiente domestico intelligente.",
     "webPortDescription": "Il frontend web dell'interfaccia utente Visionary sarà fornito da un server web in esecuzione sulla porta definita qui.",
-    "socketPortDescription": "L'interfaccia utente visionaria utilizza una connessione socket Web diretta a ioBroker. Tieni presente che attualmente il valore della porta socket è la porta impostata qui + 1 (!)."
+    "socketPortDescription": "L'interfaccia utente visionaria utilizza una connessione socket Web diretta a ioBroker. Viene utilizzata la stessa porta del client Web sopra definito."
 }

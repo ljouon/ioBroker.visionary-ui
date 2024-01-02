@@ -1,6 +1,6 @@
 import WebSocket, { WebSocketServer } from 'ws';
 import { v4 as uuidv4 } from 'uuid';
-import { VisionaryUiServer } from './visionary-ui.server';
+import { Server } from 'http';
 
 export type ClientInboundHandler = {
     onConnect: (clientId: string) => void;
@@ -8,7 +8,7 @@ export type ClientInboundHandler = {
     onMessageFromClient: (clientId: string, content: string) => void;
 };
 
-export abstract class ClientCommunication extends VisionaryUiServer {
+export abstract class ClientCommunication {
     abstract registerClientInboundHandler(clientInboundHandler: ClientInboundHandler): void;
 
     abstract messageToClient(clientId: string, message: string): void;
@@ -21,42 +21,36 @@ export class VisionaryUiSocketServer extends ClientCommunication {
     private clientInboundHandler: ClientInboundHandler | null = null;
     private clients = new Map<string, WebSocket>();
 
-    async start(_: number, port: number): Promise<void> {
-        return new Promise((resolve) => {
-            this.socketServer = new WebSocket.Server({ port }, () => {
-                console.log(`Socket server started on port: ${port}`);
-                resolve();
+    start(server: Server): void {
+        this.socketServer = new WebSocket.Server({ server }, () => {
+            console.log(`Socket server started`);
+        });
+
+        this.socketServer.on('connection', (ws: WebSocket) => {
+            const clientId = uuidv4();
+            this.clients.set(clientId, ws);
+
+            this.clientInboundHandler?.onConnect(clientId);
+
+            ws.on('message', (message: string) => {
+                this.clientInboundHandler?.onMessageFromClient(clientId, message);
             });
 
-            this.socketServer.on('connection', (ws: WebSocket) => {
-                const clientId = uuidv4();
-                this.clients.set(clientId, ws);
-
-                this.clientInboundHandler?.onConnect(clientId);
-
-                ws.on('message', (message: string) => {
-                    this.clientInboundHandler?.onMessageFromClient(clientId, message);
-                });
-
-                ws.on('close', (_) => {
-                    this.clients.delete(clientId);
-                    this.clientInboundHandler?.onDisconnect(clientId);
-                });
+            ws.on('close', (_) => {
+                this.clients.delete(clientId);
+                this.clientInboundHandler?.onDisconnect(clientId);
             });
         });
     }
 
-    async stop(): Promise<void> {
-        return new Promise((resolve) => {
-            // Reset client connection handler
-            this.clientInboundHandler = null;
+    stop(): void {
+        // Reset client connection handler
+        this.clientInboundHandler = null;
 
-            // Close socket server
-            this.socketServer?.close(() => {
-                console.log('Socket server closed');
-                this.socketServer = null;
-                resolve();
-            });
+        // Close socket server
+        this.socketServer?.close(() => {
+            console.log('Socket server closed');
+            this.socketServer = null;
         });
     }
 

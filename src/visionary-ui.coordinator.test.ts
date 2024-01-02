@@ -5,6 +5,7 @@ import { VisionaryUiSocketServer } from './visionary-ui.socket';
 import { VisionaryUiDomainRepository } from './visionary-ui.domain.repository';
 import { VuiActionEnvelope, VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from './domain';
 import { VuiCache } from './visionary-ui.cache';
+import { Server } from 'http';
 
 describe('VisionaryUiCoordinator', () => {
     let coordinator: VisionaryUiCoordinator;
@@ -12,12 +13,15 @@ describe('VisionaryUiCoordinator', () => {
     let socketServer: any;
     let domainRepository: VisionaryUiDomainRepository;
 
+    const fakeWebServer = {} as Server;
+
     beforeEach(() => {
         domainRepository = new VisionaryUiDomainRepository();
 
         webserver = {
             start: sinon.stub(),
             stop: sinon.stub(),
+            getServer: () => fakeWebServer,
         };
         socketServer = {
             start: sinon.stub(),
@@ -47,13 +51,12 @@ describe('VisionaryUiCoordinator', () => {
                 config: {
                     language: 'en',
                     webPort: 3000,
-                    socketPort: 8080,
                 },
             };
             await coordinator.start(adapterHandleStub);
 
             sinon.assert.calledOnceWithExactly(webserver.start, 3000);
-            sinon.assert.calledOnceWithExactly(socketServer.start, 8080);
+            sinon.assert.calledOnceWithExactly(socketServer.start, fakeWebServer);
         });
 
         // Test for the stop method
@@ -329,7 +332,6 @@ describe('VisionaryUiCoordinator', () => {
                 config: {
                     language: 'en',
                     webPort: 3000,
-                    socketPort: 8080,
                 },
             };
             await coordinator.start(adapterHandleStub);

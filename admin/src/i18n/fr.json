@@ -6,5 +6,5 @@
     "descriptionTitle": "Interface utilisateur visionnaire",
     "descriptionContent": "Visionary UI offre une interface utilisateur sophistiquée et réactive conçue pour une gestion efficace des appareils domestiques intelligents. Cette interface combine une esthétique élégante avec des fonctionnalités pratiques, offrant une solution avancée pour l'environnement de maison intelligente moderne.",
     "webPortDescription": "L'interface Web de Visionary UI sera fournie par un serveur Web exécuté sur le port défini ici.",
-    "socketPortDescription": "Visionary UI utilise une connexion directe par socket Web à ioBroker. Veuillez noter qu'actuellement, la valeur du port du socket est le port que vous avez configuré ici + 1 (!)."
+    "socketPortDescription": "Visionary UI utilise une connexion directe par socket Web à ioBroker. Le même port est utilisé que pour le client web défini ci-dessus."
 }

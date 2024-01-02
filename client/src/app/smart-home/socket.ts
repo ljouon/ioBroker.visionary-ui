@@ -9,12 +9,9 @@ export function useWebSocket(onMessage: MessageHandler) {
     const [connectionState, setConnectionState] = useState<ConnectionState>('UNKNOWN');
     const messageHandlerRef = useRef<MessageHandler>(onMessage);
 
-    const socketPort = Number(window.location.port) + 1;
-
     // Connect
     useEffect(() => {
-        const webSocket = new WebSocket(`ws://${window.location.hostname}:${socketPort}`);
-        // const webSocket = new WebSocket(`ws://192.168.0.122:8089`);
+        const webSocket = new WebSocket(`ws://${window.location.host}`);
 
         webSocket.onopen = () => {
             // NO OP
@@ -40,7 +37,7 @@ export function useWebSocket(onMessage: MessageHandler) {
                 webSocket.close();
             }
         };
-    }, [socketPort]);
+    }, []);
 
     // Update the message handler if it changes
     useEffect(() => {

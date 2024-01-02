@@ -102,7 +102,6 @@ you will notice that each setState will cause the stateChange event to fire (bec
 
     private async startCoordinator(language: ioBroker.Languages): Promise<void> {
         const webPort = parseInt(this.config.webPort, 10) || 8088;
-        const socketPort = webPort + 1; //parseInt(this.config.socketPort, 10) || 8888;
 
         const adapterHandle = {
             setState: (clientId: string, stateId: string, value: string | number | boolean | null): void =>
@@ -110,7 +109,6 @@ you will notice that each setState will cause the stateChange event to fire (bec
             config: {
                 language: language,
                 webPort,
-                socketPort,
             },
         };
 
@@ -247,7 +245,6 @@ you will notice that each setState will cause the stateChange event to fire (bec
 
     private async loadOrRefreshObjectData(language: ioBroker.Languages): Promise<void> {
         const objects = await this.repository.getIoBrokerStateObjects(language);
-        this.log.info(JSON.stringify(objects));
         this.coordinator.setObjects(objects);
 
         const states = await this.repository.getIoBrokerStateValues();

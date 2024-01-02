@@ -6,5 +6,5 @@
     "descriptionTitle": "Visionaire gebruikersinterface",
     "descriptionContent": "Visionary UI biedt een geavanceerde en responsieve gebruikersinterface die is ontworpen voor efficiënt beheer van smart home-apparaten. Deze interface combineert strakke esthetiek met praktische functionaliteit en biedt een geavanceerde oplossing voor de moderne smart home-omgeving.",
     "webPortDescription": "De Visionary UI-webfrontend wordt geleverd door een webserver die draait op de hier gedefinieerde poort.",
-    "socketPortDescription": "Visionaire gebruikersinterface maakt gebruik van een directe websocketverbinding met ioBroker. Houd er rekening mee dat de waarde van de socketpoort momenteel de poort is die u hier instelt + 1 (!)."
+    "socketPortDescription": "Visionaire gebruikersinterface maakt gebruik van een directe websocketverbinding met ioBroker. Dezelfde poort wordt gebruikt als voor de hierboven gedefinieerde webclient."
 }

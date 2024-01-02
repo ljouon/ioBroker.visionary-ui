@@ -19,7 +19,6 @@ export type AdapterHandle = {
     config: {
         language: string;
         webPort: number;
-        socketPort: number;
     };
 };
 
@@ -41,8 +40,8 @@ export class VisionaryUiCoordinator {
 
     async start(adapterHandle: AdapterHandle): Promise<void> {
         this.adapter = adapterHandle;
-        await this.webServer.start(adapterHandle.config.webPort, adapterHandle.config.socketPort);
-        await this.socketServer.start(adapterHandle.config.webPort, adapterHandle.config.socketPort);
+        this.webServer.start(adapterHandle.config.webPort);
+        this.socketServer.start(this.webServer.getServer());
 
         const clientInboundHandler: ClientInboundHandler = {
             onMessageFromClient: (clientId: string, content: string) => this.onMessageFromClient(clientId, content),
@@ -54,7 +53,7 @@ export class VisionaryUiCoordinator {
 
     async stop(): Promise<void> {
         await this.webServer.stop();
-        await this.socketServer.stop();
+        this.socketServer.stop();
         this.adapter = null;
     }
 

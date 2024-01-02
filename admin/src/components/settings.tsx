@@ -154,7 +154,6 @@ class Settings extends React.Component<SettingsProps, SettingsState> {
                                 <Typography variant={'body1'}>{I18n.t('webPortDescription')}</Typography>
                             </Grid>
                             <Grid item xs={12}>
-                                {/*{this.renderInput('socketPort', 'socketPort', 'number', true, )}*/}
                                 <Typography variant={'body1'}>{I18n.t('socketPortDescription')}</Typography>
                             </Grid>
                             <Grid item xs={12}>

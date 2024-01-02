@@ -1,43 +1,36 @@
-import { createServer, Server } from 'http';
 import express from 'express';
+import { createServer, Server } from 'http';
 import path from 'path';
-import { VisionaryUiServer } from './visionary-ui.server';
 
-export class VisionaryUiWebServer extends VisionaryUiServer {
+export class VisionaryUiWebServer {
     private webServer: Server | null = null;
-    private socketPort: number | null = null;
 
-    async start(port: number, socketPort: number): Promise<void> {
-        return new Promise((resolve) => {
-            this.webServer = this.createWebServer();
-            this.webServer.listen(port, () => {
-                console.log(`Web server started on port: ${port}`);
-                resolve();
-            });
-            this.socketPort = socketPort;
+    start(port: number): void {
+        const createdWebServer = this.createWebServer();
+        createdWebServer.listen(port, () => {
+            console.log(`Web server started on port: ${port}`);
         });
+        this.webServer = createdWebServer;
     }
 
-    async stop(): Promise<void> {
-        return new Promise((resolve) => {
-            // Close web server
-            this.webServer?.close(() => {
-                console.log('Web server closed');
-                this.webServer = null;
-                resolve();
-            });
+    stop(): void {
+        // Close web server
+        this.webServer?.close(() => {
+            console.log('Web server closed');
+            this.webServer = null;
         });
     }
 
     private createWebServer(): Server {
         const app = express();
-        app.use('/port', (_, res) => {
-            res.send(`${this.socketPort}`);
-        });
         app.use('/', express.static(path.join(__dirname, '../build/client/')));
         app.get('*', (req, res) => {
             res.sendFile(path.join(__dirname, '../build/client/', 'index.html'));
         });
         return createServer(app);
+    }
+
+    getServer(): Server {
+        return this.webServer!;
     }
 }
