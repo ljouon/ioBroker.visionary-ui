@@ -2,8 +2,21 @@
   "common": {
     "tier": 3,
     "name": "visionary-ui",
-    "version": "1.0.4",
+    "version": "1.0.5",
     "news": {
+      "1.0.5": {
+        "en": "client: fix protocol selection for web socket client",
+        "de": "client: protokollauswahl für web-sockel-client reparieren",
+        "ru": "клиент: выбор протокола для клиента web socket",
+        "pt": "cliente: corrigir a seleção de protocolo para cliente de soquete web",
+        "nl": "regel protocol selectie voor web socket cliënt",
+        "fr": "client: correction de la sélection de protocole pour le client de socket web",
+        "it": "client: fissare la selezione del protocollo per il client web socket",
+        "es": "cliente: fijar la selección de protocolo para cliente de toma web",
+        "pl": "klient: ustalenie protokołu",
+        "uk": "клієнт: вибір протоколу для клієнта веб-розетки",
+        "zh-cn": "客户:固定协议的选择"
+      },
       "1.0.4": {
         "en": "client: prevent sending empty state changes in rgb component\nweb sockets are now provided on same web server port",
         "de": "client: das senden von leeren zustandsänderungen in rgb-komponente verhindern\nweb-sockets werden nun auf demselben webserver-port bereitgestellt",
