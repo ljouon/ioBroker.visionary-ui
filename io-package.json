@@ -2,8 +2,21 @@
   "common": {
     "tier": 3,
     "name": "visionary-ui",
-    "version": "1.0.2",
+    "version": "1.0.3",
     "news": {
+      "1.0.3": {
+        "en": "fix value datatype for selection in select box",
+        "de": "fixwertdatentyp zur auswahl in auswahlfeld",
+        "ru": "исправить тип данных значения для выбора в выбранной коробке",
+        "pt": "corrigir o tipo de dados do valor para a seleção na caixa selecionada",
+        "nl": "_",
+        "fr": "fix value datatype pour la sélection dans la boîte sélectionnée",
+        "it": "correzione del tipo di dati del valore per la selezione nella casella selezionata",
+        "es": "fijar el tipo de datos de valor para la selección en la caja selecta",
+        "pl": "naprawić dane w celu selekcji boksu",
+        "uk": "виправлено тип даних значень для вибору",
+        "zh-cn": "f 选择箱的数值数据类型"
+      },
       "1.0.2": {
         "en": "initial release",
         "de": "Erstveröffentlichung",
