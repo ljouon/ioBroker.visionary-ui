@@ -1,108 +1,121 @@
 {
-    "common": {
-        "tier": 3,
-        "name": "visionary-ui",
-        "version": "1.0.3",
-        "news": {
-            "1.0.3": {
-                "en": "fix value datatype for selection in select box",
-                "de": "Fixwert-Datentyp zur Auswahl in Auswahlfeld",
-                "ru": "исправить тип данных значения для выбора в выбранной коробке",
-                "pt": "corrigir o tipo de dados do valor para a seleção na caixa selecionada",
-                "nl": "_",
-                "fr": "fix value datatype pour la sélection dans la boîte sélectionnée",
-                "it": "correzione del tipo di dati del valore per la selezione nella casella selezionata",
-                "es": "fijar el tipo de datos de valor para la selección en la caja selecta",
-                "pl": "naprawić dane w celu selekcji boksu",
-                "uk": "виправлено тип даних значень для вибору",
-                "zh-cn": "f 选择箱的数值数据类型"
-            },
-            "1.0.2": {
-                "en": "initial release",
-                "de": "Erstveröffentlichung",
-                "ru": "Начальная версия",
-                "pt": "lançamento inicial",
-                "nl": "Eerste uitgave",
-                "fr": "Première version",
-                "it": "Versione iniziale",
-                "es": "Versión inicial",
-                "pl": "Pierwsze wydanie",
-                "uk": "початковий випуск",
-                "zh-cn": "首次出版"
-            }
-        },
-        "titleLang": {
-            "en": "VisionaryUI",
-            "de": "VisionaryUI",
-            "ru": "VisionaryUI",
-            "pt": "Visionário UI",
-            "nl": "VisionaireUI",
-            "fr": "VisionnaireUI",
-            "it": "VisionarioUI",
-            "es": "UI visionaria",
-            "pl": "WizjonerskiUI",
-            "uk": "VisionaryUI",
-            "zh-cn": "有远见的用户界面"
-        },
-        "desc": {
-            "en": "Introducing VisionaryUI, your gateway to a seamlessly responsive user interface for managing your smart home devices. Experience the future with a sleek design that not only enhances the aesthetic appeal but also ensures optimal functionality.",
-            "de": "Wir stellen Ihnen VisionaryUI vor, Ihr Tor zu einer nahtlos reagierenden Benutzeroberfläche für die Verwaltung Ihrer Smart-Home-Geräte. ",
-            "ru": "Представляем VisionaryUI, ваш доступ к легко реагирующему пользовательскому интерфейсу для управления устройствами умного дома. ",
-            "pt": "Apresentando VisionaryUI, sua porta de entrada para uma interface de usuário perfeitamente responsiva para gerenciar seus dispositivos domésticos inteligentes. ",
-            "nl": "Maak kennis met VisionaryUI, uw toegangspoort tot een naadloos responsieve gebruikersinterface voor het beheren van uw smarthome-apparaten. ",
-            "fr": "Présentation de VisionaryUI, votre passerelle vers une interface utilisateur parfaitement réactive pour gérer vos appareils domestiques intelligents. ",
-            "it": "Ti presentiamo VisionaryUI, il tuo gateway per un'interfaccia utente perfettamente reattiva per la gestione dei tuoi dispositivi domestici intelligenti. ",
-            "es": "Presentamos VisionaryUI, su puerta de entrada a una interfaz de usuario con capacidad de respuesta perfecta para administrar sus dispositivos domésticos inteligentes. ",
-            "pl": "Przedstawiamy VisionaryUI, bramę do płynnie responsywnego interfejsu użytkownika do zarządzania inteligentnymi urządzeniami domowymi. ",
-            "uk": "Представляємо VisionaryUI, ваш шлюз до швидко реагуючого інтерфейсу користувача для керування пристроями розумного дому. Відчуйте майбутнє з елегантним дизайном, який не тільки підвищує естетичну привабливість, але й забезпечує оптимальну функціональність.",
-            "zh-cn": "VisionaryUI 隆重登场，它是通往无缝响应式用户界面的门户，用于管理您的智能家居设备。"
-        },
-        "authors": [
-            "ljouon <schm.lars+dev@googlemail.com>"
-        ],
-        "keywords": [
-            "Responsive User Interface",
-            "Aesthetics",
-            "Navigation",
-            "Modern Interface",
-            "Intuitive Controls",
-            "User-Friendly",
-            "Streamlined Experience"
-        ],
-        "license": "MIT",
-        "platform": "Javascript/Node.js",
-        "icon": "visionary-ui.png",
-        "localLinks": {
-            "_default": {
-                "link": "%protocol%://%ip%:%webPort%",
-                "pro": true
-            }
-        },
-        "enabled": true,
-        "extIcon": "https://raw.githubusercontent.com/ljouon/ioBroker.visionary-ui/main/admin/visionary-ui.png",
-        "readme": "https://github.com/ljouon/ioBroker.visionary-ui/blob/main/README.md",
-        "loglevel": "info",
-        "mode": "daemon",
-        "type": "visualization",
-        "compact": true,
-        "connectionType": "none",
-        "dataSource": "none",
-        "eraseOnUpload": true,
-        "dependencies": [
-            {
-                "js-controller": ">=2.0.0"
-            }
-        ],
-        "supportCustoms": true,
-        "adminUI": {
-            "config": "materialize",
-            "custom": "json"
-        }
+  "common": {
+    "tier": 3,
+    "name": "visionary-ui",
+    "version": "1.0.4",
+    "news": {
+      "1.0.4": {
+        "en": "client: prevent sending empty state changes in rgb component\nweb sockets are now provided on same web server port",
+        "de": "client: das senden von leeren zustandsänderungen in rgb-komponente verhindern\nweb-sockets werden nun auf demselben webserver-port bereitgestellt",
+        "ru": "клиент: предотвратить отправку пустых государственных изменений в компоненте rgb\nweb sockets теперь предоставляется на том же порту веб-сервера",
+        "pt": "cliente: evitar o envio de alterações de estado vazias no componente rgb\nsoquetes web agora são fornecidos na mesma porta do servidor web",
+        "nl": "het vermijden van lege staatsverandering in rgb component\nweb sockets zijn nu toegewezen aan dezelfde web server haven",
+        "fr": "client: empêcher d'envoyer des changements d'état vide dans le composant rgb\nles sockets web sont maintenant fournis sur le même port de serveur web",
+        "it": "client: evitare l'invio di cambiamenti di stato vuoti nel componente rgb\nweb sockets sono ora forniti sulla stessa porta server web",
+        "es": "cliente: prevenir el envío de cambios estatales vacíos en el componente rgb\nweb sockets se proporcionan ahora en el mismo puerto servidor web",
+        "pl": "klient: zapobiega wysyłaniu pustych zmian stanu\nobecnie są one udostępniane na tym samym serwerach internetowych",
+        "uk": "клієнт: не допускати порожні зміни стану в компоненті rgb\nвеб-роз'єми тепер надаються на одному сервері",
+        "zh-cn": "客户:防止寄出空状态变化的复合部分\n现向同一网络服务器港口提供网站服务"
+      },
+      "1.0.3": {
+        "en": "fix value datatype for selection in select box",
+        "de": "Fixwert-Datentyp zur Auswahl in Auswahlfeld",
+        "ru": "исправить тип данных значения для выбора в выбранной коробке",
+        "pt": "corrigir o tipo de dados do valor para a seleção na caixa selecionada",
+        "nl": "_",
+        "fr": "fix value datatype pour la sélection dans la boîte sélectionnée",
+        "it": "correzione del tipo di dati del valore per la selezione nella casella selezionata",
+        "es": "fijar el tipo de datos de valor para la selección en la caja selecta",
+        "pl": "naprawić dane w celu selekcji boksu",
+        "uk": "виправлено тип даних значень для вибору",
+        "zh-cn": "f 选择箱的数值数据类型"
+      },
+      "1.0.2": {
+        "en": "initial release",
+        "de": "Erstveröffentlichung",
+        "ru": "Начальная версия",
+        "pt": "lançamento inicial",
+        "nl": "Eerste uitgave",
+        "fr": "Première version",
+        "it": "Versione iniziale",
+        "es": "Versión inicial",
+        "pl": "Pierwsze wydanie",
+        "uk": "початковий випуск",
+        "zh-cn": "首次出版"
+      }
     },
-    "native": {
-        "webPort": "8088",
-        "socketPort": "8089"
+    "titleLang": {
+      "en": "VisionaryUI",
+      "de": "VisionaryUI",
+      "ru": "VisionaryUI",
+      "pt": "Visionário UI",
+      "nl": "VisionaireUI",
+      "fr": "VisionnaireUI",
+      "it": "VisionarioUI",
+      "es": "UI visionaria",
+      "pl": "WizjonerskiUI",
+      "uk": "VisionaryUI",
+      "zh-cn": "有远见的用户界面"
     },
-    "objects": [],
-    "instanceObjects": []
+    "desc": {
+      "en": "Introducing VisionaryUI, your gateway to a seamlessly responsive user interface for managing your smart home devices. Experience the future with a sleek design that not only enhances the aesthetic appeal but also ensures optimal functionality.",
+      "de": "Wir stellen Ihnen VisionaryUI vor, Ihr Tor zu einer nahtlos reagierenden Benutzeroberfläche für die Verwaltung Ihrer Smart-Home-Geräte. ",
+      "ru": "Представляем VisionaryUI, ваш доступ к легко реагирующему пользовательскому интерфейсу для управления устройствами умного дома. ",
+      "pt": "Apresentando VisionaryUI, sua porta de entrada para uma interface de usuário perfeitamente responsiva para gerenciar seus dispositivos domésticos inteligentes. ",
+      "nl": "Maak kennis met VisionaryUI, uw toegangspoort tot een naadloos responsieve gebruikersinterface voor het beheren van uw smarthome-apparaten. ",
+      "fr": "Présentation de VisionaryUI, votre passerelle vers une interface utilisateur parfaitement réactive pour gérer vos appareils domestiques intelligents. ",
+      "it": "Ti presentiamo VisionaryUI, il tuo gateway per un'interfaccia utente perfettamente reattiva per la gestione dei tuoi dispositivi domestici intelligenti. ",
+      "es": "Presentamos VisionaryUI, su puerta de entrada a una interfaz de usuario con capacidad de respuesta perfecta para administrar sus dispositivos domésticos inteligentes. ",
+      "pl": "Przedstawiamy VisionaryUI, bramę do płynnie responsywnego interfejsu użytkownika do zarządzania inteligentnymi urządzeniami domowymi. ",
+      "uk": "Представляємо VisionaryUI, ваш шлюз до швидко реагуючого інтерфейсу користувача для керування пристроями розумного дому. Відчуйте майбутнє з елегантним дизайном, який не тільки підвищує естетичну привабливість, але й забезпечує оптимальну функціональність.",
+      "zh-cn": "VisionaryUI 隆重登场，它是通往无缝响应式用户界面的门户，用于管理您的智能家居设备。"
+    },
+    "authors": [
+      "ljouon <schm.lars+dev@googlemail.com>"
+    ],
+    "keywords": [
+      "Responsive User Interface",
+      "Aesthetics",
+      "Navigation",
+      "Modern Interface",
+      "Intuitive Controls",
+      "User-Friendly",
+      "Streamlined Experience"
+    ],
+    "license": "MIT",
+    "platform": "Javascript/Node.js",
+    "icon": "visionary-ui.png",
+    "localLinks": {
+      "_default": {
+        "link": "%protocol%://%ip%:%webPort%",
+        "pro": true
+      }
+    },
+    "enabled": true,
+    "extIcon": "https://raw.githubusercontent.com/ljouon/ioBroker.visionary-ui/main/admin/visionary-ui.png",
+    "readme": "https://github.com/ljouon/ioBroker.visionary-ui/blob/main/README.md",
+    "loglevel": "info",
+    "mode": "daemon",
+    "type": "visualization",
+    "compact": true,
+    "connectionType": "none",
+    "dataSource": "none",
+    "eraseOnUpload": true,
+    "dependencies": [
+      {
+        "js-controller": ">=2.0.0"
+      }
+    ],
+    "supportCustoms": true,
+    "adminUI": {
+      "config": "materialize",
+      "custom": "json"
+    }
+  },
+  "native": {
+    "webPort": "8088",
+    "socketPort": "8089"
+  },
+  "objects": [],
+  "instanceObjects": []
 }

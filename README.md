@@ -109,8 +109,7 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**    
 -->
-
-### **WORK IN PROGRESS**
+### 1.0.4 (2024-01-02)
 
 * (ljouon) client: prevent sending empty state changes in rgb component
 * (ljouon) web sockets are now provided on same web server port
