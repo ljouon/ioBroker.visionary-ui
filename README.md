@@ -110,11 +110,11 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     ### **WORK IN PROGRESS**    
 -->
 
-### 1.0.2 (2024-01-01)
+### **WORK IN PROGRESS**
 
-* (ljouon) first release with minimal feature set
+* (ljouon) fix value datatype for selection in select box
 
-### 1.0.0 (2023-12-30)
+### 1.0.2 (2023-12-30)
 
 * (ljouon) first release with minimal feature set
 
