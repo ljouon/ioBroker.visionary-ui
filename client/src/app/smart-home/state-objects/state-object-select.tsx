@@ -25,7 +25,10 @@ export function StateObjectSelect({ uiStateObject, sectionId, cardId }: ObjectEn
 
     const handleValueChange = (newValue: string) => {
         setInternalValue(newValue);
-        sendVuiAction({ type: 'setValues', data: [{ id: uiStateObject.id, value: newValue }] });
+        sendVuiAction({
+            type: 'setValues',
+            data: [{ id: uiStateObject.id, value: uiStateObject.datatype === 'number' ? Number(newValue) : newValue }],
+        });
     };
 
     useEffect(() => {
