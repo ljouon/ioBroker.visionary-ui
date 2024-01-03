@@ -1,6 +1,7 @@
 import { mapToIobEnum, mapToVuiStateObject, mapToVuiStateValue } from './visionary-ui.mapper';
 import { VuiCache } from './visionary-ui.cache';
 import { VuiFunction, VuiRoom, VuiStateObject, VuiStateValue } from './domain';
+import '@iobroker/types';
 
 export type VisionaryUiCustomProperties = {
     enabled: boolean;

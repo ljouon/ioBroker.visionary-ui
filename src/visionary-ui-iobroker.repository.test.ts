@@ -1,6 +1,7 @@
 import { expect } from 'chai';
 import sinon from 'sinon';
 import { VisionaryUiIoBrokerRepository } from './visionary-ui-iobroker.repository';
+import '@iobroker/types';
 
 describe('VisionaryUiIoBrokerRepository', () => {
     let repository: VisionaryUiIoBrokerRepository;

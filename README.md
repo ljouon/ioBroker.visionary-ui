@@ -109,6 +109,11 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**    
 -->
+
+### **WORK IN PROGRESS**
+
+* (ljouon) nyc is able to identify namespace of ioBroker in test coverage run
+
 ### 1.0.5 (2024-01-02)
 
 * (ljouon) client: fix protocol selection for web socket client
