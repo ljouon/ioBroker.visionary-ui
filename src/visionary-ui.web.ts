@@ -8,7 +8,7 @@ export class VisionaryUiWebServer {
     start(port: number): void {
         const createdWebServer = this.createWebServer();
         createdWebServer.listen(port, () => {
-            console.log(`Web server started on port: ${port}`);
+            // No Op
         });
         this.webServer = createdWebServer;
     }
@@ -16,7 +16,6 @@ export class VisionaryUiWebServer {
     stop(): void {
         // Close web server
         this.webServer?.close(() => {
-            console.log('Web server closed');
             this.webServer = null;
         });
     }

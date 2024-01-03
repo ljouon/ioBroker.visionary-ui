@@ -23,7 +23,7 @@ export class VisionaryUiSocketServer extends ClientCommunication {
 
     start(server: Server): void {
         this.socketServer = new WebSocket.Server({ server }, () => {
-            console.log(`Socket server started`);
+            // No Op
         });
 
         this.socketServer.on('connection', (ws: WebSocket) => {
@@ -49,13 +49,11 @@ export class VisionaryUiSocketServer extends ClientCommunication {
 
         // Close socket server
         this.socketServer?.close(() => {
-            console.log('Socket server closed');
             this.socketServer = null;
         });
     }
 
     messageToAllClients(message: string): void {
-        // console.log(`Server sends message: ${message}`);
         this.socketServer?.clients.forEach((client) => {
             client.send(message);
         });
@@ -63,7 +61,6 @@ export class VisionaryUiSocketServer extends ClientCommunication {
 
     messageToClient(clientId: string, message: string): void {
         if (this.clients.has(clientId)) {
-            // console.log(`Server sends message: ${message}`);
             const clientSocket = this.clients.get(clientId)!;
             clientSocket.send(message);
         }

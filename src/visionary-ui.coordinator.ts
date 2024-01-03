@@ -139,9 +139,6 @@ export class VisionaryUiCoordinator {
     }
 
     private onClientConnect(clientId: string): void {
-        console.log(`Client connected: ${clientId}`);
-
-        // TODO: Read language from repository instead of adapter config
         const configurationData = {
             language: this.adapter?.config.language || 'en',
         };
@@ -164,14 +161,13 @@ export class VisionaryUiCoordinator {
         this.socketServer.messageToClient(clientId, JSON.stringify(envelopeStateValues));
     }
 
-    private onClientDisconnect(clientId: string): void {
+    // Parameter clientId
+    private onClientDisconnect(_: string): void {
         // NO OP
-        console.log(`Client disconnected: ${clientId}`);
     }
 
     private onMessageFromClient(clientId: string, data: string): void {
         const actionEnvelope: VuiActionEnvelope = JSON.parse(data);
-        console.log(`Inbound message from client ${clientId}: ${actionEnvelope}`);
         switch (actionEnvelope.type) {
             case 'setValues':
                 this.setAdapterStates(clientId, actionEnvelope.data);
