@@ -2,8 +2,21 @@
   "common": {
     "tier": 3,
     "name": "visionary-ui",
-    "version": "1.0.5",
+    "version": "1.0.6",
     "news": {
+      "1.0.6": {
+        "en": "client menu highlighting depending on navigation\nnyc is able to identify namespace of ioBroker in test coverage run",
+        "de": "client-menü markieren je nach navigation\nnyc ist in der Lage, Namespace von ioBroker im Testabdeckungslauf zu identifizieren",
+        "ru": "меню клиента в зависимости от навигации\nnyc может идентифицировать пространство имен ioBroker в тестовом беге покрытия",
+        "pt": "menu do cliente destacando dependendo da navegação\nnyc é capaz de identificar o namespace do ioBroker em execução de cobertura de teste",
+        "nl": "client menu markeren afhankelijk van navigatie\nnyc is in staat om naamruimte van ioBroker te identificeren in de testdekking",
+        "fr": "menu client mettant en évidence selon la navigation\nnyc est capable d'identifier l'espace de nom de ioBroker dans la couverture de test",
+        "it": "menu client che evidenzia a seconda della navigazione\nnyc è in grado di identificare lo spazio dei nomi di ioBroker nel test di copertura",
+        "es": "menú cliente resaltando dependiendo de la navegación\nnyc es capaz de identificar el espacio de nombre de ioBroker en la cobertura de prueba",
+        "pl": "menu klienta podświetlanie w zależności od nawigacji\nnyc jest w stanie zidentyfikować spację nazw jOBrokera w czasie trwania testu",
+        "uk": "меню клієнта, що виділяється в залежності від навігації\nnyc здатний визначити простір імен ioBroker в режимі тестового покриття",
+        "zh-cn": "客户端菜单根据导航而突出显示\nnyc 可以在测试覆盖运行中识别 ioBroker 的命名空间"
+      },
       "1.0.5": {
         "en": "client: fix protocol selection for web socket client",
         "de": "client: protokollauswahl für web-sockel-client reparieren",
