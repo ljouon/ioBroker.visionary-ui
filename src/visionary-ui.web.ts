@@ -23,7 +23,7 @@ export class VisionaryUiWebServer {
     private createWebServer(): Server {
         const app = express();
         app.use('/', express.static(path.join(__dirname, '../build/client/')));
-        app.get('*', (req, res) => {
+        app.get('*', (_, res) => {
             res.sendFile(path.join(__dirname, '../build/client/', 'index.html'));
         });
         return createServer(app);

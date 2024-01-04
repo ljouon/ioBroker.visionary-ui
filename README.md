@@ -112,6 +112,7 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
 
 ### **WORK IN PROGRESS**
 
+* (ljouon) client menu highlighting depending on navigation
 * (ljouon) nyc is able to identify namespace of ioBroker in test coverage run
 
 ### 1.0.5 (2024-01-02)
