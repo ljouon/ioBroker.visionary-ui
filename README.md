@@ -12,7 +12,19 @@
 
 **Tests:** ![Test and Release](https://github.com/ljouon/ioBroker.visionary-ui/workflows/Test%20and%20Release/badge.svg)
 
-## visionary-ui adapter for ioBroker
+## Visionary-UI: a new visualisation adapter for [ioBroker](https://www.iobroker.net/)
+
+For the official ioBroker website and documentation please have a look [here](https://www.iobroker.net/).
+
+### ❤️ What is this?
+
+What can be expect from this adapter?
+
+Visionary-UI is a new visualisation adapter providing a responsive user interface to the smart home system ioBroker.
+You can control your smart home, observe collected sensor values or just be happy to have it all in one place as easy as
+it can be. ;-)
+
+### 🩻 Screenshot
 
 ![screenshot](images/screenshot.png)
 
@@ -21,30 +33,62 @@
 
 ### 📚 Prerequisites
 
-* **ioBroker Installation**: Visionary-UI is an adapter for the ioBroker smart home system. Ensure you have ioBroker up
-  and running to be able to use this ui adapter.
+* **ioBroker Installation**: Ensure you have ioBroker up and running to be able to use this UI adapter.
+* **Visionary-UI (=> before official release)**: Please find the latest version of Visionary-UI
+  on [npmjs.com](https://www.npmjs.com/package/iobroker.visionary-ui) and install it manually after activation of the
+  expert mode in ioBroker (*hit the button looking like a human head at the top of the admin UI*).
+* **Visionary-UI (=> after official release)**: After release you can install Visionary-UI just by selection and hitting
+  the "+" button in the list of available adapters.
 
 ### ⚙️ Configuration
 
-* **Enum Definitions**: Use the enum definition feature of ioBroker to define enums for "rooms" and "functions". These
-  two aspects are crucial for
-  automatic detection of states in Visionary-UI.
-* **State Mapping**: Visionary-UI operates on the state level of the ioBroker hierarchy. Map the corresponding states of
-  a device to at least one "room" and one "function". For instance, map a light bulb in the living room to the
-  enum "living room" and the function "light".
+After installation of Visionary-UI you will be asked in the admin interface to define a standard port for the
+Visionary-UI web client to be hosted on.
+Default port of Visionary-UI is `8088`.
+
+* **Enum Definitions**: Visionary-UI uses the default categories of enums in ioBroker regarding `rooms` and `functions`.
+
+  These two aspects are crucial for automatic detection of states in Visionary-UI.
+  You can find them under the menu `Enums` in the admin interface of ioBroker.
+
+    * There you can define a structure of `rooms` matching and representing your own home situation.
+      You can even use a hierarchy with a depth level of 2 to define like floors/levels of your house and set rooms as
+      children to these floors/levels.
+
+    * The second aspect to define is the enum `functions`. Here it is totally up to you to define a structure or
+      grouping for your devices at home. You can even use the suggestions ioBroker provides as default. For example you
+      can define a function for all your *heating* related devices, *light* related devices or for specific *security*
+      aspects.
+
+* **State Mapping**: Visionary-UI operates on the state level of the ioBroker hierarchy.
+  With the base configuration for enums you can now start to map your devices to corresponding enum objects just
+  defined.
+
+  But be aware that you only will be able to see your states and values if they are mapped to **both** of the defined
+  enum aspects `rooms` and `functions` (at least to *ONE* of each type).
+
+  You can map the states in the `Objects` (`#tab-objects`) section of the ioBroker admin interface or directly in
+  the `Enum` (`#tab-enums`) section.
+
+  For instance, map a light bulb in the living room to the enum "*living room*" and the function "*light*".
+
 * **Enum Levels**: Currently, only two levels (parent, child) are supported for the organisation of device states in
-  these enums. Deeper nesting is not yet supported.
+  these enums. Deeper nesting is not supported yet due to side-menu restrictions.
 
 **Rooms**
+
+Example of a valid `rooms` mapping:
 
 ![enum rooms](images/enum_rooms.png)
 
 **Functions**
 
+Example of a valid `functions` mapping:
+
 ![enum functions](images/enum_functions.png)
 
 💡 Supported Devices and States
-----------------------------
+-------------------------------
 
 Visionary-UI supports various device types at the state level:
 
@@ -59,8 +103,68 @@ Visionary-UI supports various device types at the state level:
 * **RGB Light Control**: Utilize "level.color.red", "level.color.green", "level.color.blue", and group them for a color
   selector component with the role "light.color".
 
+## Sorting of rooms, functions, objects
+
+It is supported to manually define a sort order on the objects of an enum or the enums itself. The
+enums (`rooms`, `functions`) are shown in the sidebar of Visionary-UI to build a menu structure and in the page content
+representing the structure of your home.
+
+To define a sort order you need to place custom properties directly to the objects in ioBroker.
+
+- Please open the `Objects` (`#tab-objects`) section of the ioBroker admin interface
+- Find the object you want to define and open the custom settings on the right side of the table listing represented by
+  a ⚙️icon️. There you will find a setting for Visionary-UI. Please open and enable it. There is a field for the "
+  *Display rank*" of that specific object.
+- All objects visible in one grouping aspect in the user interface are automatically ordered in ascending order by the
+  number value of this rank field (lower number comes first).
+
+Same is possible for enums. BUT here you need to manually edit the corresponding json representation in the admin
+interface.
+
+- Activate the expert settings to see the enum objects in the table listing.
+- Open the edit section for a enum you want to define a sort rank to.
+- Add a custom json part to the existing object like the following:
+  ```    
+  "custom": {
+    "visionary-ui.0": {
+      "rank": 2
+    }
+  }
+  ```
+
+## Custom Icons
+
+It is supported to manually define a custom icon to an object or an enum.
+All icons from this collection are supported: [Material Design Icons](https://pictogrammers.com/library/mdi/)
+To define a custom icon you need to place a custom property directly to the object in ioBroker.
+
+- Please open the `Objects` (`#tab-objects`) section of the ioBroker admin interface
+- Find the object you want to define and open the custom settings on the right side of the table listing represented by
+  a ⚙️icon️.
+- There you will find a setting for Visionary-UI. Please open and enable it (if it is not already).
+- There is a field for the "*Custom Icon*" of that specific object.
+- Please enter the name of the desired icon into that field.
+  You need to provide the name of the icon in the following form "*home-automation*" (small letters with dashes between
+  the words) or in this form "*mdiHomeAutomation*" (with leading 'mdi' prefix and camel case words) for the "**Home
+  Automation**" icon.
+
+Same is possible for enums. BUT here you need to manually edit the corresponding json representation in the admin
+interface.
+
+- Activate the expert settings to see the enum objects in the table listing.
+- Open the edit section for a enum you want to define a custom icon for.
+- Add a custom json part to the existing object like the following (Please just extend the already existing parts.):
+  ```    
+  "custom": {
+    "visionary-ui.0": {
+      "rank": 2,
+      "customIcon": "home-automation"
+    }
+  }
+  ```
+
 💻 WebSockets and Webinterface
----------------------------
+------------------------------
 
 Visionary-UI uses a direct websocket connection to ioBroker. For that it assumes, ioBroker is available on localhost.
 Other connection types different from that are not supported.
@@ -109,6 +213,7 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**    
 -->
+
 ### 1.0.6 (2024-01-04)
 
 * (ljouon) client menu highlighting depending on navigation
