@@ -163,6 +163,34 @@ interface.
   }
   ```
 
+## Custom Display Name
+
+It is supported to manually define a custom name to an object or an enum.
+To define a custom name you need to place a custom property directly to the object in ioBroker.
+
+- Please open the `Objects` (`#tab-objects`) section of the ioBroker admin interface
+- Find the object you want to define and open the custom settings on the right side of the table listing represented by
+  a ⚙️name️.
+- There you will find a setting for Visionary-UI. Please open and enable it (if it is not already).
+- There is a field for the "*Display name*" of that specific object.
+- Please enter the desired custom name into that field.
+
+Same is possible for enums. BUT here you need to manually edit the corresponding json representation in the admin
+interface.
+
+- Activate the expert settings to see the enum objects in the table listing.
+- Open the edit section for a enum you want to define a custom name for.
+- Add a custom json part to the existing object like the following (Please just extend the already existing parts.):
+  ```    
+  "custom": {
+    "visionary-ui.0": {
+      "rank": 2,
+      "customIcon": "home-automation",
+      "displayName": "My custom name"
+    }
+  }
+  ```
+
 💻 WebSockets and Webinterface
 ------------------------------
 
