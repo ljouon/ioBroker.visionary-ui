@@ -24,6 +24,18 @@ Visionary-UI is a new visualisation adapter providing a responsive user interfac
 You can control your smart home, observe collected sensor values or just be happy to have it all in one place as easy as
 it can be. ;-)
 
+**Features**
+
+- Responsive UI with Light/Dark mode
+- Automatic state type UI component detection
+- READ-only value => just show value in UI
+- Fast aspect navigation (`rooms` to `functions`) on top of each aspect card
+- Custom display names
+- Custom material icons
+- Sorting of objects, rooms, functions
+- RGB-Light support (i.e. Philips HUE lights)
+- Live-Status due to use of web sockets
+
 ### 🩻 Screenshot
 
 ![screenshot](images/screenshot.png)
