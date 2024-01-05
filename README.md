@@ -127,6 +127,7 @@ interface.
   ```    
   "custom": {
     "visionary-ui.0": {
+      "enabled": true,
       "rank": 2
     }
   }
@@ -157,6 +158,7 @@ interface.
   ```    
   "custom": {
     "visionary-ui.0": {
+      "enabled": true,
       "rank": 2,
       "customIcon": "home-automation"
     }
@@ -184,6 +186,7 @@ interface.
   ```    
   "custom": {
     "visionary-ui.0": {
+      "enabled": true,
       "rank": 2,
       "customIcon": "home-automation",
       "displayName": "My custom name"
