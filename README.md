@@ -197,13 +197,14 @@ interface.
 💻 WebSockets and Webinterface
 ------------------------------
 
-Visionary-UI uses a direct websocket connection to ioBroker. For that it assumes, ioBroker is available on localhost.
-Other connection types different from that are not supported.
+Visionary-UI uses a direct websocket connection to ioBroker.
+For the web socket connection the same port is used which is configured during initial setup of Visionary-UI. You can
+change the port in the configuration page of the instance afterwards as well.
 
-The websocket port will automatically be chosen by adding +1 to the port definition of the webinterface providing the
-UI.
-The UI currently does not support SSL/TLS for provisioning. The most common use case is to run it behind a reverse proxy
-providing this feature. It's on my list of future tasks to support the SSL/TLS handling provided by ioBroker itself.
+The UI currently does not support SSL/TLS for provisioning.
+The most common use case is to let ioBroker run behind a reverse proxy. You can define the SSL/TLS security aspect in
+your reverse proxy.
+It's on my list for future tasks to support default handling provided by ioBroker itself.
 
 🤝 Feedback
 ----------
