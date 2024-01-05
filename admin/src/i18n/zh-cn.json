@@ -1,10 +1,10 @@
 {
-    "visionary-ui adapter settings": "visionary-ui的适配器设置",
-    "webPort": "Web server port",
-    "socketPort": "Socket server port",
-    "visionaryUiSettings": "有远见的 UI：适配器设置",
-    "descriptionTitle": "富有远见的用户界面",
-    "descriptionContent": "Visionary UI 提供了复杂且响应迅速的用户界面，专为智能家居设备的高效管理而设计。该界面结合了时尚美观与实用功能，为现代智能家居环境提供了先进的解决方案。",
-    "webPortDescription": "Visionary UI Web 前端将由在此处定义的端口上运行的 Web 服务器提供。",
-    "socketPortDescription": "Visionary UI 使用直接 Web 套接字连接到 ioBroker。与上面定义的 Web 客户端使用相同的端口。"
+  "visionary-ui adapter settings": "visionary-ui的适配器设置",
+  "webPort": "Web server port",
+  "socketPort": "Socket server port",
+  "visionaryUiSettings": "有远见的 UI：适配器设置",
+  "descriptionTitle": "富有远见的用户界面",
+  "descriptionContent": "Visionary-UI 提供了复杂且响应迅速的用户界面，专为智能家居设备的高效管理而设计。该界面结合了时尚美观与实用功能，为现代智能家居环境提供了先进的解决方案。",
+  "webPortDescription": "Visionary-UI Web 前端将由在此处定义的端口上运行的 Web 服务器提供。",
+  "socketPortDescription": "Visionary-UI 使用直接 Web 套接字连接到 ioBroker。与上面定义的 Web 客户端使用相同的端口。"
 }

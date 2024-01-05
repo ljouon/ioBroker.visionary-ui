@@ -29,7 +29,7 @@ export class VisionaryUiAdapter extends utils.Adapter {
     private async onReady(): Promise<void> {
         const language = await this.repository.getLanguage();
 
-        // Start coordinator between ioBroker and visionary ui
+        // Start coordinator between ioBroker and Visionary-UI
         await this.startCoordinator(language);
 
         // this.subscribeForeignStates('0_userdata.*');
@@ -104,7 +104,7 @@ export class VisionaryUiAdapter extends utils.Adapter {
                 case 'function':
                     return await this.handleFunctionEnumObjectDeletion(id, language);
                 default:
-                    // Object type is either a state object or not managed by visionary ui adapter
+                    // Object type is either a state object or not managed by Visionary-UI adapter
                     // The ID might be deleted from state management
                     return await this.handleStateObjectDeletion(id);
             }
@@ -118,7 +118,7 @@ export class VisionaryUiAdapter extends utils.Adapter {
                 case 'function':
                     return await this.handleFunctionEnumChange(id, object, language);
                 default:
-                    // Object type not managed by visionary ui adapter
+                    // Object type not managed by Visionary-UI adapter
                     return Promise.resolve();
             }
         }

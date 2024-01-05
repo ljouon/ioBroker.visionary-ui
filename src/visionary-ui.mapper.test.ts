@@ -10,7 +10,7 @@ import {
 } from './visionary-ui.mapper';
 import { VuiEnum, VuiStateObject, VuiStateValue } from './domain';
 
-describe('Visionary UI Mapper', () => {
+describe('Visionary-UI Mapper', () => {
     describe('mapTranslation', () => {
         it('should return the translated value for the specified language', () => {
             const value = { en: 'Test', de: 'Testen' };
