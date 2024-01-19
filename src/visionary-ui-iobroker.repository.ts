@@ -35,6 +35,8 @@ export class VisionaryUiIoBrokerRepository {
                 if (entryElement) {
                     const vuiEnum = mapToIobEnum(entryId, entryElement, language);
                     cache.set({ ...vuiEnum, type: 'room' });
+                } else {
+                    cache.delete(entryId);
                 }
                 return cache;
             }, new VuiCache<VuiRoom>()),
@@ -64,6 +66,8 @@ export class VisionaryUiIoBrokerRepository {
                 if (entryElement) {
                     const vuiStateObject = mapToVuiStateObject(entryId, entryElement, language);
                     cache.set(vuiStateObject);
+                } else {
+                    cache.delete(entryId);
                 }
                 return cache;
             }, new VuiCache<VuiStateObject>()),
@@ -79,7 +83,10 @@ export class VisionaryUiIoBrokerRepository {
                 if (entryElement) {
                     const vuiStateValue = mapToVuiStateValue(entryId, entryElement);
                     cache.set(vuiStateValue);
+                } else {
+                    cache.delete(entryId);
                 }
+
                 return cache;
             }, new VuiCache<VuiStateValue>()),
         );

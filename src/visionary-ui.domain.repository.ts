@@ -80,7 +80,16 @@ export class VisionaryUiDomainRepository {
     }
 
     isMappedToRoom(object: VuiStateObject): boolean {
-        const values = this.rooms.values().map((room) => room.members?.includes(object.id) || false);
+        const values = this.rooms
+            .values()
+            .map((room) => room.members?.some((memberId) => object.id.startsWith(memberId)) || false);
+        return values.includes(true);
+    }
+
+    isMappedToFunction(object: VuiStateObject): boolean {
+        const values = this.functions
+            .values()
+            .map((room) => room.members?.some((memberId) => object.id.startsWith(memberId)) || false);
         return values.includes(true);
     }
 }

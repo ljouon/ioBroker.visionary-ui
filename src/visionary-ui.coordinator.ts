@@ -52,7 +52,7 @@ export class VisionaryUiCoordinator {
     }
 
     async stop(): Promise<void> {
-        await this.webServer.stop();
+        this.webServer.stop();
         this.socketServer.stop();
         this.adapter = null;
     }
@@ -94,18 +94,26 @@ export class VisionaryUiCoordinator {
     }
 
     setObjects(vuiStateObjectCache: VuiCache<VuiStateObject>): void {
-        // Only store vuiStateObjectCache mapped to at least one room
-        vuiStateObjectCache.deleteByFilter((object) => !this.repository.isMappedToRoom(object));
-
+        // Only store vuiStateObjectCache mapped to at least one room and one function
+        vuiStateObjectCache.deleteByFilter(
+            (object) =>
+                !object.enabled ||
+                !this.repository.isMappedToRoom(object) ||
+                !this.repository.isMappedToFunction(object),
+        );
         this.repository.setStateObjects(vuiStateObjectCache);
         const envelope: VuiDataEnvelope = { type: 'allStates', data: vuiStateObjectCache.values() };
         this.socketServer.messageToAllClients(JSON.stringify(envelope));
     }
 
     setObject(vuiStateObject: VuiStateObject): void {
-        // Only store objects mapped to at least one room
-        if (this.repository.isMappedToRoom(vuiStateObject)) {
-            this.repository.setStateObject(vuiStateObject);
+        // Only store objects mapped to at least one room and one function
+        if (this.repository.isMappedToRoom(vuiStateObject) && this.repository.isMappedToFunction(vuiStateObject)) {
+            if (vuiStateObject.enabled) {
+                this.repository.setStateObject(vuiStateObject);
+            } else {
+                this.repository.deleteStateObject(vuiStateObject.id);
+            }
             const envelope: VuiDataEnvelope = { type: 'state', data: vuiStateObject };
             this.socketServer.messageToAllClients(JSON.stringify(envelope));
         }
@@ -123,6 +131,7 @@ export class VisionaryUiCoordinator {
     setStates(vuiStateCache: VuiCache<VuiStateValue>): void {
         // Only store states if object is managed
         const managedObjectIds = this.repository.getStateObjects().ids();
+        // Delete old states which are not managed anymore
         vuiStateCache.deleteByFilter((state) => !managedObjectIds.includes(state.id));
         this.repository.setStateValues(vuiStateCache);
         const envelope: VuiDataEnvelope = { type: 'allValues', data: vuiStateCache.values() };

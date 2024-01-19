@@ -121,6 +121,7 @@ export type VuiStateObject = {
     unit: string;
     customIcon: string | null;
     rank: number | null;
+    enabled: boolean;
 };
 
 export type StateValue = {

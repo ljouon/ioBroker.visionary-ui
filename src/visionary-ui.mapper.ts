@@ -33,6 +33,7 @@ export function mapToVuiStateObject(
         minValue: ioBrokerObject.common.min,
         maxValue: ioBrokerObject.common.max,
         step: ioBrokerObject.common.step,
+        enabled: (customProperties && customProperties.enabled) || false,
     };
 }
 

@@ -36,7 +36,8 @@ export function organizeStateObjects(
     stateValues: VuiStateValue[],
 ): StateObjectWrapper[] {
     const vuiObjects = stateObjects
-        .filter((object) => members.includes(object.id))
+        .filter((object) => object.enabled)
+        .filter((object) => members.some((memberId) => object.id.startsWith(memberId)))
         .sort((objectA, objectB) => {
             const rankA = objectA.rank ?? 0;
             const rankB = objectB.rank ?? 0;
@@ -44,7 +45,6 @@ export function organizeStateObjects(
         })
         .map((object: VuiStateObject) => {
             const stateValue = stateValues.find((stateValue) => stateValue.id === object.id) || null;
-
             return {
                 ...object,
                 value: stateValue && stateValue.value !== null ? stateValue.value : null,
