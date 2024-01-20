@@ -258,6 +258,12 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     ### **WORK IN PROGRESS**    
 -->
 
+### **WORK IN PROGRESS**
+
+* (ljouon) add scroll to top button
+* (ljouon) optimize deletion of disabled elements, simplify mapping to rooms and functions
+* (ljouon) extend readme to explain state mapping for usage in Visionary-UI
+
 ### 1.0.6 (2024-01-04)
 
 * (ljouon) client menu highlighting depending on navigation
