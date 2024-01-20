@@ -2,8 +2,21 @@
   "common": {
     "tier": 3,
     "name": "visionary-ui",
-    "version": "1.0.6",
+    "version": "1.0.7",
     "news": {
+      "1.0.7": {
+        "en": "add scroll to top button\noptimize deletion of disabled elements, simplify mapping to rooms and functions\nextend readme to explain state mapping for usage in Visionary-UI",
+        "de": "scroll hinzufügen\noptimieren sie das löschen von behinderten elementen, vereinfachen sie die zuordnung zu räumen und funktionen\nreadme verlängern, um die staatliche Kartierung für die Nutzung in Visionary-UI zu erklären",
+        "ru": "добавить прокрутку на кнопку сверху\nоптимизируйте удаление отключенных элементов, упростите отображение на номера и функции\nпродление чтения, чтобы объяснить состояние карты для использования в Visionary-UI",
+        "pt": "adicionar rolagem ao botão superior\notimizar a exclusão de elementos deficientes, simplificar o mapeamento para salas e funções\nestender o readme para explicar o mapeamento do estado para uso em Visionary-UI",
+        "nl": "scroll toevoegen aan de bovenste knop\noptimaliseer verwijdering van gehandicapte elementen, vereenvoudig mapping naar kamers en functies\nreadme uitbreiden om state mapping voor gebruik in Visionary-UI uit te leggen",
+        "fr": "ajouter le défilement au bouton supérieur\noptimiser la suppression des éléments désactivés, simplifier la cartographie des salles et des fonctions\nétendre la lecture pour expliquer la cartographie d'état pour l'utilisation dans Visionary-UI",
+        "it": "aggiungere lo scorrimento al pulsante superiore\nottimizzare la cancellazione di elementi disabili, semplificare la mappatura a camere e funzioni\nestendere il readme per spiegare la mappatura dello stato per l'uso in Visionary-UI",
+        "es": "añadir desplazamiento al botón superior\noptimización de la eliminación de elementos discapacitados, simplifica el mapeo de habitaciones y funciones\nextender el readme para explicar la asignación estatal para uso en Visionary-UI",
+        "pl": "dodaj przewijanie do górnego przycisku\noptymalizacja usuwania elementów niepełnosprawnych, uproszczenie mapowania do pomieszczeń i funkcji\nrozszerzenie readme, aby wyjaśnić mapowanie stanu do wykorzystania w Visionary- UI",
+        "uk": "додати прокрутку до верхньої кнопки\nоптимізація видалення елементів відключення, спрощення картування в номери і функції\nпродовжити читання для пояснення стану картування для використання в Visionary-UI",
+        "zh-cn": "向上键添加滚动\n优化删除残缺内容,简化对房间和功能的映射\n扩展 readme 以解释用于Visionary-UI的状态映射"
+      },
       "1.0.6": {
         "en": "client menu highlighting depending on navigation\nnyc is able to identify namespace of ioBroker in test coverage run",
         "de": "client-menü markieren je nach navigation\nnyc ist in der Lage, Namespace von ioBroker im Testabdeckungslauf zu identifizieren",
