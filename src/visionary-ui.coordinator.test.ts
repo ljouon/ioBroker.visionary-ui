@@ -163,9 +163,15 @@ describe('VisionaryUiCoordinator', () => {
                 members: ['objectId'],
             } as unknown as VuiRoom;
             coordinator.setRoom(room);
+            const vuiFunction = {
+                id: 'functionId',
+                members: ['objectId'],
+            } as unknown as VuiFunction;
+            coordinator.setFunction(vuiFunction);
             const vuiStateObjectCache = new VuiCache<VuiStateObject>();
             const vuiStateObject = {
                 id: 'objectId',
+                enabled: true,
             } as unknown as VuiStateObject;
             vuiStateObjectCache.set(vuiStateObject);
             coordinator.setObjects(vuiStateObjectCache);
@@ -186,9 +192,14 @@ describe('VisionaryUiCoordinator', () => {
                 members: ['objectId'],
             } as unknown as VuiRoom;
             coordinator.setRoom(room);
-
+            const vuiFunction = {
+                id: 'functionId',
+                members: ['objectId'],
+            } as unknown as VuiFunction;
+            coordinator.setFunction(vuiFunction);
             const vuiStateObject = {
                 id: 'objectId',
+                enabled: true,
             } as unknown as VuiStateObject;
             coordinator.setObject(vuiStateObject);
 
@@ -222,8 +233,15 @@ describe('VisionaryUiCoordinator', () => {
             } as unknown as VuiRoom;
             coordinator.setRoom(room);
 
+            const vuiFunction = {
+                id: 'functionId',
+                members: ['objectId'],
+            } as unknown as VuiFunction;
+            coordinator.setFunction(vuiFunction);
+
             const objectElement = {
                 id: 'objectId',
+                enabled: true,
             } as unknown as VuiStateObject;
             coordinator.setObject(objectElement);
 
@@ -232,6 +250,7 @@ describe('VisionaryUiCoordinator', () => {
             const vuiStateValueCache = new VuiCache<VuiStateValue>();
             const stateElement = {
                 id: 'objectId',
+                enabled: true,
             } as unknown as VuiStateValue;
             vuiStateValueCache.set(stateElement);
             coordinator.setStates(vuiStateValueCache);
@@ -252,12 +271,19 @@ describe('VisionaryUiCoordinator', () => {
                 members: ['objectId'],
             } as unknown as VuiRoom;
             coordinator.setRoom(room);
+            const vuiFunction = {
+                id: 'functionId',
+                members: ['objectId'],
+            } as unknown as VuiFunction;
+            coordinator.setFunction(vuiFunction);
             const vuiStateObject = {
                 id: 'objectId',
+                enabled: true,
             } as unknown as VuiStateObject;
             coordinator.setObject(vuiStateObject);
             const vuiStateValue = {
                 id: 'objectId',
+                enabled: true,
             } as unknown as VuiStateValue;
             coordinator.setState(vuiStateValue);
 
@@ -280,11 +306,13 @@ describe('VisionaryUiCoordinator', () => {
 
             const functionEntry = {
                 id: 'functionId',
+                members: ['objectId'],
             } as unknown as VuiFunction;
             coordinator.setFunction(functionEntry);
 
             const objectEntry = {
                 id: 'objectId',
+                enabled: true,
             } as unknown as VuiStateObject;
             coordinator.setObject(objectEntry);
 
@@ -310,12 +338,12 @@ describe('VisionaryUiCoordinator', () => {
             sinon.assert.calledWithExactly(
                 socketServer.messageToClient.getCall(2),
                 'client1',
-                '{"type":"allFunctions","data":[{"id":"functionId"}]}',
+                '{"type":"allFunctions","data":[{"id":"functionId","members":["objectId"]}]}',
             );
             sinon.assert.calledWithExactly(
                 socketServer.messageToClient.getCall(3),
                 'client1',
-                '{"type":"allStates","data":[{"id":"objectId"}]}',
+                '{"type":"allStates","data":[{"id":"objectId","enabled":true}]}',
             );
             sinon.assert.calledWithExactly(
                 socketServer.messageToClient.getCall(4),

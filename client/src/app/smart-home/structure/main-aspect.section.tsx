@@ -65,7 +65,7 @@ export function MainAspectSection({ id, type }: MainAspectSectionProps) {
     return (
         <>
             <div className="pt-4 pl-4">
-                <h1 className="m- flex items-center text-lg font-bold leading-none  text-gray-900 md:text-xl lg:text-2xl dark:text-white">
+                <h1 className="flex items-center text-lg font-bold leading-none text-gray-900 md:text-xl lg:text-2xl dark:text-white bg-red-300">
                     <VuiEnumIcon element={element.mainAspect} size={16} />
                     <span className="ml-2">{element.mainAspect.name}</span>
                 </h1>

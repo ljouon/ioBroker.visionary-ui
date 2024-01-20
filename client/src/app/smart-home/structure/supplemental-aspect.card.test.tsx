@@ -18,6 +18,7 @@ describe('SupplementalAspectCard', () => {
                     type: 'state',
                     id: 'objId1',
                     name: 'name',
+                    enabled: true,
                 },
             ],
 
@@ -40,8 +41,8 @@ describe('SupplementalAspectCard', () => {
     it('displays state objects sorted by rank and filtered by functionObjectIds', () => {
         vi.mocked(useVuiDataContext).mockReturnValue({
             stateObjects: [
-                { id: '1', rank: 2, name: 'Object 2' },
-                { id: '2', rank: 1, name: 'Object 1' },
+                { id: '1', rank: 2, name: 'Object 2', enabled: true },
+                { id: '2', rank: 1, name: 'Object 1', enabled: true },
             ],
             stateValues: [
                 { id: '1', value: 'Value 1', lastChange: '2023-04-01' },
@@ -60,8 +61,8 @@ describe('SupplementalAspectCard', () => {
     it('displays state objects sorted by rank (with the first element missing the rank) and filtered by functionObjectIds', () => {
         vi.mocked(useVuiDataContext).mockReturnValue({
             stateObjects: [
-                { id: '1', name: 'Object 2' },
-                { id: '2', rank: 1, name: 'Object 1' },
+                { id: '1', name: 'Object 2', enabled: true },
+                { id: '2', rank: 1, name: 'Object 1', enabled: true },
             ],
             stateValues: [
                 { id: '1', value: 'Value 1', lastChange: '2023-04-01' },
@@ -79,8 +80,8 @@ describe('SupplementalAspectCard', () => {
     it('displays state objects sorted by rank (with the second element missing the rank) and filtered by functionObjectIds', () => {
         vi.mocked(useVuiDataContext).mockReturnValue({
             stateObjects: [
-                { id: '1', rank: 5, name: 'Object 2' },
-                { id: '2', name: 'Object 1' },
+                { id: '1', rank: 5, name: 'Object 2', enabled: true },
+                { id: '2', name: 'Object 1', enabled: true },
             ],
             stateValues: [
                 { id: '1', value: 'Value 1', lastChange: '2023-04-01' },
@@ -99,8 +100,8 @@ describe('SupplementalAspectCard', () => {
     it('displays state objects sorted by rank with missing values and filtered by functionObjectIds', () => {
         vi.mocked(useVuiDataContext).mockReturnValue({
             stateObjects: [
-                { id: '1', rank: 2, name: 'Object 2' },
-                { id: '2', rank: 1, name: 'Object 1' },
+                { id: '1', rank: 2, name: 'Object 2', enabled: true },
+                { id: '2', rank: 1, name: 'Object 1', enabled: true },
             ],
             stateValues: [
                 { id: '1', value: null, lastChange: '2023-04-01' },

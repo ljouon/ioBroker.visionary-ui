@@ -43,7 +43,9 @@ describe('Visionary-UI Mapper', () => {
                     max: 3,
                     step: 1,
                     unit: '°C',
-                    custom: { 'visionary-ui': { displayName: 'Display Name 1', customIcon: 'icon1', rank: 1 } },
+                    custom: {
+                        'visionary-ui': { enabled: true, displayName: 'Display Name 1', customIcon: 'icon1', rank: 1 },
+                    },
                 },
                 type: 'state',
                 enums: { 'enum.rooms.room1': true },
@@ -67,6 +69,7 @@ describe('Visionary-UI Mapper', () => {
                 maxValue: 3,
                 states: null,
                 step: 1,
+                enabled: true,
             };
 
             const result = mapToVuiStateObject('object1', mockIoBrokerObject, 'en');
