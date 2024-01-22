@@ -2,8 +2,21 @@
   "common": {
     "tier": 3,
     "name": "visionary-ui",
-    "version": "1.0.7",
+    "version": "1.0.8",
     "news": {
+      "1.0.8": {
+        "en": "fix header background color",
+        "de": "fix header hintergrundfarbe",
+        "ru": "фиксация цвета фона заголовка",
+        "pt": "corrigir a cor de fundo do cabeçalho",
+        "nl": "fix header achtergrondkleur",
+        "fr": "fixer la couleur d'arrière-plan de l'en-tête",
+        "it": "fissare l'intestazione colore di sfondo",
+        "es": "fijar cabeza de fondo color",
+        "pl": "naprawić kolor tła nagłówka",
+        "uk": "виправити заголовок фонового кольору",
+        "zh-cn": "固定页眉背景颜色"
+      },
       "1.0.7": {
         "en": "add scroll to top button\noptimize deletion of disabled elements, simplify mapping to rooms and functions\nextend readme to explain state mapping for usage in Visionary-UI",
         "de": "scroll hinzufügen\noptimieren sie das löschen von behinderten elementen, vereinfachen sie die zuordnung zu räumen und funktionen\nreadme verlängern, um die staatliche Kartierung für die Nutzung in Visionary-UI zu erklären",
