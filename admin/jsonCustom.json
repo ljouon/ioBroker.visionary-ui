@@ -40,6 +40,15 @@
       "default": "0",
       "sm": 6,
       "help": "Rank number to be used to determine the sorting of the element in the context of others."
+    },
+    "forceReadOnly": {
+      "type": "checkbox",
+      "label": "Force to show this state as read only",
+      "help": "Prevent editing and just show state value in the user interface. (Sometimes an adapter resets the writeable property.)",
+      "default": false,
+      "sm": 6,
+      "newLine": true,
+      "noMultiEdit": true
     }
   }
 }

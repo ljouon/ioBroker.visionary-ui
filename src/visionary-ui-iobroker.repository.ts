@@ -8,6 +8,7 @@ export type VisionaryUiCustomProperties = {
     customIcon: string;
     displayName: string;
     rank: number;
+    forceReadOnly: boolean;
 };
 
 export class VisionaryUiIoBrokerRepository {

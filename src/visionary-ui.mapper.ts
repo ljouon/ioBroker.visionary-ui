@@ -24,7 +24,7 @@ export function mapToVuiStateObject(
         role: ioBrokerObject.common.role || 'unknown',
         datatype: ioBrokerObject.common.type,
         iobType: ioBrokerObject.type,
-        isWriteable: ioBrokerObject.common.write,
+        isWriteable: customProperties?.enabled && customProperties.forceReadOnly ? false : ioBrokerObject.common.write,
         defaultValue: ioBrokerObject.common.def,
         unit: ioBrokerObject.common.unit,
         customIcon: customProperties?.customIcon || null,
