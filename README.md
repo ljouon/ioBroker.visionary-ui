@@ -257,6 +257,11 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**    
 -->
+
+### **WORK IN PROGRESS**
+
+* (ljouon) fix header background color
+
 ### 1.0.7 (2024-01-20)
 
 * (ljouon) add scroll to top button
