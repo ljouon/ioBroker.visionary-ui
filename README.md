@@ -257,6 +257,11 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**    
 -->
+
+### **WORK IN PROGRESS**
+
+* (ljouon) update dependencies to fix security vulnerabilities
+
 ### 1.0.8 (2024-01-22)
 
 * (ljouon) fix header background color
