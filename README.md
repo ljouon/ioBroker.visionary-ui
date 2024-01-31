@@ -257,8 +257,7 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**    
 -->
-
-### **WORK IN PROGRESS**
+### 1.0.9 (2024-01-31)
 
 * (ljouon) update dependencies to fix security vulnerabilities
 

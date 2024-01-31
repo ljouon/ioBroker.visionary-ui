@@ -2,8 +2,21 @@
   "common": {
     "tier": 3,
     "name": "visionary-ui",
-    "version": "1.0.8",
+    "version": "1.0.9",
     "news": {
+      "1.0.9": {
+        "en": "update dependencies to fix security vulnerabilities",
+        "de": "die abhängigkeiten zu aktualisieren, um sicherheitslücken zu beheben",
+        "ru": "обновление зависимостей для устранения уязвимостей безопасности",
+        "pt": "dependências de atualização para corrigir vulnerabilidades de segurança",
+        "nl": "update afhankelijkheden om beveiligingsproblemen op te lossen",
+        "fr": "mettre à jour les dépendances pour corriger les vulnérabilités de sécurité",
+        "it": "aggiornare le dipendenze per risolvere le vulnerabilità di sicurezza",
+        "es": "actualizar las dependencias para corregir vulnerabilidades de seguridad",
+        "pl": "aktualizacja zależności w celu ustalenia słabych punktów bezpieczeństwa",
+        "uk": "оновлення залежності для фіксації вразливостей безпеки",
+        "zh-cn": "更新解决安全弱点的依赖性"
+      },
       "1.0.8": {
         "en": "fix header background color",
         "de": "fix header hintergrundfarbe",
@@ -81,19 +94,6 @@
         "pl": "naprawić dane w celu selekcji boksu",
         "uk": "виправлено тип даних значень для вибору",
         "zh-cn": "f 选择箱的数值数据类型"
-      },
-      "1.0.2": {
-        "en": "initial release",
-        "de": "Erstveröffentlichung",
-        "ru": "Начальная версия",
-        "pt": "lançamento inicial",
-        "nl": "Eerste uitgave",
-        "fr": "Première version",
-        "it": "Versione iniziale",
-        "es": "Versión inicial",
-        "pl": "Pierwsze wydanie",
-        "uk": "початковий випуск",
-        "zh-cn": "首次出版"
       }
     },
     "titleLang": {
