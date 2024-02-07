@@ -184,7 +184,7 @@ To define a custom name you need to place a custom property directly to the obje
 
 - Please open the `Objects` (`#tab-objects`) section of the ioBroker admin interface
 - Find the object you want to define and open the custom settings on the right side of the table listing represented by
-  a ⚙️name️.
+  a ⚙️icon.
 - There you will find a setting for Visionary-UI. Please open and enable it (if it is not already).
 - There is a field for the "*Display name*" of that specific object.
 - Please enter the desired custom name into that field.
@@ -257,6 +257,7 @@ see [`@alcalzone/release-script`](https://github.com/AlCalzone/release-script#us
     Placeholder for the next version (at the beginning of the line):
     ### **WORK IN PROGRESS**    
 -->
+
 ### 1.0.9 (2024-01-31)
 
 * (ljouon) update dependencies to fix security vulnerabilities

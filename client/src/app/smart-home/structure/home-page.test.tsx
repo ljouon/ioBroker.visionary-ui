@@ -1,13 +1,18 @@
 import '@testing-library/jest-dom';
-import { vi } from 'vitest';
-import { useVuiDataContext, VuiDataContextType } from '@/app/smart-home/data.context';
-import { useNavigate } from 'react-router-dom';
-import { render } from '@/test/testing-library-setup';
-import { HomePage } from '@/app/smart-home/structure/home.page';
-import { screen } from '@testing-library/react';
+import {vi} from 'vitest';
+import {useVuiDataContext, VuiDataContextType} from '@/app/smart-home/data.context';
+import {useNavigate} from 'react-router-dom';
+import {render} from '@/test/testing-library-setup';
+import {HomePage} from '@/app/smart-home/structure/home.page';
+import {screen} from '@testing-library/react';
+import {createAspectPath} from "@/app/route-utils";
 
 vi.mock('@/app/smart-home/data.context', () => ({
     useVuiDataContext: vi.fn(),
+}));
+
+vi.mock('@/app/route-utils', () => ({
+    createAspectPath: vi.fn(),
 }));
 
 vi.mock('react-router-dom', () => ({
@@ -23,14 +28,12 @@ vi.mock('@/app/components/error', () => ({
         </div>
     ),
 }));
-// vi.mock('react-i18next', () => ({
-//     useTranslation: () => ({ t: (key: string) => key }),
-// }));
+
 vi.mock('react-i18next', async () => {
     const actual = await vi.importActual('react-i18next');
     return {
         ...actual,
-        useTranslation: () => ({ t: (key: string) => key }),
+        useTranslation: () => ({t: (key: string) => key}),
     };
 });
 
@@ -44,7 +47,7 @@ describe('HomePage Component', () => {
 
         vi.mocked(useNavigate).mockReturnValue(mockNavigate);
 
-        render(<HomePage />);
+        render(<HomePage/>);
 
         expect(mockNavigate).not.toHaveBeenCalled();
     });
@@ -55,9 +58,30 @@ describe('HomePage Component', () => {
             roomAspectNodes: [],
         } as unknown as VuiDataContextType);
 
-        render(<HomePage />);
+        render(<HomePage/>);
 
         expect(screen.getByText('ErrorDisplay')).toBeInTheDocument();
         expect(screen.getByText('no_connection_to_server')).toBeInTheDocument();
+    });
+
+    it('does navigate if there are room aspect nodes', () => {
+        const mockNavigate = vi.fn();
+        vi.mocked(useVuiDataContext).mockReturnValue({
+            connectionState: 'OPEN',
+            roomAspectNodes: [{
+                level: 0,
+                canonicalPath: 'canonicalPath',
+                mainAspect: {name: 'aRoom'},
+                supplementalAspects: {},
+                children: []
+            }],
+        } as unknown as VuiDataContextType);
+
+        vi.mocked(createAspectPath).mockImplementation((a: string, b: string) => a + '/' + b);
+        vi.mocked(useNavigate).mockReturnValue(mockNavigate);
+
+        render(<HomePage/>);
+
+        expect(mockNavigate).toHaveBeenCalledWith('rooms/canonicalPath');
     });
 });

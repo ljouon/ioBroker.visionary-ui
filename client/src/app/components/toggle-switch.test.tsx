@@ -1,15 +1,16 @@
-import { fireEvent, screen } from '@testing-library/react';
-import { describe, expect, it, vi } from 'vitest';
-import { render } from '@/test/testing-library-setup'; // Adjust the import path as necessary
-import { ToggleSwitch } from './toggle-switch';
+import {fireEvent, screen} from '@testing-library/react';
+import {describe, expect, it, vi} from 'vitest';
+import {render} from '@/test/testing-library-setup'; // Adjust the import path as necessary
+import {ToggleSwitch} from './toggle-switch';
 
 describe('ToggleSwitch Component', () => {
     it('initializes with the correct value', () => {
         render(
             <ToggleSwitch
                 initialValue="leftValue"
-                left={{ value: 'leftValue', label: 'Left' }}
-                right={{ value: 'rightValue', label: 'Right' }}
+                highlightValue="leftValue"
+                left={{value: 'leftValue', label: 'Left'}}
+                right={{value: 'rightValue', label: 'Right'}}
                 onSwitch={vi.fn()}
             />,
         );
@@ -22,8 +23,9 @@ describe('ToggleSwitch Component', () => {
         render(
             <ToggleSwitch
                 initialValue="leftValue"
-                left={{ value: 'leftValue', label: 'Left' }}
-                right={{ value: 'rightValue', label: 'Right' }}
+                highlightValue="leftValue"
+                left={{value: 'leftValue', label: 'Left'}}
+                right={{value: 'rightValue', label: 'Right'}}
                 onSwitch={onSwitchMock}
             />,
         );
@@ -36,8 +38,9 @@ describe('ToggleSwitch Component', () => {
         render(
             <ToggleSwitch
                 initialValue="rightValue"
-                left={{ value: 'leftValue', label: 'Left' }}
-                right={{ value: 'rightValue', label: 'Right' }}
+                highlightValue="leftValue"
+                left={{value: 'leftValue', label: 'Left'}}
+                right={{value: 'rightValue', label: 'Right'}}
                 onSwitch={onSwitchMock}
             />,
         );
@@ -50,8 +53,9 @@ describe('ToggleSwitch Component', () => {
         render(
             <ToggleSwitch
                 initialValue="rightValue"
-                left={{ value: 'leftValue', label: 'Left' }}
-                right={{ value: 'rightValue', label: 'Right' }}
+                highlightValue="leftValue"
+                left={{value: 'leftValue', label: 'Left'}}
+                right={{value: 'rightValue', label: 'Right'}}
                 onSwitch={onSwitchMock}
             />,
         );
@@ -63,8 +67,9 @@ describe('ToggleSwitch Component', () => {
         render(
             <ToggleSwitch
                 initialValue="leftValue"
-                left={{ value: 'leftValue', label: 'Left' }}
-                right={{ value: 'rightValue', label: 'Right' }}
+                highlightValue="leftValue"
+                left={{value: 'leftValue', label: 'Left'}}
+                right={{value: 'rightValue', label: 'Right'}}
                 onSwitch={vi.fn()}
             />,
         );
